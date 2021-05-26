@@ -22,5 +22,9 @@ class Bot(BotAuht):
         for event in self.longpoll.listen():
             if event.type == VkEventType.MESSAGE_NEW and event.to_me and event.text:
                 received_message = event.text.lower().strip()
-                print(received_message)
+                sender_name = self._get_user_name(event.user_id)
+                logger.info(f"{sender_name}: {received_message}")
 
+    def _get_user_name(self, user_id):
+        """ получает имя пользователя по его id """
+        return self.api.users.get(user_id=user_id)[0].get('first_name')
