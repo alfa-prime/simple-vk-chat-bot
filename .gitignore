@@ -1,0 +1,7 @@
+.idea
+__pycache__
+Pipfile
+Pipfile.lock
+.env
+logs
+vk_config.v2.json
