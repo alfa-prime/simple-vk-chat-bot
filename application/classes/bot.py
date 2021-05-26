@@ -1,5 +1,6 @@
 import vk_api
 from vk_api.longpoll import VkLongPoll, VkEventType
+from vk_api.utils import get_random_id
 
 from application.settings import BOT_TOKEN
 from ..utilites.logger import set_logger
@@ -24,6 +25,12 @@ class Bot(BotAuht):
                 received_message = event.text.lower().strip()
                 sender_name = self._get_user_name(event.user_id)
                 logger.info(f"{sender_name}: {received_message}")
+
+                self._send_message(event.user_id, 'привет')
+                
+    def _send_message(self, sender_id, message):
+        self.api.messages.send(peer_id=sender_id, message=message, random_id=get_random_id())
+        logger.info(f"Бот: {message}")
 
     def _get_user_name(self, user_id):
         """ получает имя пользователя по его id """
