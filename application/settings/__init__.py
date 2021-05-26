@@ -10,6 +10,3 @@ def load_env_values():
 
 if load_env_values():
     BOT_TOKEN = os.getenv('bot_token')
-
-
-
