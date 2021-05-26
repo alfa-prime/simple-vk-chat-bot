@@ -34,7 +34,7 @@ class Bot(BotAuht):
     def _send_message(self, sender_id, message):
         """ посылает сообщение пользователю """
         self.api.messages.send(peer_id=sender_id, message=message, random_id=get_random_id())
-        logger.info(f"Бот: {message.strip()}")
+        logger.info(f"Бот: {message}")
 
     def _get_user_name(self, user_id):
         """ получает имя пользователя по его id """
