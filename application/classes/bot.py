@@ -2,9 +2,10 @@ import vk_api
 from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.utils import get_random_id
 
-from application.settings import BOT_TOKEN
 from ..utilites.logger import set_logger
 from ..classes.dispatcher import Dispatcher
+
+from application.settings import BOT_TOKEN
 
 logger = set_logger(__name__)
 
