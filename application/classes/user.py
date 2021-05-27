@@ -7,7 +7,7 @@ from ..utilites.logger import set_logger
 from ..settings import USER_TOKEN, APP_ID, API_VERSION
 
 # список дополнительных полей для выдачи при запросе расширенной информации о пользователях (users.get)
-FIELDS_TO_SEARCH = 'sex, bdate, city, relation'
+FIELDS_TO_SEARCH = 'sex, bdate, city'
 
 logger = set_logger(__name__)
 
@@ -47,14 +47,14 @@ class User(UserAuth, UserProperties):
             self._set_properties(raw)
 
     def _get_raw_properties(self, input_id):
-        """  получение 'сырых' свойств пользователя """
+        """  получение свойств пользователя """
         try:
             return self.api.users.get(user_ids=input_id, fields=FIELDS_TO_SEARCH, v=API_VERSION)[0]
         except vk_api.ApiError as error:
             return dict(error.error)
 
     def _set_properties(self, properties):
-        """ устанавливает свойства для текущего пользователя """
+        """ устанавливает свойства пользователя """
         self.first_name = properties.get('first_name')
         self.last_name = properties.get('last_name')
         self.sex_id = properties.get('sex')
