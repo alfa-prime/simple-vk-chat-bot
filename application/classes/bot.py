@@ -31,21 +31,27 @@ class Bot(BotAuht):
                 sender_id = event.user_id
                 sender_name = self._get_user_name(sender_id)
                 logger.info(f"{sender_name}: {received_message}")
+                message = None
 
-                if '#' in received_message:
-                    search_user_id = received_message[1:]
+                if received_message == 'поиск':
+                    self._send_message(sender_id, message='Введите id или screen_name:')
+                    search_user_id = self._catch_user_input()
                     user = User(search_user_id)
                     result, result_message = self._check_user_error_deactivated(user)
+
                     if result:
                         if not user.age:
                             self._send_message(sender_id, message='Введите возраст:')
                             user.age = self._catch_user_input()
+                        else:
+                            message = dict(message=user)
                     else:
-                        self._send_message(sender_id, **result_message)
+                        message = result_message
 
                 else:
                     message = dispatcher.process_message(received_message, sender_name)
-                    self._send_message(sender_id, **message)
+
+                self._send_message(sender_id, **message)
 
     def _catch_user_input(self):
         """ ждет ввода значения от пользователя и возвращает его """
