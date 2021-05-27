@@ -1,6 +1,8 @@
 import vk_api
+from vk_api.bot_longpoll import VkBotLongPoll
 from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.utils import get_random_id
+import json
 
 from ..utilites.logger import set_logger
 from ..classes.dispatcher import Dispatcher
@@ -16,6 +18,7 @@ class BotAuht:
         self.api = session.get_api()
         self.longpoll = VkLongPoll(session)
 
+
 class Bot(BotAuht):
     def __init__(self):
         super().__init__()
@@ -26,6 +29,7 @@ class Bot(BotAuht):
 
         for event in self.longpoll.listen():
             if event.type == VkEventType.MESSAGE_NEW and event.to_me and event.text:
+
                 received_message = event.text.lower().strip()
                 sender_id = event.user_id
                 sender_name = self._get_user_name(sender_id)
@@ -36,7 +40,9 @@ class Bot(BotAuht):
                     user = User(search_user_id)
                     result, result_message = self._check_user_error_deactivated(user)
                     if result:
-                        self._send_message(sender_id, message=user)
+                        if not user.age:
+                            self._send_message(sender_id, message='Введите возраст:')
+                            user.age = self._catch_user_input()
                     else:
                         self._send_message(sender_id, **result_message)
 
@@ -44,9 +50,18 @@ class Bot(BotAuht):
                     message = dispatcher.process_message(received_message, sender_name)
                     self._send_message(sender_id, **message)
 
+    def _catch_user_input(self):
+        """ ждет ввода значения от пользователя и возвращает его """
+        for event in self.longpoll.listen():
+            if event.type == VkEventType.MESSAGE_NEW and event.to_me:
+                return event.text.lower().strip()
+
     @staticmethod
     def _check_user_error_deactivated(user):
-        """ проверяет аккаунт на валидность и блокировку """
+        """
+        если аккаунт заблокирован или удален,
+        возвращает соотвествующее сообщение для отправки в чат
+        """
         if user.has_error:
             return False, dict(message=user.has_error)
         elif user.is_deactivated:

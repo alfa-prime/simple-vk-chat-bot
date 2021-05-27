@@ -1,0 +1,343 @@
+[
+    {
+        "conversation": {
+            "peer": {
+                "id": 8301129,
+                "type": "user",
+                "local_id": 8301129
+            },
+            "last_message_id": 2049,
+            "in_read": 2049,
+            "out_read": 2049,
+            "is_marked_unread": false,
+            "important": false,
+            "can_write": {
+                "allowed": true
+            }
+        },
+        "last_message": {
+            "date": 1622152955,
+            "from_id": -204586087,
+            "id": 2049,
+            "out": 1,
+            "peer_id": 8301129,
+            "text": "\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u0432\u043e\u0437\u0440\u0430\u0441\u0442",
+            "conversation_message_id": 1879,
+            "fwd_messages": [],
+            "important": false,
+            "random_id": -1359941080,
+            "attachments": [],
+            "is_hidden": false
+        }
+    },
+    {
+        "conversation": {
+            "peer": {
+                "id": 492905356,
+                "type": "user",
+                "local_id": 492905356
+            },
+            "last_message_id": 1792,
+            "in_read": 1792,
+            "out_read": 1792,
+            "is_marked_unread": false,
+            "important": false,
+            "can_write": {
+                "allowed": true
+            }
+        },
+        "last_message": {
+            "date": 1622101637,
+            "from_id": -204586087,
+            "id": 1792,
+            "out": 1,
+            "peer_id": 492905356,
+            "text": "\u041d\u0435\u0438\u0437\u0432\u0435\u0441\u0442\u043d\u0430\u044f \u043a\u043e\u043c\u0430\u043d\u0434\u0430",
+            "conversation_message_id": 28,
+            "fwd_messages": [],
+            "important": false,
+            "random_id": 1735192397,
+            "attachments": [],
+            "is_hidden": false
+        }
+    },
+    {
+        "conversation": {
+            "peer": {
+                "id": 174036779,
+                "type": "user",
+                "local_id": 174036779
+            },
+            "last_message_id": 1267,
+            "in_read": 1267,
+            "out_read": 1267,
+            "is_marked_unread": false,
+            "important": false,
+            "can_write": {
+                "allowed": true
+            }
+        },
+        "last_message": {
+            "date": 1621711732,
+            "from_id": -204586087,
+            "id": 1267,
+            "out": 1,
+            "peer_id": 174036779,
+            "text": "",
+            "conversation_message_id": 18,
+            "fwd_messages": [],
+            "important": false,
+            "random_id": -1330132396,
+            "attachments": [
+                {
+                    "type": "sticker",
+                    "sticker": {
+                        "product_id": 102,
+                        "sticker_id": 3143,
+                        "images": [
+                            {
+                                "url": "https://vk.com/sticker/1-3143-64",
+                                "width": 64,
+                                "height": 64
+                            },
+                            {
+                                "url": "https://vk.com/sticker/1-3143-128",
+                                "width": 128,
+                                "height": 128
+                            },
+                            {
+                                "url": "https://vk.com/sticker/1-3143-256",
+                                "width": 256,
+                                "height": 256
+                            },
+                            {
+                                "url": "https://vk.com/sticker/1-3143-352",
+                                "width": 352,
+                                "height": 352
+                            },
+                            {
+                                "url": "https://vk.com/sticker/1-3143-512",
+                                "width": 512,
+                                "height": 512
+                            }
+                        ],
+                        "images_with_background": [
+                            {
+                                "url": "https://vk.com/sticker/1-3143-64b",
+                                "width": 64,
+                                "height": 64
+                            },
+                            {
+                                "url": "https://vk.com/sticker/1-3143-128b",
+                                "width": 128,
+                                "height": 128
+                            },
+                            {
+                                "url": "https://vk.com/sticker/1-3143-256b",
+                                "width": 256,
+                                "height": 256
+                            },
+                            {
+                                "url": "https://vk.com/sticker/1-3143-352b",
+                                "width": 352,
+                                "height": 352
+                            },
+                            {
+                                "url": "https://vk.com/sticker/1-3143-512b",
+                                "width": 512,
+                                "height": 512
+                            }
+                        ]
+                    }
+                }
+            ],
+            "is_hidden": false
+        }
+    },
+    {
+        "conversation": {
+            "peer": {
+                "id": 196844940,
+                "type": "user",
+                "local_id": 196844940
+            },
+            "last_message_id": 1259,
+            "in_read": 1259,
+            "out_read": 1259,
+            "is_marked_unread": false,
+            "important": false,
+            "can_write": {
+                "allowed": true
+            }
+        },
+        "last_message": {
+            "date": 1621696981,
+            "from_id": -204586087,
+            "id": 1259,
+            "out": 1,
+            "peer_id": 196844940,
+            "text": "\u041a\u043b\u0430\u0432\u0438\u0430\u0442\u0443\u0440\u0430 \u0443\u0431\u0440\u0430\u043d\u0430",
+            "conversation_message_id": 18,
+            "fwd_messages": [],
+            "important": false,
+            "random_id": 228579361,
+            "attachments": [],
+            "is_hidden": false
+        }
+    },
+    {
+        "conversation": {
+            "peer": {
+                "id": 3740983,
+                "type": "user",
+                "local_id": 3740983
+            },
+            "last_message_id": 1145,
+            "in_read": 1145,
+            "out_read": 1145,
+            "is_marked_unread": false,
+            "important": false,
+            "can_write": {
+                "allowed": true
+            }
+        },
+        "last_message": {
+            "date": 1621624590,
+            "from_id": -204586087,
+            "id": 1145,
+            "out": 1,
+            "peer_id": 3740983,
+            "text": "\u0410 \u0432\u043e\u0442 \u0438 \u043a\u043d\u043e\u043f\u043e\u0447\u043a\u0438",
+            "conversation_message_id": 36,
+            "fwd_messages": [],
+            "important": false,
+            "random_id": -1704530984,
+            "attachments": [],
+            "is_hidden": false
+        }
+    },
+    {
+        "conversation": {
+            "peer": {
+                "id": 1616179,
+                "type": "user",
+                "local_id": 1616179
+            },
+            "last_message_id": 1109,
+            "in_read": 1109,
+            "out_read": 1109,
+            "is_marked_unread": false,
+            "important": false,
+            "can_write": {
+                "allowed": true
+            }
+        },
+        "last_message": {
+            "date": 1621616805,
+            "from_id": -204586087,
+            "id": 1109,
+            "out": 1,
+            "peer_id": 1616179,
+            "text": "",
+            "conversation_message_id": 44,
+            "fwd_messages": [],
+            "important": false,
+            "random_id": -424913765,
+            "attachments": [
+                {
+                    "type": "sticker",
+                    "sticker": {
+                        "product_id": 102,
+                        "sticker_id": 3143,
+                        "images": [
+                            {
+                                "url": "https://vk.com/sticker/1-3143-64",
+                                "width": 64,
+                                "height": 64
+                            },
+                            {
+                                "url": "https://vk.com/sticker/1-3143-128",
+                                "width": 128,
+                                "height": 128
+                            },
+                            {
+                                "url": "https://vk.com/sticker/1-3143-256",
+                                "width": 256,
+                                "height": 256
+                            },
+                            {
+                                "url": "https://vk.com/sticker/1-3143-352",
+                                "width": 352,
+                                "height": 352
+                            },
+                            {
+                                "url": "https://vk.com/sticker/1-3143-512",
+                                "width": 512,
+                                "height": 512
+                            }
+                        ],
+                        "images_with_background": [
+                            {
+                                "url": "https://vk.com/sticker/1-3143-64b",
+                                "width": 64,
+                                "height": 64
+                            },
+                            {
+                                "url": "https://vk.com/sticker/1-3143-128b",
+                                "width": 128,
+                                "height": 128
+                            },
+                            {
+                                "url": "https://vk.com/sticker/1-3143-256b",
+                                "width": 256,
+                                "height": 256
+                            },
+                            {
+                                "url": "https://vk.com/sticker/1-3143-352b",
+                                "width": 352,
+                                "height": 352
+                            },
+                            {
+                                "url": "https://vk.com/sticker/1-3143-512b",
+                                "width": 512,
+                                "height": 512
+                            }
+                        ]
+                    }
+                }
+            ],
+            "is_hidden": false
+        }
+    },
+    {
+        "conversation": {
+            "peer": {
+                "id": 102412995,
+                "type": "user",
+                "local_id": 102412995
+            },
+            "last_message_id": 920,
+            "in_read": 920,
+            "out_read": 920,
+            "is_marked_unread": false,
+            "important": false,
+            "can_write": {
+                "allowed": true
+            }
+        },
+        "last_message": {
+            "date": 1621577829,
+            "from_id": -204586087,
+            "id": 920,
+            "out": 1,
+            "peer_id": 102412995,
+            "text": "\u0421\u043b\u0443\u0448\u0430\u044e \u0438 \u043f\u043e\u0432\u0438\u043d\u0443\u044e\u0441\u044c.\n\u041d\u0430\u043f\u043e\u043c\u0438\u043d\u0430\u044e \u043f\u0440\u043e \u043a\u043e\u043c\u0430\u043d\u0434\u0443 \u041a\u043b\u0430\u0432\u0438\u0448\u0438",
+            "conversation_message_id": 21,
+            "fwd_messages": [],
+            "important": false,
+            "random_id": 8702770,
+            "attachments": [],
+            "is_hidden": false
+        }
+    }
+]
