@@ -6,7 +6,7 @@ from ..utilites.logger import set_logger
 from ..classes.dispatcher import Dispatcher
 from ..classes.user import User
 
-from application.settings import BOT_TOKEN, API_VERSION
+from application.settings import BOT_TOKEN
 
 logger = set_logger(__name__)
 
@@ -35,7 +35,6 @@ class Bot(BotAuht):
                     search_user_id = received_message[1:]
                     user = User(search_user_id)
                     result, result_message = self._check_user_error_deactivated(user)
-
                     if result:
                         self._send_message(sender_id, message=user)
                     else:
@@ -47,6 +46,7 @@ class Bot(BotAuht):
 
     @staticmethod
     def _check_user_error_deactivated(user):
+        """ проверяет аккаунт на валидность и блокировку """
         if user.has_error:
             return False, dict(message=user.has_error)
         elif user.is_deactivated:
