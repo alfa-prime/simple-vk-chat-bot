@@ -51,7 +51,6 @@ class User(UserAuth, UserProperties):
         try:
             return self.api.users.get(user_ids=input_id, fields=FIELDS_TO_SEARCH, v=API_VERSION)[0]
         except vk_api.ApiError as error:
-            logger.error(error)
             return dict(error.error)
 
     def _set_properties(self, properties):

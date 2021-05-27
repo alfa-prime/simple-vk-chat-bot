@@ -10,5 +10,4 @@ class Dispatcher:
             return dict(message=message)
 
         else:
-            message = 'Неизвестная команда'
-            return dict(message=message)
+            return dict(message='Неизвестная команда')
