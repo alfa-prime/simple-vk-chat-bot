@@ -1,8 +1,6 @@
 import vk_api
-from vk_api.bot_longpoll import VkBotLongPoll
 from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.utils import get_random_id
-import json
 
 from ..utilites.logger import set_logger
 from ..classes.dispatcher import Dispatcher
@@ -17,7 +15,6 @@ class BotAuht:
         session = vk_api.VkApi(token=BOT_TOKEN)
         self.api = session.get_api()
         self.longpoll = VkLongPoll(session)
-
 
 class Bot(BotAuht):
     def __init__(self):
