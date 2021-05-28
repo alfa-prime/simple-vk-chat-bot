@@ -1,28 +1,13 @@
-from dataclasses import dataclass
 import re
 from datetime import datetime
 
-from ..classes import UserAuthorization
+from ..classes import UserAuthorization, UserProperties
 from ..utilites.logger import set_logger
 
 # список дополнительных полей для выдачи при запросе расширенной информации о пользователях (users.get)
 FIELDS_TO_SEARCH = 'sex, bdate, city'
 
 logger = set_logger(__name__)
-
-@dataclass
-class UserProperties:
-    """ хранит сведения о свойствах пользователя """
-    first_name: str = None
-    last_name: str = None
-    sex_id: int = None
-    city_id: int = None
-    city_name: str = None
-    age: int = None
-
-    has_error: str = None
-    is_deactivated: str = None
-    search_attr: dict = None
 
 class User(UserAuthorization, UserProperties):
     """  получает, обрабатывает и проставляет свойства пользователя """
