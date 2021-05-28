@@ -1,20 +1,14 @@
 from dataclasses import dataclass
 import re
 from datetime import datetime
-import vk_api
 
+from ..classes import UserAuthorization
 from ..utilites.logger import set_logger
-from ..settings import USER_TOKEN, APP_ID, API_VERSION
 
 # список дополнительных полей для выдачи при запросе расширенной информации о пользователях (users.get)
 FIELDS_TO_SEARCH = 'sex, bdate, city'
 
 logger = set_logger(__name__)
-
-class UserAuth:
-    def __init__(self):
-        session = vk_api.VkApi(app_id=APP_ID, token=USER_TOKEN)
-        self.api = session.get_api()
 
 @dataclass
 class UserProperties:
@@ -29,7 +23,7 @@ class UserProperties:
     has_error: str = None
     is_deactivated: str = None
 
-class User(UserAuth, UserProperties):
+class User(UserAuthorization, UserProperties):
     """  получает, обрабатывает и проставляет свойства пользователя """
     def __init__(self, input_id):
         super().__init__()
@@ -49,8 +43,8 @@ class User(UserAuth, UserProperties):
     def _get_raw_properties(self, input_id):
         """  получение свойств пользователя """
         try:
-            return self.api.users.get(user_ids=input_id, fields=FIELDS_TO_SEARCH, v=API_VERSION)[0]
-        except vk_api.ApiError as error:
+            return self.api.users.get(user_ids=input_id, fields=FIELDS_TO_SEARCH, v=self.api_version)[0]
+        except self.api_error as error:
             return dict(error.error)
 
     def _set_properties(self, properties):

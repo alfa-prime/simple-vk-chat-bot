@@ -4,11 +4,11 @@ from vk_api.utils import get_random_id
 from ..utilites.logger import set_logger
 from ..classes.dispatcher import Dispatcher
 from ..classes.user import User
-from ..classes import Authorizer
+from ..classes import BotAuthorization
 
 logger = set_logger(__name__)
 
-class Bot(Authorizer):
+class Bot(BotAuthorization):
     def __init__(self):
         super().__init__()
 
