@@ -43,11 +43,11 @@ class Bot(BotAuht):
                         if not user.age:
                             self._send_message(sender_id, message='Введите возраст:')
                             user.age = self._catch_user_input()
+                            message = dict(message=user)
                         else:
                             message = dict(message=user)
                     else:
                         message = result_message
-
                 else:
                     message = dispatcher.process_message(received_message, sender_name)
 
