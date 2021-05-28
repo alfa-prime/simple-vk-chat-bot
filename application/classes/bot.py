@@ -1,22 +1,14 @@
-import vk_api
-from vk_api.longpoll import VkLongPoll, VkEventType
+from vk_api.longpoll import VkEventType
 from vk_api.utils import get_random_id
 
 from ..utilites.logger import set_logger
 from ..classes.dispatcher import Dispatcher
 from ..classes.user import User
-
-from application.settings import BOT_TOKEN
+from ..classes import Authorizer
 
 logger = set_logger(__name__)
 
-class BotAuht:
-    def __init__(self):
-        session = vk_api.VkApi(token=BOT_TOKEN)
-        self.api = session.get_api()
-        self.longpoll = VkLongPoll(session)
-
-class Bot(BotAuht):
+class Bot(Authorizer):
     def __init__(self):
         super().__init__()
 
