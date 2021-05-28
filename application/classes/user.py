@@ -22,6 +22,7 @@ class UserProperties:
 
     has_error: str = None
     is_deactivated: str = None
+    search_attr: dict = None
 
 class User(UserAuthorization, UserProperties):
     """  получает, обрабатывает и проставляет свойства пользователя """
@@ -66,3 +67,11 @@ class User(UserAuthorization, UserProperties):
                 self.age = current_year - int(birth_year)
             except TypeError as error:
                 logger.error(error)
+
+        self.search_attr = dict(
+            sex_id=self.sex_id,
+            city_id=self.city_id,
+            city_name=self.city_name,
+            age=self.age
+        )
+
