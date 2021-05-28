@@ -48,6 +48,11 @@ class User(UserAuthorization, UserProperties):
         except self.api_error as error:
             return dict(error.error)
 
+    @staticmethod
+    def _swap_sex_id(sex_id):
+        swap = {1: 2, 2: 1, 0: 0}
+        return swap.get(sex_id)
+
     def _set_properties(self, properties):
         """ устанавливает свойства пользователя """
         self.first_name = properties.get('first_name')
@@ -69,7 +74,7 @@ class User(UserAuthorization, UserProperties):
                 logger.error(error)
 
         self.search_attr = dict(
-            sex_id=self.sex_id,
+            sex_id=self._swap_sex_id(self.sex_id),
             city_id=self.city_id,
             city_name=self.city_name,
             age=self.age
