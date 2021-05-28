@@ -50,6 +50,7 @@ class User(UserAuthorization, UserProperties):
 
     @staticmethod
     def _swap_sex_id(sex_id):
+        """ для поиска замена sex_id на противоположный"""
         swap = {1: 2, 2: 1, 0: 0}
         return swap.get(sex_id)
 
