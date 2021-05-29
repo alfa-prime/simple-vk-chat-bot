@@ -34,7 +34,9 @@ class Bot(BotAuthorization):
                     if result:
                         if not user.age:
                             self._send_message(sender_id, message='Введите возраст:')
-                            user.age = self._catch_user_input()
+                            age = self._catch_user_input()
+                            user.search_attr['age'] = age
+                            user.age = age
                             message = dict(message=user)
                         else:
                             message = dict(message=user)
