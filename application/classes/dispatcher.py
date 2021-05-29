@@ -13,22 +13,23 @@ class Dispatcher:
         self.api = api
         self.longpoll = longpoll
         self.sender_id = None
+        self.sender_name = None
 
     def process_message(self, received_message, sender_id):
         """ обрабатывает входящие сообщения пользователя, формирует ответ бота """
         self.sender_id = sender_id
-        sender_name = self._get_sender_name(sender_id)
-        logger.info(f"{sender_name}: {received_message}")
+        self.sender_name = self._get_sender_name(sender_id)
+        logger.info(f"{self.sender_name}: {received_message}")
 
         if received_message == 'начать':
-            self._send_message(message=Messages.welcome(sender_name), keyboard=Keyboards.main())
+            self._send_message(message=Messages.welcome(self.sender_name), keyboard=Keyboards.main())
 
         elif received_message == 'инфо':
             self._send_message(message=Messages.info(), keyboard=Keyboards.search())
 
         elif received_message == 'поиск':
             self._send_message(message='Введите id:')
-            search_user_id = self._catch_user_input(sender_name)
+            search_user_id = self._catch_user_input(self.sender_name)
             user = User(search_user_id)
             check_result, check_result_message = self._check_user_error_or_deactivated(user)
 
@@ -36,8 +37,12 @@ class Dispatcher:
                 self._send_message(message='Найденые сведения о пользователе:')
                 self._send_message(message=Messages.user_info(user))
 
-                if not user.search_attr.get('age'):
-                    self._send_message(message=user)
+                missing_data = {k: v['msg_if_val_none'] for k, v in user.search_attr.items() if v['value'] is None}
+
+                if missing_data.get('age'):
+                    self._send_message(message=missing_data.get('age'))
+                    self._set_age_range(user)
+
             else:
                 self._send_message(message=check_result_message, keyboard=Keyboards.search())
 
@@ -73,3 +78,24 @@ class Dispatcher:
             return False, user.is_deactivated
         else:
             return True, None
+
+    def _set_age_range(self, user):
+        """
+        в случае отсутсвия данных о возрасте,
+        задаем возрастной диапазон
+        """
+        while True:
+            self._send_message(message='Введите начальное значение диапазона:')
+            age_from = self._catch_user_input(self.sender_name)
+            self._send_message(message='Введите окончание диапазона:')
+            age_to = self._catch_user_input(self.sender_name)
+
+            if age_from < age_to:
+                self._send_message(message=f'Введенный возрастной диапазон {age_from}-{age_to}')
+                user.search_attr['age_from']['value'] = age_from
+                user.search_attr['age_to']['value'] = age_to
+                print(user.search_attr)
+
+                break
+            else:
+                self._send_message(message='Введный диапазон неверен. Попробуем заново:')
