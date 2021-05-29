@@ -8,5 +8,12 @@ class Keyboards:
         return keyboard.get_keyboard()
 
     @staticmethod
+    def main():
+        keyboard = VkKeyboard(one_time=True)
+        keyboard.add_button('Поиск', color=VkKeyboardColor.PRIMARY)
+        keyboard.add_button('Инфо', color=VkKeyboardColor.NEGATIVE)
+        return keyboard.get_keyboard()
+
+    @staticmethod
     def hide():
         return VkKeyboard.get_empty_keyboard()

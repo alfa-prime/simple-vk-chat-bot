@@ -24,6 +24,7 @@ class Bot(BotAuthorization):
                 sender_id = event.user_id
                 sender_name = self._get_user_name(sender_id)
                 logger.info(f"{sender_name}: {received_message}")
+                print(received_message, sender_name)
 
                 if received_message == 'поиск':
                     self._send_message(sender_id, message='Введите id или screen_name:')
