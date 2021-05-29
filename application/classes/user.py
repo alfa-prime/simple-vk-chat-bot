@@ -50,8 +50,8 @@ class User(UserAuthorization, UserProperties):
                 birth_year = re.search(r'\d{4}', birthday)[0]
                 current_year = datetime.now().year
                 self.age = current_year - int(birth_year)
-            except TypeError as error:
-                logger.error(error)
+            except TypeError:
+                logger.error('Год рождения не найден. Возраст неизвестен.')
 
         self.search_attr = dict(
             sex_id=self._swap_sex_id(self.sex_id),
