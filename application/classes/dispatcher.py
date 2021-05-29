@@ -13,19 +13,6 @@ class Dispatcher:
         self.api = api
         self.longpoll = longpoll
 
-    def _send_message(self, sender_id, message):
-        """ посылает сообщение пользователю """
-        self.api.messages.send(peer_id=sender_id, **message, random_id=get_random_id())
-        logger.info(f"Бот: {message}")
-
-    def _catch_user_input(self, sender_name):
-        """ ждет ввода значения от пользователя и возвращает его """
-        for event in self.longpoll.listen():
-            if event.type == VkEventType.MESSAGE_NEW and event.to_me:
-                received_message = event.text.lower().strip()
-                logger.info(f"{sender_name}: {received_message}")
-                return received_message
-
     def process_message(self, received_message, sender_id):
         """ обрабатывает входящие сообщения пользователя, формирует ответ бота """
         sender_name = self._get_sender_name(sender_id)
@@ -47,12 +34,29 @@ class Dispatcher:
             if check_result:
                 reply_message = dict(message=user)
             else:
-                reply_message = check_result_message
+                reply_message = dict(message=check_result_message, keyboard=Keyboards.search())
 
         else:
             reply_message = dict(message='Неизвестная команда')
 
         self._send_message(sender_id, reply_message)
+
+    def _get_sender_name(self, user_id):
+        """ получает имя пользователя по его id """
+        return self.api.users.get(user_id=user_id)[0].get('first_name')
+
+    def _send_message(self, sender_id, message):
+        """ посылает сообщение пользователю """
+        self.api.messages.send(peer_id=sender_id, **message, random_id=get_random_id())
+        logger.info(f"Бот: {message.get('message')}")
+
+    def _catch_user_input(self, sender_name):
+        """ ждет ввода значения от пользователя и возвращает его """
+        for event in self.longpoll.listen():
+            if event.type == VkEventType.MESSAGE_NEW and event.to_me:
+                received_message = event.text.lower().strip()
+                logger.info(f"{sender_name}: {received_message}")
+                return received_message
 
     @staticmethod
     def _check_user_error_or_deactivated(user):
@@ -61,12 +65,8 @@ class Dispatcher:
         возвращает соотвествующее сообщение для отправки в чат
         """
         if user.has_error:
-            return False, dict(message=user.has_error, keyboard=Keyboards.search())
+            return False, user.has_error
         elif user.is_deactivated:
-            return False, dict(message=user.is_deactivated, keyboard=Keyboards.search())
+            return False, user.is_deactivated
         else:
             return True, None
-
-    def _get_sender_name(self, user_id):
-        """ получает имя пользователя по его id """
-        return self.api.users.get(user_id=user_id)[0].get('first_name')

@@ -11,9 +11,9 @@ def set_logger(name):
     logger.setLevel(logging.INFO)
 
     formatter = logging.Formatter('%(asctime)-23s '
-                                  '%(levelname)-7s '
-                                  '%(filename)-8s '
-                                  '%(funcName)-14s '
+                                  '%(levelname)-5s '
+                                  '%(filename)-14s '
+                                  '%(funcName)-18s '
                                   'line:%(lineno)-4s '
                                   '%(message)s')
 
