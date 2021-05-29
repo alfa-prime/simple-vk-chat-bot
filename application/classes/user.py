@@ -5,6 +5,7 @@ from ..classes import UserAuthorization, UserProperties
 from ..utilites.logger import set_logger
 
 # список дополнительных полей для выдачи при запросе расширенной информации о пользователях (users.get)
+# подробности https://vk.com/dev/users.get параметр fields
 FIELDS_TO_SEARCH = 'sex, bdate, city'
 
 logger = set_logger(__name__)
@@ -54,6 +55,7 @@ class User(UserAuthorization, UserProperties):
                 logger.error('Год рождения не найден. Возраст неизвестен.')
 
         self.search_attr = dict(
+            # msg_if_val_none будет выводится, когда бот будет запрашивать недостающие сведения
             sex_id=dict(value=self._swap_sex_id(), msg_if_val_none='Пол не определен кого будем искать?'),
             city_id=dict(value=self.city_id, msg_if_val_none='ID города неизвестен'),
             city_name=dict(value=self.city_name, msg_if_val_none='Город не определен'),
@@ -63,6 +65,10 @@ class User(UserAuthorization, UserProperties):
         )
 
     def _swap_sex_id(self):
-        """ для поиска замена sex_id на противоположный"""
+        """
+        для параметров поиска замена sex_id на противоположный
+        значения id https://vk.com/dev/users.search параметр sex_id
+        1: женщина, 2: мужчина, 0: любой
+        """
         swap = {1: 2, 2: 1, 0: None}
         return swap.get(self.sex_id)

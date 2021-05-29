@@ -1,16 +1,14 @@
 import json
 from application.settings import API_VERSION
 
+# id семейного положения  1: не женат (не замужем), 6: в активном поиске, 0: не указано
 # значения ID можно посмотреть https://vk.com/dev/users.search параметр status
-# семейное положение  1: не женат (не замужем), 6: в активном поиске, 0: не указано
 RELATION_IDS = (1, 6, 0)
 
 class Hunter:
     def __init__(self, user):
-        print(user)
         self.search_attr = user.search_attr
         self.api = user.api
-        print(self.search_attr)
 
     def search(self):
         result = self.api.users.search(
