@@ -24,17 +24,16 @@ class Bot(BotAuthorization):
                 sender_id = event.user_id
                 sender_name = self._get_user_name(sender_id)
                 logger.info(f"{sender_name}: {received_message}")
-                print(received_message, sender_name)
 
                 if received_message == 'поиск':
-                    self._send_message(sender_id, message='Введите id или screen_name:')
+                    self._send_message(sender_id, dict(message='Введите id или screen_name:'))
                     search_user_id = self._catch_user_input()
                     user = User(search_user_id)
                     result, result_message = self._check_user_error_deactivated(user)
 
                     if result:
                         if not user.age:
-                            self._send_message(sender_id, message='Введите возраст:')
+                            self._send_message(sender_id, dict(message='Введите возраст:'))
                             age = self._catch_user_input()
                             user.search_attr['age'] = age
                             user.age = age
@@ -46,7 +45,7 @@ class Bot(BotAuthorization):
                 else:
                     message = dispatcher.process_message(received_message, sender_name)
 
-                self._send_message(sender_id, **message)
+                self._send_message(sender_id, message)
 
     def _catch_user_input(self):
         """ ждет ввода значения от пользователя и возвращает его """
@@ -67,9 +66,9 @@ class Bot(BotAuthorization):
         else:
             return True, None
 
-    def _send_message(self, sender_id, message=None, keyboard=None):
+    def _send_message(self, sender_id, message):
         """ посылает сообщение пользователю """
-        self.api.messages.send(peer_id=sender_id, message=message, keyboard=keyboard, random_id=get_random_id())
+        self.api.messages.send(peer_id=sender_id, **message, random_id=get_random_id())
         logger.info(f"Бот: {message}")
 
     def _get_user_name(self, user_id):
