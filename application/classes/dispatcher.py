@@ -12,46 +12,46 @@ class Dispatcher:
     def __init__(self, api, longpoll):
         self.api = api
         self.longpoll = longpoll
+        self.sender_id = None
 
     def process_message(self, received_message, sender_id):
         """ обрабатывает входящие сообщения пользователя, формирует ответ бота """
+        self.sender_id = sender_id
         sender_name = self._get_sender_name(sender_id)
         logger.info(f"{sender_name}: {received_message}")
 
         if received_message == 'начать':
-            reply_message = dict(message=Messages.welcome(sender_name), keyboard=Keyboards.main())
+            self._send_message(message=Messages.welcome(sender_name), keyboard=Keyboards.main())
 
         elif received_message == 'инфо':
-            reply_message = dict(message=Messages.info(), keyboard=Keyboards.search())
+            self._send_message(message=Messages.info(), keyboard=Keyboards.search())
 
         elif received_message == 'поиск':
-            self._send_message(sender_id, dict(message='Введите id или screen_name:'))
+            self._send_message(message='Введите id:')
             search_user_id = self._catch_user_input(sender_name)
             user = User(search_user_id)
-
             check_result, check_result_message = self._check_user_error_or_deactivated(user)
 
             if check_result:
-                self._send_message(sender_id, dict(message=Messages.user_info(user)))
-                reply_message = dict(message=user)
+                self._send_message(message='Найденые сведения о пользователе:')
+                self._send_message(message=Messages.user_info(user))
+
                 if not user.search_attr.get('age'):
-                    reply_message = dict(message=user)
+                    self._send_message(message=user)
             else:
-                reply_message = dict(message=check_result_message, keyboard=Keyboards.search())
+                self._send_message(message=check_result_message, keyboard=Keyboards.search())
 
         else:
-            reply_message = dict(message='Неизвестная команда')
-
-        self._send_message(sender_id, reply_message)
+            self._send_message(message='Неизвестная команда')
 
     def _get_sender_name(self, user_id):
         """ получает имя пользователя по его id """
         return self.api.users.get(user_id=user_id)[0].get('first_name')
 
-    def _send_message(self, sender_id, message):
+    def _send_message(self, message=None, keyboard=None):
         """ посылает сообщение пользователю """
-        self.api.messages.send(peer_id=sender_id, **message, random_id=get_random_id())
-        logger.info(f"Бот: {message.get('message')}")
+        self.api.messages.send(peer_id=self.sender_id, message=message, keyboard=keyboard, random_id=get_random_id())
+        logger.info(f"Бот: {message}")
 
     def _catch_user_input(self, sender_name):
         """ ждет ввода значения от пользователя и возвращает его """
