@@ -5,6 +5,7 @@ from ..utilites.logger import set_logger
 from ..classes.user import User
 from ..classes.keyboards import Keyboards
 from ..classes.messages import Messages
+from ..classes.hunter import Hunter
 
 logger = set_logger(__name__)
 
@@ -42,6 +43,9 @@ class Dispatcher:
                 if missing_data.get('age'):
                     self._send_message(message=missing_data.get('age'))
                     self._set_age_range(user)
+
+                hunter = Hunter(user)
+                hunter.search()
 
             else:
                 self._send_message(message=check_result_message, keyboard=Keyboards.search())
@@ -94,8 +98,6 @@ class Dispatcher:
                 self._send_message(message=f'Введенный возрастной диапазон {age_from}-{age_to}')
                 user.search_attr['age_from']['value'] = age_from
                 user.search_attr['age_to']['value'] = age_to
-                print(user.search_attr)
-
                 break
             else:
                 self._send_message(message='Введный диапазон неверен. Попробуем заново:')
