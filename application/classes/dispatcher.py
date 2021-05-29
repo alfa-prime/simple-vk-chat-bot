@@ -32,7 +32,10 @@ class Dispatcher:
             check_result, check_result_message = self._check_user_error_or_deactivated(user)
 
             if check_result:
+                self._send_message(sender_id, dict(message=Messages.user_info(user)))
                 reply_message = dict(message=user)
+                if not user.search_attr.get('age'):
+                    reply_message = dict(message=user)
             else:
                 reply_message = dict(message=check_result_message, keyboard=Keyboards.search())
 
