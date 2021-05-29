@@ -5,6 +5,7 @@ from ..utilites.logger import set_logger
 from ..classes.dispatcher import Dispatcher
 from ..classes.user import User
 from ..classes import BotAuthorization
+from ..classes.keyboards import Keyboards
 
 logger = set_logger(__name__)
 
@@ -57,15 +58,15 @@ class Bot(BotAuthorization):
         возвращает соотвествующее сообщение для отправки в чат
         """
         if user.has_error:
-            return False, dict(message=user.has_error)
+            return False, dict(message=user.has_error, keyboard=Keyboards.search())
         elif user.is_deactivated:
-            return False, dict(message=user.is_deactivated)
+            return False, dict(message=user.is_deactivated, keyboard=Keyboards.search())
         else:
             return True, None
 
-    def _send_message(self, sender_id, message):
+    def _send_message(self, sender_id, message=None, keyboard=None):
         """ посылает сообщение пользователю """
-        self.api.messages.send(peer_id=sender_id, message=message, random_id=get_random_id())
+        self.api.messages.send(peer_id=sender_id, message=message, keyboard=keyboard, random_id=get_random_id())
         logger.info(f"Бот: {message}")
 
     def _get_user_name(self, user_id):

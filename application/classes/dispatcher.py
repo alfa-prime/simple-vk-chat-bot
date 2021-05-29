@@ -1,3 +1,5 @@
+from ..classes.keyboards import Keyboards
+
 class Dispatcher:
     """
         обрабатывает входящие сообщения пользователя, кроме поиска,
@@ -10,7 +12,7 @@ class Dispatcher:
                       f'Для поиска пары, используйте \n' \
                       f'команду Поиск\n' \
 
-            return dict(message=message)
+            return dict(message=message, keyboard=Keyboards.search())
 
         else:
             return dict(message='Неизвестная команда')
