@@ -39,25 +39,8 @@ class Dispatcher:
                 self._send_message(message='Найденые сведения о пользователе:')
                 self._send_message(message=Messages.user_info(self.user))
 
-                missing_data = {k: v['msg_if_val_none'] for k, v in self.user.search_attr.items() if v['value'] is None}
-
-                if missing_data.get('age'):
-                    self._send_message(message=missing_data.get('age'))
-                    self._set_age_range(self.user)
-                else:
-                    self._send_message(
-                        message=Messages.choose_search_option_by_age(self.user.age),
-                        keyboard=Keyboards.choose_search_option_by_age()
-                    )
-                    user_choice = self._catch_user_input()
-                    if user_choice == 'диапазон':
-                        self._set_age_range(self.user)
-                    elif user_choice == 'ровестники':
-                        age_from = self.user.age - 2
-                        age_to = self.user.age + 2
-                        self.user.search_attr['age_from']['value'] = age_from
-                        self.user.search_attr['age_to']['value'] = age_to
-                        self._send_message(message=f'Буду искать ровестников от {age_from} до {age_to} лет')
+                self._request_missing_data()
+                self._set_search_option_by_age()
 
                 hunter = Hunter(self.user)
                 hunter.search()
@@ -112,7 +95,35 @@ class Dispatcher:
             if age_from <= age_to:
                 user.search_attr['age_from']['value'] = age_from
                 user.search_attr['age_to']['value'] = age_to
-                self._send_message(message=f'Введенный возрастной диапазон {age_from}-{age_to}')
                 break
             else:
                 self._send_message(message='Введный диапазон неверен. Попробуем заново:')
+
+    def _request_missing_data(self):
+        """ запрашивает недостающие данные для поиска """
+        missing_data = {k: v['msg_if_val_none'] for k, v in self.user.search_attr.items() if v['value'] is None}
+
+        if missing_data.get('age'):
+            self._send_message(message=missing_data.get('age'))
+            self._set_age_range(self.user)
+
+    def _set_search_option_by_age(self):
+        """
+        если у юзера, которому подбирается пара, возраст определен
+        дается возвожность выбора варианта поиска:
+        1. ровестники [возраст пользователя +/- 2 года];
+        2. возрастной диапазон [определяется пользователем]
+        """
+        if self.user.age:
+            self._send_message(
+                message=Messages.choose_search_option_by_age(self.user.age),
+                keyboard=Keyboards.choose_search_option_by_age()
+            )
+            user_choice = self._catch_user_input()
+            if user_choice == 'диапазон':
+                self._set_age_range(self.user)
+            elif user_choice == 'ровестники':
+                age_from = self.user.age - 2
+                age_to = self.user.age + 2
+                self.user.search_attr['age_from']['value'] = age_from
+                self.user.search_attr['age_to']['value'] = age_to
