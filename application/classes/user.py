@@ -57,7 +57,8 @@ class User(UserAuthorization, UserProperties):
 
         self.search_attr = dict(
             # msg_if_val_none будет выводится, когда бот будет запрашивать недостающие сведения
-            sex_id=dict(value=self._swap_sex_id(), msg_if_val_none='Пол не определен кого будем искать?'),
+            # чувствую что здесь возможно изменение кода, но пока пусть будет так
+            sex_id=dict(value=''),
             city_id=dict(value=self.city_id, msg_if_val_none='ID города неизвестен'),
             city_name=dict(value=self.city_name, msg_if_val_none='Город не определен'),
             age=dict(value=self.age, msg_if_val_none='Возраст неизвестен.\n Задайте возрастной диапазон от и до'),
@@ -69,12 +70,3 @@ class User(UserAuthorization, UserProperties):
     def _sex_id_to_text(sex_id):
         result = {1: 'женский', 2: 'мужской', 0: 'неопределен'}
         return result.get(sex_id)
-
-    def _swap_sex_id(self):
-        """
-        для параметров поиска замена sex_id на противоположный
-        значения id https://vk.com/dev/users.search параметр sex_id
-        1: женщина, 2: мужчина, 0: любой
-        """
-        swap = {1: 2, 2: 1, 0: None}
-        return swap.get(self.sex_id)

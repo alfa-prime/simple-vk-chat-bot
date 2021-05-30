@@ -41,6 +41,7 @@ class Dispatcher:
 
                 self._request_missing_data()
                 self._set_search_option_by_age()
+                self._set_search_option_by_sex()
 
                 hunter = Hunter(self.user)
                 hunter.search()
@@ -84,8 +85,7 @@ class Dispatcher:
 
     def _set_age_range(self, user):
         """
-        в случае отсутсвия данных о возрасте,
-        задаем возрастной диапазон
+        пользователь сам задет возрастной диапазон для поиска
         """
         while True:
             self._send_message(message='Введите начальное значение диапазона:')
@@ -128,3 +128,17 @@ class Dispatcher:
                 age_to = self.user.age + 2
                 self.user.search_attr['age_from']['value'] = age_from
                 self.user.search_attr['age_to']['value'] = age_to
+
+    def _set_search_option_by_sex(self):
+        """ пользователь сам выбирает кого пола будут кандидаты на пару """
+        self._send_message(
+            message=Messages.choose_search_option_by_sex(self.user.sex_by_text),
+            keyboard=Keyboards.choose_search_option_by_sex()
+        )
+        user_choice = self._catch_user_input()
+        if user_choice == 'мужчины':
+            self.user.search_attr['sex_id']['value'] = 2
+        elif user_choice == 'женщины':
+            self.user.search_attr['sex_id']['value'] = 1
+        else:
+            self.user.search_attr['sex_id']['value'] = 0

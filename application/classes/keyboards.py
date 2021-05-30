@@ -22,5 +22,13 @@ class Keyboards:
         return keyboard.get_keyboard()
 
     @staticmethod
+    def choose_search_option_by_sex():
+        keyboard = VkKeyboard(one_time=True)
+        keyboard.add_button('Мужчины', color=VkKeyboardColor.PRIMARY)
+        keyboard.add_button('Женщины', color=VkKeyboardColor.POSITIVE)
+        keyboard.add_button('Неважно', color=VkKeyboardColor.NEGATIVE)
+        return keyboard.get_keyboard()
+
+    @staticmethod
     def hide():
         return VkKeyboard.get_empty_keyboard()
