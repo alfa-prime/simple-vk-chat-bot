@@ -1,6 +1,5 @@
 import re
 from datetime import datetime
-from vk_api.longpoll import VkPlatform
 
 from ..classes import UserAuthorization, UserProperties
 from ..utilites.logger import set_logger

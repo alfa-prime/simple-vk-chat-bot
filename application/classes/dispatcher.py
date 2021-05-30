@@ -36,7 +36,7 @@ class Dispatcher:
             check_result, check_result_message = self._check_user_error_or_deactivated(self.user)
 
             if check_result:
-                self._send_message(message='Найденые сведения о пользователе:')
+                self._send_message(message='Найденые данные:')
                 self._send_message(message=Messages.user_info(self.user))
 
                 self._request_missing_data()

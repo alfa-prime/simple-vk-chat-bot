@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 import vk_api
-from vk_api.longpoll import VkLongPoll, VkPlatform
+from vk_api.longpoll import VkLongPoll
 from application.settings import BOT_TOKEN, APP_ID, USER_TOKEN, API_VERSION
 
 class BotAuthorization:
@@ -23,6 +23,7 @@ class UserProperties:
     first_name: str = None
     last_name: str = None
     sex_id: int = None
+    sex_by_text: str = None
     city_id: int = None
     city_name: str = None
     age: int = None
