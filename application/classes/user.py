@@ -59,7 +59,7 @@ class User(UserAuthorization, UserProperties):
             sex_id=dict(value=self._swap_sex_id(), msg_if_val_none='Пол не определен кого будем искать?'),
             city_id=dict(value=self.city_id, msg_if_val_none='ID города неизвестен'),
             city_name=dict(value=self.city_name, msg_if_val_none='Город не определен'),
-            age=dict(value=self.age, msg_if_val_none='Возраст неизвестен. Задайте возрастной диапазон от и до'),
+            age=dict(value=self.age, msg_if_val_none='Возраст неизвестен.\n Задайте возрастной диапазон от и до'),
             age_from=dict(value=''),
             age_to=dict(value='')
         )
