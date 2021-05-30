@@ -58,6 +58,7 @@ class Dispatcher:
     def _send_message(self, message=None, keyboard=None):
         """ посылает сообщение пользователю """
         self.api.messages.send(peer_id=self.sender_id, message=message, keyboard=keyboard, random_id=get_random_id())
+        message = message.replace('\n\n', ' ').replace('\n', ' ')
         logger.info(f"Бот: {message}")
 
     def _catch_user_input(self):

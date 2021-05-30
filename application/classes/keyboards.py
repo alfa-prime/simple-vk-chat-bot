@@ -21,7 +21,6 @@ class Keyboards:
         keyboard.add_button('Диапазон', color=VkKeyboardColor.NEGATIVE)
         return keyboard.get_keyboard()
 
-
     @staticmethod
     def hide():
         return VkKeyboard.get_empty_keyboard()
