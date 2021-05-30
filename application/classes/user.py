@@ -4,7 +4,7 @@ from datetime import datetime
 from ..classes import UserAuthorization, UserProperties
 from ..utilites.logger import set_logger
 
-# список дополнительных полей для выдачи при запросе расширенной информации о пользователях (users.get)
+# список дополнительных полей для выдачи
 # подробности https://vk.com/dev/users.get параметр fields
 FIELDS_TO_SEARCH = 'sex, bdate, city'
 
