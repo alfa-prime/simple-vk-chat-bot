@@ -15,6 +15,7 @@ class Bot(BotAuthorization):
         dispatcher = Dispatcher(self.api, self.longpoll)
 
         for event in self.longpoll.listen():
+
             if event.type == VkEventType.MESSAGE_NEW and event.to_me and event.text:
 
                 received_message = event.text.lower().strip()

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 import vk_api
-from vk_api.longpoll import VkLongPoll
+from vk_api.longpoll import VkLongPoll, VkPlatform
 from application.settings import BOT_TOKEN, APP_ID, USER_TOKEN, API_VERSION
 
 class BotAuthorization:
@@ -15,6 +15,7 @@ class UserAuthorization:
         self.api = session.get_api()
         self.api_error = vk_api.VkApiError
         self.api_version = API_VERSION
+
 
 @dataclass
 class UserProperties:

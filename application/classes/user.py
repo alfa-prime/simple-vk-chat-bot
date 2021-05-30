@@ -1,5 +1,6 @@
 import re
 from datetime import datetime
+from vk_api.longpoll import VkPlatform
 
 from ..classes import UserAuthorization, UserProperties
 from ..utilites.logger import set_logger
@@ -39,6 +40,7 @@ class User(UserAuthorization, UserProperties):
         self.first_name = properties.get('first_name')
         self.last_name = properties.get('last_name')
         self.sex_id = properties.get('sex')
+        self.sex_by_text = self._sex_id_to_text(self.sex_id)
 
         city = properties.get('city')
         if city:
@@ -63,6 +65,11 @@ class User(UserAuthorization, UserProperties):
             age_from=dict(value=''),
             age_to=dict(value='')
         )
+
+    @staticmethod
+    def _sex_id_to_text(sex_id):
+        result = {1: 'женский', 2: 'мужской', 0: 'неопределен'}
+        return result.get(sex_id)
 
     def _swap_sex_id(self):
         """

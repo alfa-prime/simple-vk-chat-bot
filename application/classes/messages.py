@@ -24,10 +24,7 @@ class Messages:
     @staticmethod
     def user_info(user):
         full_name = f"{user.first_name} {user.last_name}"
-
-        sex_id_to_text = {1: 'женский', 2: 'мужской', 0: 'не указан'}
-        sex = sex_id_to_text[user.sex_id]
-
+        sex = user.sex_by_text
         age = user.age if user.age else 'Нет данных'
         city = user.city_name if user.city_name else 'Нет данных'
 
@@ -44,3 +41,4 @@ class Messages:
                        f'"Ровестники": возраст +/- 2 года;\n' \
                        f'"Диапазон": задать возрастной диапазон. Например от 20 до 25.'
         return message_body
+
