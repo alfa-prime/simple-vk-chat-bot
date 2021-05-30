@@ -40,7 +40,7 @@ class Messages:
 
     @staticmethod
     def choose_search_option_by_age(age):
-        message_body = f'Возраст: {age}. Какой вариант поиска будем использовать?\n' \
+        message_body = f'Возраст: {age}.\n Какой вариант поиска будем использовать?\n' \
                        f'"Ровестники": возраст +/- 2 года;\n' \
                        f'"Диапазон": задать возрастной диапазон. Например от 20 до 25.'
         return message_body

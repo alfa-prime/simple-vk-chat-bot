@@ -57,7 +57,7 @@ class Dispatcher:
                         age_to = self.user.age + 2
                         self.user.search_attr['age_from']['value'] = age_from
                         self.user.search_attr['age_to']['value'] = age_to
-                        self._send_message(message=f'Ищем ровестников от {age_from} до {age_to} лет')
+                        self._send_message(message=f'Буду искать ровестников от {age_from} до {age_to} лет')
 
                 hunter = Hunter(self.user)
                 hunter.search()
@@ -110,9 +110,9 @@ class Dispatcher:
             age_to = self._catch_user_input()
 
             if age_from <= age_to:
-                self._send_message(message=f'Введенный возрастной диапазон {age_from}-{age_to}')
                 user.search_attr['age_from']['value'] = age_from
                 user.search_attr['age_to']['value'] = age_to
+                self._send_message(message=f'Введенный возрастной диапазон {age_from}-{age_to}')
                 break
             else:
                 self._send_message(message='Введный диапазон неверен. Попробуем заново:')
