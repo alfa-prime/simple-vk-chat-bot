@@ -28,7 +28,8 @@ class Messages:
         age = user.age if user.age else 'Нет данных'
         city = user.city_name if user.city_name else 'Нет данных'
 
-        message_body = f'Имя: {full_name}\n' \
+        message_body = f'Найденые данные:\n' \
+                       f'Имя: {full_name}\n' \
                        f'Пол: {sex}\n' \
                        f'Возраст: {age}\n' \
                        f'Город: {city}'
@@ -37,9 +38,9 @@ class Messages:
 
     @staticmethod
     def choose_search_option_by_age(age):
-        message_body = f'Возраст: {age}.\n Какой вариант поиска будем использовать?\n' \
-                       f'"Ровестники": возраст +/- 2 года;\n' \
-                       f'"Диапазон": задать возрастной диапазон. Например от 20 до 25.'
+        message_body = f'Возраст: {age}.\nКакой вариант поиска будем использовать?\n' \
+                       f'"Ровестники":\nвозраст +/- 2 года;\n' \
+                       f'"Диапазон":\nзадать возрастной диапазон.\nНапример от 20 до 25.'
         return message_body
 
     @staticmethod
