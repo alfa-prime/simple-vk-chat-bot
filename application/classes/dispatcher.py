@@ -128,7 +128,11 @@ class Dispatcher:
                 self.user.search_attr['age_to'] = age_to
 
     def _set_search_option_by_sex(self):
-        """ пользователь сам выбирает кого пола будут кандидаты """
+        """
+        пользователь сам выбирает кого пола будут кандидаты
+        id пола  1: женский, 2: мужской, 0: любой
+        значения ID можно посмотреть https://vk.com/dev/users.search параметр sex
+        """
         self._send_message(
             message=Messages.choose_search_option_by_sex(self.user.sex_by_text),
             keyboard=Keyboards.choose_search_option_by_sex()
