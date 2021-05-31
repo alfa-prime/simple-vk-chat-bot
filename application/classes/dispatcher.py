@@ -47,7 +47,7 @@ class Dispatcher:
                 self._send_message(message=check_result_message, keyboard=Keyboards.search())
 
         else:
-            self._send_message(message='Неизвестная команда')
+            self._send_message(Messages.unknown_command(), keyboard=Keyboards.main())
 
     def _get_sender_name(self):
         """ получает имя пользователя по его id """

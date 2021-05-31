@@ -10,8 +10,8 @@ class Keyboards:
     @staticmethod
     def main():
         keyboard = VkKeyboard(one_time=False, inline=True)
-        keyboard.add_button('Поиск', color=VkKeyboardColor.PRIMARY)
         keyboard.add_button('Инфо', color=VkKeyboardColor.NEGATIVE)
+        keyboard.add_button('Поиск', color=VkKeyboardColor.PRIMARY)
         return keyboard.get_keyboard()
 
     @staticmethod

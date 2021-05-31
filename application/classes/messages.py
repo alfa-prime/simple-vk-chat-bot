@@ -2,8 +2,8 @@ class Messages:
     @staticmethod
     def welcome(sender_name):
         message_body = f'Здравствуйте, {sender_name}\n' \
-                       f'Для поиска пары, используйте команду "Поиск"\n' \
-                       f'Подробности по команде "Инфо"\n'
+                       f'Подробности по команде "Инфо"\n' \
+                       f'Для поиска пары, команда "Поиск"\n'
         return message_body
 
     @staticmethod
@@ -52,4 +52,12 @@ class Messages:
                        f'Задайте желаемый возрастной диапазон.\n' \
                        f'Например от 25 до 35.'
         return message_body
+
+    @staticmethod
+    def unknown_command():
+        message_body = f'Неизвестная комадна.\n' \
+                      f'"Инфо" список доступных команд\n' \
+                      f'Для поиска пары, команда "Поиск"\n'
+        return message_body
+
 
