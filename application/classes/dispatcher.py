@@ -92,18 +92,18 @@ class Dispatcher:
             age_to = self._catch_user_input()
 
             if age_from <= age_to:
-                user.search_attr['age_from']['value'] = age_from
-                user.search_attr['age_to']['value'] = age_to
+                user.search_attr['age_from'] = age_from
+                user.search_attr['age_to'] = age_to
                 break
             else:
                 self._send_message(message='Введный диапазон неверен. Попробуем заново:')
 
     def _request_missing_data(self):
         """ запрашивает недостающие данные для поиска """
-        missing_data = {k: v['msg_if_val_none'] for k, v in self.user.search_attr.items() if v['value'] is None}
+        missing_data = {k: v for k, v in self.user.search_attr.items() if v is None}
 
-        if missing_data.get('age'):
-            self._send_message(message=missing_data.get('age'))
+        if 'age' in missing_data:
+            self._send_message(message=Messages.missing_age())
             self._set_age_range(self.user)
 
     def _set_search_option_by_age(self):
@@ -124,19 +124,19 @@ class Dispatcher:
             elif user_choice == 'ровестники':
                 age_from = self.user.age - 2
                 age_to = self.user.age + 2
-                self.user.search_attr['age_from']['value'] = age_from
-                self.user.search_attr['age_to']['value'] = age_to
+                self.user.search_attr['age_from'] = age_from
+                self.user.search_attr['age_to'] = age_to
 
     def _set_search_option_by_sex(self):
-        """ пользователь сам выбирает кого пола будут кандидаты на пару """
+        """ пользователь сам выбирает кого пола будут кандидаты """
         self._send_message(
             message=Messages.choose_search_option_by_sex(self.user.sex_by_text),
             keyboard=Keyboards.choose_search_option_by_sex()
         )
         user_choice = self._catch_user_input()
         if user_choice == 'мужчины':
-            self.user.search_attr['sex_id']['value'] = 2
+            self.user.search_attr['sex_id'] = 2
         elif user_choice == 'женщины':
-            self.user.search_attr['sex_id']['value'] = 1
+            self.user.search_attr['sex_id'] = 1
         else:
-            self.user.search_attr['sex_id']['value'] = 0
+            self.user.search_attr['sex_id'] = 0

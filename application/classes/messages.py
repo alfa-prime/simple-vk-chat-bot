@@ -49,3 +49,11 @@ class Messages:
                        f'Кого будем искать?'
         return message_body
 
+    @staticmethod
+    def missing_age():
+        message_body = f'Возраст: Нет данных.\n' \
+                       f'Поиск ровестников невозможен.\n' \
+                       f'Задайте возрастной диапазон.\n' \
+                       f'Например от 25 до 35.'
+        return message_body
+

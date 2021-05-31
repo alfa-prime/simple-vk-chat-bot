@@ -1,6 +1,8 @@
 import json
 from application.settings import API_VERSION
 
+# 321895964 - id без города
+
 # id семейного положения  1: не женат (не замужем), 6: в активном поиске
 # значения ID можно посмотреть https://vk.com/dev/users.search параметр status
 RELATION_IDS = (1, 6)
@@ -17,10 +19,10 @@ class Hunter:
     def search(self):
         result = self.api.users.search(
             # описание всех параметров https://vk.com/dev/users.search
-            city=self.search_attr.get('city_id').get('value'),
-            age_from=self.search_attr.get('age_from').get('value'),
-            age_to=self.search_attr.get('age_to').get('value'),
-            sex=self.search_attr.get('sex_id').get('value'),
+            city=self.search_attr.get('city_id'),
+            age_from=self.search_attr.get('age_from'),
+            age_to=self.search_attr.get('age_to'),
+            sex=self.search_attr.get('sex_id'),
             fields=FIELDS_TO_SEARCH,
             has_photo=1,
             sort=0,

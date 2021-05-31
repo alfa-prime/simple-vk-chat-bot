@@ -56,17 +56,16 @@ class User(UserAuthorization, UserProperties):
                 logger.error('Год рождения не найден. Возраст неизвестен.')
 
         self.search_attr = dict(
-            # msg_if_val_none будет выводится, когда бот будет запрашивать недостающие сведения
-            # чувствую что здесь возможно изменение кода, но пока пусть будет так
-            sex_id=dict(value=''),
-            city_id=dict(value=self.city_id, msg_if_val_none='ID города неизвестен'),
-            city_name=dict(value=self.city_name, msg_if_val_none='Город не определен'),
-            age=dict(value=self.age, msg_if_val_none='Возраст неизвестен.\n Задайте возрастной диапазон от и до'),
-            age_from=dict(value=''),
-            age_to=dict(value='')
+            sex_id='',
+            city_id=self.city_id,
+            age=self.age,
+            age_from='',
+            age_to=''
         )
 
     @staticmethod
     def _sex_id_to_text(sex_id):
+        # id пола  1: женский, 2: мужской, 0: любой
+        # значения ID можно посмотреть https://vk.com/dev/users.search параметр sex
         result = {1: 'женский', 2: 'мужской', 0: 'неопределен'}
         return result.get(sex_id)
