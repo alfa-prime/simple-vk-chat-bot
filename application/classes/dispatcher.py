@@ -37,9 +37,8 @@ class Dispatcher:
 
             if check_result:
                 self._send_message(message=Messages.user_info(self.user))
-                self._request_missing_data()
-                self._set_search_option_by_age()
                 self._set_search_option_by_sex()
+                self._set_search_option_by_age()
 
                 hunter = Hunter(self.user)
                 hunter.search()
@@ -98,20 +97,13 @@ class Dispatcher:
             else:
                 self._send_message(message='Введный диапазон неверен. Попробуем заново:')
 
-    def _request_missing_data(self):
-        """ запрашивает недостающие данные для поиска """
-        missing_data = {k: v for k, v in self.user.search_attr.items() if v is None}
-
-        if 'age' in missing_data:
-            self._send_message(message=Messages.missing_age())
-            self._set_age_range(self.user)
-
     def _set_search_option_by_age(self):
         """
         если у юзера, которому подбирается пара, возраст определен
         дается возвожность выбора варианта поиска:
         1. ровестники [возраст пользователя +/- 2 года];
-        2. возрастной диапазон [определяется пользователем]
+        2. возрастной диапазон [определяется пользователем],
+        в противном случае, вариант один: возрастной диапазон [определяется пользователем]
         """
         if self.user.age:
             self._send_message(
@@ -126,6 +118,9 @@ class Dispatcher:
                 age_to = self.user.age + 2
                 self.user.search_attr['age_from'] = age_from
                 self.user.search_attr['age_to'] = age_to
+        else:
+            self._send_message(message=Messages.missing_age())
+            self._set_age_range(self.user)
 
     def _set_search_option_by_sex(self):
         """

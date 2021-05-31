@@ -24,9 +24,8 @@ class Keyboards:
     @staticmethod
     def choose_search_option_by_sex():
         keyboard = VkKeyboard(one_time=False, inline=True)
-        keyboard.add_button('Мужчины', color=VkKeyboardColor.PRIMARY)
-        keyboard.add_button('Женщины', color=VkKeyboardColor.POSITIVE)
-        keyboard.add_line()
+        keyboard.add_button('Мужчин', color=VkKeyboardColor.PRIMARY)
+        keyboard.add_button('Женщин', color=VkKeyboardColor.POSITIVE)
         keyboard.add_button('Неважно', color=VkKeyboardColor.NEGATIVE)
         return keyboard.get_keyboard()
 

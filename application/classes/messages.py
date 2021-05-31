@@ -24,14 +24,10 @@ class Messages:
     @staticmethod
     def user_info(user):
         full_name = f"{user.first_name} {user.last_name}"
-        sex = user.sex_by_text
-        age = user.age if user.age else 'Нет данных'
         city = user.city_name if user.city_name else 'Нет данных'
 
         message_body = f'Найденые данные:\n' \
                        f'Имя: {full_name}\n' \
-                       f'Пол: {sex}\n' \
-                       f'Возраст: {age}\n' \
                        f'Город: {city}'
 
         return message_body
