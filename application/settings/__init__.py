@@ -4,7 +4,8 @@ import os
 
 def load_env_values():
     """ загружает переменные окружения из .env файла """
-    env_file_path = Path.cwd() / 'application' / 'settings' / '.env'
+    root_dir = Path(__file__).parent.parent.parent
+    env_file_path = root_dir / '.env'
     return load_dotenv(env_file_path) if env_file_path.exists() else False
 
 
