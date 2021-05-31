@@ -16,7 +16,6 @@ class UserAuthorization:
         self.api_error = vk_api.VkApiError
         self.api_version = API_VERSION
 
-
 @dataclass
 class UserProperties:
     """ хранит сведения о свойствах пользователя """
