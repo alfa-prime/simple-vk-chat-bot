@@ -25,13 +25,24 @@ class Hunter:
             sex=self.search_attr.get('sex_id'),
             fields=FIELDS_TO_SEARCH,
             has_photo=1,
-            sort=0,
             count=1000,
             v=API_VERSION
         )
 
         items = result.get('items')
-        filtered_result = [v for v in items if v.get('can_access_closed') and v.get('relation') in RELATION_IDS]
+        """
+        фильтруем результат запроса, выбираем только тех у кого:
+        1. страница доступна
+        2. семейное положение: не женат (не замужем) или в активном поиске
+        3. по непонятным пока для меня причинам в отбор попадают и другие города,
+           поэтому 'жестко' фильтруется только запрошенный город
+        """
+        filtered_result = [v for v in items
+                           if v.get('can_access_closed')
+                           and v.get('relation') in RELATION_IDS
+                           and v.get('city')
+                           and v.get('city').get('id') == self.search_attr.get('city_id')]
+
         print(len(filtered_result))
 
         with open('result.json', 'w', encoding='utf-8',) as file:

@@ -93,23 +93,6 @@ class Dispatcher:
         else:
             return True, None
 
-    def _set_age_range(self):
-        """
-        пользователь сам задет возрастной диапазон для поиска
-        """
-        while True:
-            self._send_message('Введите начальное значение диапазона:')
-            age_from = self._catch_user_input()
-            self._send_message('Введите окончание диапазона:')
-            age_to = self._catch_user_input()
-
-            if age_from <= age_to:
-                self.user.search_attr['age_from'] = age_from
-                self.user.search_attr['age_to'] = age_to
-                break
-            else:
-                self._send_message('Введный диапазон неверен. Попробуем заново.')
-
     def _set_search_option_by_age(self):
         """
         если у юзера, которому подбирается пара, возраст определен
@@ -135,6 +118,23 @@ class Dispatcher:
             self._send_message(Messages.missing_age())
             self._set_age_range()
 
+    def _set_age_range(self):
+        """
+        пользователь сам задет возрастной диапазон для поиска
+        """
+        while True:
+            self._send_message('Введите начальное значение диапазона:')
+            age_from = self._catch_user_input()
+            self._send_message('Введите окончание диапазона:')
+            age_to = self._catch_user_input()
+
+            if age_from <= age_to:
+                self.user.search_attr['age_from'] = age_from
+                self.user.search_attr['age_to'] = age_to
+                break
+            else:
+                self._send_message('Введный диапазон неверен. Попробуем заново.')
+
     def _set_search_option_by_sex(self):
         """
         пользователь сам выбирает кого пола будут кандидаты
@@ -155,21 +155,39 @@ class Dispatcher:
             
     def _set_search_option_by_city(self):
         """
-        если у юзера, которому подбирается пара, город не указан,
-        запрашивает имя города и пытается найти его id
+        если у юзера город указан, предлагаются варианты поиска:
+        родной город, указать другой,
+        в противном случае запрашивает имя города
+        """
+
+        if self.user.city_id:
+            self._send_message(
+                Messages.choose_search_option_by_city(self.user.city_name),
+                Keyboards.choose_search_option_by_city()
+            )
+            user_choice = self._catch_user_input()
+            if user_choice == 'родной город':
+                self.user.search_attr['city_id'] = self.user.city_id
+            elif user_choice == 'указать другой':
+                self._set_city()
+        else:
+            self._send_message('Город: нет данных')
+            self._set_city()
+
+    def _set_city(self):
+        """
+        запрашивает название города, ищет его id
         поиск городов пока только по России [country_id=1]
         подробнее https://vk.com/dev/database.getCities
         """
-        if not self.user.city_name:
-            self._send_message('Город: нет данных')
-            while True:
-                self._send_message('Введите название города:')
-                city_name = self._catch_user_input()
-                result = self.user.api.database.getCities(q=city_name, country_id=1)
-                if result.get('items'):
-                    self.user.search_attr['city_id'] = result.get('items')[0].get('id')
-                    # self.user.city_id = result.get('items')[0].get('id')
-                    self.user.city_name = result.get('items')[0].get('title')
-                    break
-                else:
-                    self._send_message(f"'{city_name}' не обнаружен. Попробуем заново.")
+        while True:
+            self._send_message('Введите название города:')
+            city_name = self._catch_user_input()
+            result = self.user.api.database.getCities(q=city_name, country_id=1)
+            if result.get('items'):
+                self.user.search_attr['city_id'] = result.get('items')[0].get('id')
+                self.user.city_id = result.get('items')[0].get('id')
+                self.user.city_name = result.get('items')[0].get('title')
+                break
+            else:
+                self._send_message(f"'{city_name}' не обнаружен. Попробуем заново.")

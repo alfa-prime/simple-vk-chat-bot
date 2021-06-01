@@ -31,5 +31,12 @@ class Keyboards:
         return keyboard.get_keyboard()
 
     @staticmethod
+    def choose_search_option_by_city():
+        keyboard = VkKeyboard(one_time=False, inline=True)
+        keyboard.add_button('Родной город', color=VkKeyboardColor.PRIMARY)
+        keyboard.add_button('Указать другой', color=VkKeyboardColor.NEGATIVE)
+        return keyboard.get_keyboard()
+
+    @staticmethod
     def hide():
         return VkKeyboard.get_empty_keyboard()

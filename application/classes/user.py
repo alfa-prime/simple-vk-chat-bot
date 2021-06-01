@@ -36,6 +36,7 @@ class User(UserAuthorization, UserProperties):
 
     def _set_properties(self, properties):
         """ устанавливает свойства пользователя """
+        self.search_attr = dict(sex_id=None, city_id=None, age_from=None, age_to=None)
         self.id = properties.get('id')
         self.first_name = properties.get('first_name')
         self.last_name = properties.get('last_name')
@@ -54,13 +55,6 @@ class User(UserAuthorization, UserProperties):
                 self.age = current_year - int(birth_year)
             except TypeError:
                 logger.error('Год рождения не найден. Возраст неизвестен.')
-
-        self.search_attr = dict(
-            sex_id=None,
-            city_id=self.city_id,
-            age_from=None,
-            age_to=None
-        )
 
     @staticmethod
     def _sex_id_to_text(sex_id):
