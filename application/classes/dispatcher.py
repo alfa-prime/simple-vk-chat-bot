@@ -26,6 +26,7 @@ class Dispatcher:
 
         if received_message in Commands.start.value: received_message = 'старт'
         if received_message in Commands.help.value: received_message = 'помощь'
+        if received_message in Commands.search.value: received_message = 'поиск'
 
         COMMANDS_MAPPER = {
             'старт': self._received_begin,
@@ -67,7 +68,7 @@ class Dispatcher:
             hunter.search()
 
         else:
-            self._send_message(check_result_message, Keyboards.search())
+            self._send_message(check_result_message, Keyboards.new_search())
 
     def _get_sender_name(self):
         """ получает имя пользователя по его id """
