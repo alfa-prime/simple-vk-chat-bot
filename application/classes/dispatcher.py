@@ -17,11 +17,11 @@ class Dispatcher:
         self.sender_name = None
         self.user = None
 
-    def _send_message(self, message=None, keyboard=None):
-        """ посылает сообщение пользователю """
-        self.api.messages.send(peer_id=self.sender_id, message=message, keyboard=keyboard, random_id=get_random_id())
-        message = message.replace('\n\n', ' ').replace('\n', ' ')
-        logger.info(f"Бот: {message}")
+        self.COMMANDS_MAPPER = {
+            'начать': self._received_begin,
+            'инфо': self._received_info,
+            'поиск': self._received_search
+        }
 
     def process_message(self, received_message, sender_id):
         """ обрабатывает входящие сообщения пользователя, формирует ответ бота """
@@ -29,33 +29,39 @@ class Dispatcher:
         self.sender_name = self._get_sender_name()
         logger.info(f"{self.sender_name}: {received_message}")
 
-        if received_message == 'начать':
-            self._send_message(Messages.welcome(self.sender_name), Keyboards.main())
-
-        elif received_message == 'инфо':
-            self._send_message(Messages.info(), Keyboards.search())
-
-        elif received_message == 'поиск':
-            self._send_message(message='Введите id:')
-            search_user_id = self._catch_user_input()
-            self.user = User(search_user_id)
-            check_result, check_result_message = self._check_user_error_or_deactivated()
-
-            if check_result:
-                self._send_message(Messages.user_info(self.user))
-                self._set_search_option_by_sex()
-                self._set_search_option_by_age()
-                self._set_search_option_by_city()
-                self._send_message(f'Начинаем поиск {self.user}')
-
-                hunter = Hunter(self.user)
-                hunter.search()
-
-            else:
-                self._send_message(check_result_message, Keyboards.search())
-
+        if received_message in self.COMMANDS_MAPPER:
+            self.COMMANDS_MAPPER.get(received_message)()
         else:
             self._send_message(Messages.unknown_command(), Keyboards.main())
+
+    def _send_message(self, message=None, keyboard=None):
+        """ посылает сообщение пользователю """
+        self.api.messages.send(peer_id=self.sender_id, message=message, keyboard=keyboard, random_id=get_random_id())
+        message = message.replace('\n\n', ' ').replace('\n', ' ')
+        logger.info(f"Бот: {message}")
+
+    def _received_begin(self):
+        self._send_message(Messages.welcome(self.sender_name), Keyboards.main())
+
+    def _received_info(self):
+        self._send_message(Messages.info(), Keyboards.search())
+
+    def _received_search(self):
+        self._send_message(message='Введите id:')
+        search_user_id = self._catch_user_input()
+        self.user = User(search_user_id)
+        check_result, check_result_message = self._check_user_error_or_deactivated()
+
+        if check_result:
+            self._send_message(Messages.user_info(self.user))
+            self._set_search_option_by_sex()
+            self._set_search_option_by_age()
+            self._set_search_option_by_city()
+            self._send_message(f'Начинаем поиск {self.user}')
+            hunter = Hunter(self.user)
+            hunter.search()
+        else:
+            self._send_message(check_result_message, Keyboards.search())
 
     def _get_sender_name(self):
         """ получает имя пользователя по его id """
