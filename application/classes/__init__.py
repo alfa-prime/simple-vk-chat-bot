@@ -19,6 +19,7 @@ class UserAuthorization:
 @dataclass
 class UserProperties:
     """ хранит сведения о свойствах пользователя """
+    id: int = None
     first_name: str = None
     last_name: str = None
     sex_id: int = None

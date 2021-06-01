@@ -9,7 +9,7 @@ RELATION_IDS = (1, 6)
 
 # список дополнительных полей для выдачи
 # подробности https://vk.com/dev/users.search параметр fields
-FIELDS_TO_SEARCH = 'relation, bdate'
+FIELDS_TO_SEARCH = 'relation, bdate, city'
 
 class Hunter:
     def __init__(self, user):

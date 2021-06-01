@@ -19,7 +19,6 @@ class User(UserAuthorization, UserProperties):
     def _process_properties(self, input_id):
         """ обработка полученных свойств """
         raw = self._get_raw_properties(input_id)
-        print(raw)
 
         if 'error_msg' in raw:
             self.has_error = raw.get('error_msg')
@@ -37,6 +36,7 @@ class User(UserAuthorization, UserProperties):
 
     def _set_properties(self, properties):
         """ устанавливает свойства пользователя """
+        self.id = properties.get('id')
         self.first_name = properties.get('first_name')
         self.last_name = properties.get('last_name')
         self.sex_id = properties.get('sex')

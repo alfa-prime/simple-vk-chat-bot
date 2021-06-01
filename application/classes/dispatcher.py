@@ -46,7 +46,7 @@ class Dispatcher:
                 self._set_search_option_by_sex()
                 self._set_search_option_by_age()
                 self._set_search_option_by_city()
-                self._send_message('Начинаем поиск')
+                self._send_message(f'Начинаем поиск {self.user}')
 
                 hunter = Hunter(self.user)
                 hunter.search()
@@ -134,9 +134,9 @@ class Dispatcher:
             keyboard=Keyboards.choose_search_option_by_sex()
         )
         user_choice = self._catch_user_input()
-        if user_choice == 'мужчины':
+        if user_choice == 'мужчин':
             self.user.search_attr['sex_id'] = 2
-        elif user_choice == 'женщины':
+        elif user_choice == 'женщин':
             self.user.search_attr['sex_id'] = 1
         else:
             self.user.search_attr['sex_id'] = 0
