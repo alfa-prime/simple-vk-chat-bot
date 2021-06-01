@@ -11,6 +11,7 @@ class Keyboards:
     def new_search():
         keyboard = VkKeyboard(one_time=False, inline=True)
         keyboard.add_button('Новый поиск', color=VkKeyboardColor.PRIMARY)
+        keyboard.add_button('Инфо', color=VkKeyboardColor.NEGATIVE)
         return keyboard.get_keyboard()
 
     @staticmethod
