@@ -1,4 +1,5 @@
 from application.classes.bot import Bot
 
-bot = Bot()
-bot.start()
+if __name__ == '__main__':
+    bot = Bot()
+    bot.start()
