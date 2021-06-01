@@ -6,7 +6,7 @@ from ..utilites.logger import set_logger
 
 # список дополнительных полей для выдачи
 # подробности https://vk.com/dev/users.get параметр fields
-FIELDS_TO_SEARCH = 'sex, bdate, city'
+FIELDS_TO_SEARCH = 'sex, bdate, city, country'
 
 logger = set_logger(__name__)
 
@@ -19,6 +19,7 @@ class User(UserAuthorization, UserProperties):
     def _process_properties(self, input_id):
         """ обработка полученных свойств """
         raw = self._get_raw_properties(input_id)
+        print(raw)
 
         if 'error_msg' in raw:
             self.has_error = raw.get('error_msg')

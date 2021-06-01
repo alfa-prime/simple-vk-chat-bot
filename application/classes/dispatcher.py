@@ -45,6 +45,8 @@ class Dispatcher:
                 self._send_message(Messages.user_info(self.user))
                 self._set_search_option_by_sex()
                 self._set_search_option_by_age()
+                self._set_search_option_by_city()
+                self._send_message('Начинаем поиск')
 
                 hunter = Hunter(self.user)
                 hunter.search()
@@ -94,7 +96,7 @@ class Dispatcher:
                 self.user.search_attr['age_to'] = age_to
                 break
             else:
-                self._send_message('Введный диапазон неверен. Попробуем заново:')
+                self._send_message('Введный диапазон неверен. Попробуем заново.')
 
     def _set_search_option_by_age(self):
         """
@@ -138,4 +140,24 @@ class Dispatcher:
             self.user.search_attr['sex_id'] = 1
         else:
             self.user.search_attr['sex_id'] = 0
-
+            
+    def _set_search_option_by_city(self):
+        """
+        если у юзера, которому подбирается пара, город не указан,
+        запрашивает имя города и пытается найти его id
+        поиск городов пока только по России [country_id=1]
+        подробнее https://vk.com/dev/database.getCities
+        """
+        if not self.user.city_id:
+            self._send_message('Город: нет данных')
+            while True:
+                self._send_message('Введите название города:')
+                city_name = self._catch_user_input()
+                result = self.user.api.database.getCities(q=city_name, country_id=1)
+                if result.get('items'):
+                    self.user.search_attr['city_id'] = result.get('items')[0].get('id')
+                    self.user.city_id = result.get('items')[0].get('id')
+                    self.user.city_name = result.get('items')[0].get('title')
+                    break
+                else:
+                    self._send_message(f"'{city_name}' не обнаружен. Попробуем заново.")
