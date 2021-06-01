@@ -5,6 +5,7 @@ from ..utilites.logger import set_logger
 from ..classes.user import User
 from ..classes.keyboards import Keyboards
 from ..classes.messages import Messages
+from ..classes.commands import Commands
 from ..classes.hunter import Hunter
 
 logger = set_logger(__name__)
@@ -17,20 +18,23 @@ class Dispatcher:
         self.sender_name = None
         self.user = None
 
-        self.COMMANDS_MAPPER = {
-            'начать': self._received_begin,
-            'инфо': self._received_info,
-            'поиск': self._received_search
-        }
-
     def process_message(self, received_message, sender_id):
         """ обрабатывает входящие сообщения пользователя, формирует ответ бота """
         self.sender_id = sender_id
         self.sender_name = self._get_sender_name()
         logger.info(f"{self.sender_name}: {received_message}")
 
-        if received_message in self.COMMANDS_MAPPER:
-            self.COMMANDS_MAPPER.get(received_message)()
+        if received_message in Commands.start.value: received_message = 'старт'
+        if received_message in Commands.help.value: received_message = 'помощь'
+
+        COMMANDS_MAPPER = {
+            'старт': self._received_begin,
+            'помощь': self._received_info,
+            'поиск': self._received_search
+        }
+
+        if received_message in COMMANDS_MAPPER:
+            COMMANDS_MAPPER.get(received_message)()
         else:
             self._send_message(Messages.unknown_command(), Keyboards.main())
 
@@ -57,9 +61,11 @@ class Dispatcher:
             self._set_search_option_by_sex()
             self._set_search_option_by_age()
             self._set_search_option_by_city()
+
             self._send_message(f'Начинаем поиск {self.user}')
             hunter = Hunter(self.user)
             hunter.search()
+
         else:
             self._send_message(check_result_message, Keyboards.search())
 
@@ -136,7 +142,7 @@ class Dispatcher:
         значения ID можно посмотреть https://vk.com/dev/users.search параметр sex
         """
         self._send_message(
-            message=Messages.choose_search_option_by_sex(self.user.sex_by_text),
+            message=Messages.choose_search_option_by_sex(self.user.sex),
             keyboard=Keyboards.choose_search_option_by_sex()
         )
         user_choice = self._catch_user_input()
@@ -154,7 +160,7 @@ class Dispatcher:
         поиск городов пока только по России [country_id=1]
         подробнее https://vk.com/dev/database.getCities
         """
-        if not self.user.city_id:
+        if not self.user.city_name:
             self._send_message('Город: нет данных')
             while True:
                 self._send_message('Введите название города:')
@@ -162,7 +168,7 @@ class Dispatcher:
                 result = self.user.api.database.getCities(q=city_name, country_id=1)
                 if result.get('items'):
                     self.user.search_attr['city_id'] = result.get('items')[0].get('id')
-                    self.user.city_id = result.get('items')[0].get('id')
+                    # self.user.city_id = result.get('items')[0].get('id')
                     self.user.city_name = result.get('items')[0].get('title')
                     break
                 else:

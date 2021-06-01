@@ -22,8 +22,7 @@ class UserProperties:
     id: int = None
     first_name: str = None
     last_name: str = None
-    sex_id: int = None
-    sex_by_text: str = None
+    sex: str = None
     city_id: int = None
     city_name: str = None
     age: int = None

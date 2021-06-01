@@ -39,8 +39,7 @@ class User(UserAuthorization, UserProperties):
         self.id = properties.get('id')
         self.first_name = properties.get('first_name')
         self.last_name = properties.get('last_name')
-        self.sex_id = properties.get('sex')
-        self.sex_by_text = self._sex_id_to_text(self.sex_id)
+        self.sex = self._sex_id_to_text(properties.get('sex'))
 
         city = properties.get('city')
         if city:
@@ -57,11 +56,10 @@ class User(UserAuthorization, UserProperties):
                 logger.error('Год рождения не найден. Возраст неизвестен.')
 
         self.search_attr = dict(
-            sex_id='',
+            sex_id=None,
             city_id=self.city_id,
-            age=self.age,
-            age_from='',
-            age_to=''
+            age_from=None,
+            age_to=None
         )
 
     @staticmethod
