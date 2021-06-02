@@ -164,10 +164,10 @@ class Dispatcher:
         if self.user.city_id:
             self._send_message(
                 Messages.choose_search_option_by_city(self.user.city_name),
-                Keyboards.choose_search_option_by_city()
+                Keyboards.choose_search_option_by_city(self.user.city_name)
             )
             user_choice = self._catch_user_input()
-            if user_choice == 'родной город':
+            if user_choice == self.user.city_name:
                 self.user.search_attr['city_id'] = self.user.city_id
             elif user_choice == 'указать другой':
                 self._set_city()

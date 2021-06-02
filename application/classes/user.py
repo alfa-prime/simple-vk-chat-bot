@@ -36,7 +36,6 @@ class User(UserAuthorization, UserProperties):
 
     def _set_properties(self, properties):
         """ устанавливает свойства пользователя """
-        self.search_attr = dict(sex_id=None, city_id=None, age_from=None, age_to=None)
         self.id = properties.get('id')
         self.first_name = properties.get('first_name')
         self.last_name = properties.get('last_name')
@@ -46,6 +45,8 @@ class User(UserAuthorization, UserProperties):
         if city:
             self.city_id = city.get('id')
             self.city_name = city.get('title')
+
+        self.search_attr = dict(sex_id=None, city_id=self.city_id, age_from=None, age_to=None)
 
         birthday = properties.get('bdate')
         if birthday:
