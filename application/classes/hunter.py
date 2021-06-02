@@ -13,16 +13,31 @@ FIELDS_TO_SEARCH = 'relation, bdate, city'
 
 class Hunter:
     def __init__(self, user):
+        self.user = user
         self.search_attr = user.search_attr
         self.api = user.api
 
     def search(self):
+
+        user_id = self.user.id
+        sex_id = self.search_attr.get('sex_id')
+        age_from = self.search_attr.get('age_from')
+        age_to = self.search_attr.get('age_to')
+        city_id = self.search_attr.get('city_id')
+
+        # формирую уникальный отпечаток истории поиска юзера
+        # идея такая: по заданым параметрам получаю все доступные данные,
+        # и сохраняю их в базу и если в следующий попадаются такие же параметры,
+        # то сведения берутся из базы, а не запрашиваются у ВК.
+        imprint_user_search_history = f'{user_id}-{sex_id}-{age_from}-{age_to}-{city_id}'
+        print(imprint_user_search_history)
+
         result = self.api.users.search(
             # описание всех параметров https://vk.com/dev/users.search
-            city=self.search_attr.get('city_id'),
-            age_from=self.search_attr.get('age_from'),
-            age_to=self.search_attr.get('age_to'),
-            sex=self.search_attr.get('sex_id'),
+            city=city_id,
+            age_from=age_from,
+            age_to=age_to,
+            sex=sex_id,
             fields=FIELDS_TO_SEARCH,
             has_photo=1,
             count=1000,
