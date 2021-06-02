@@ -45,5 +45,16 @@ class Keyboards:
         return keyboard.get_keyboard()
 
     @staticmethod
+    def process_target():
+        keyboard = VkKeyboard(one_time=False, inline=True)
+        keyboard.add_button(f'Да', color=VkKeyboardColor.POSITIVE)
+        keyboard.add_button(f'Нет', color=VkKeyboardColor.NEGATIVE)
+        keyboard.add_button(f'Дальше', color=VkKeyboardColor.SECONDARY)
+        keyboard.add_line()
+
+        keyboard.add_button(f'Прервать', color=VkKeyboardColor.PRIMARY)
+        return keyboard.get_keyboard()
+
+    @staticmethod
     def hide():
         return VkKeyboard.get_empty_keyboard()

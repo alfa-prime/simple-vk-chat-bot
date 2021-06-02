@@ -41,15 +41,29 @@ class Dispatcher:
 
     def _send_message(self, message=None, keyboard=None):
         """ посылает сообщение пользователю """
-        self.api.messages.send(peer_id=self.sender_id, message=message, keyboard=keyboard, random_id=get_random_id())
+        self.api.messages.send(peer_id=self.sender_id,
+                               message=message,
+                               keyboard=keyboard,
+                               random_id=get_random_id())
         message = message.replace('\n\n', ' ').replace('\n', ' ')
         logger.info(f"Бот: {message}")
+
+    # def _send_carousel(self, message=None, template=None):
+    #     self.api.messages.send(peer_id=self.sender_id,
+    #                            message=message,
+    #                            template=template,
+    #                            random_id=get_random_id())
 
     def _received_begin(self):
         self._send_message(Messages.welcome(self.sender_name), Keyboards.main())
 
     def _received_info(self):
         self._send_message(Messages.info(), Keyboards.search())
+        # template = {
+        #     "type": "carousel",
+        #     "elements": [{'title': 'Title', "description": "Description"}]
+        # }
+        # self._send_carousel(message='xxx', template=template)
 
     def _received_search(self):
         self._send_message(message='Введите id:')
@@ -65,7 +79,17 @@ class Dispatcher:
 
             self._send_message(f'Начинаем поиск {self.user}')
             hunter = Hunter(self.user)
-            hunter.search()
+
+            for target_id, target_attr in hunter.targets.items():
+                self._send_message(target_attr.get('name'), Keyboards.process_target())
+                answer = self._catch_user_input()
+                if answer == 'следующий':
+                    pass
+                if answer == 'прервать':
+                    break
+
+            # for target_id, target_attr in hunter.targets.items():
+            #     print(target_attr.get('name'))
 
         else:
             self._send_message(check_result_message, Keyboards.new_search())

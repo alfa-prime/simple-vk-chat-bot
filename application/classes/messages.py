@@ -66,6 +66,12 @@ class Messages:
         return message_body
 
     @staticmethod
+    def target_info(target):
+        message_body = f'{target.get("name")}\n' \
+                       f'{target.get("link")}'
+        return message_body
+
+    @staticmethod
     def unknown_command():
         message_body = f'Неизвестная комадна.\n' \
                       f'"Инфо" подробности\n' \
