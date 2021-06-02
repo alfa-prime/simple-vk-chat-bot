@@ -41,7 +41,7 @@ class Keyboards:
     def choose_search_option_by_city(city_name):
         keyboard = VkKeyboard(one_time=False, inline=True)
         keyboard.add_button(f'{city_name}', color=VkKeyboardColor.PRIMARY)
-        keyboard.add_button('Указать другой', color=VkKeyboardColor.NEGATIVE)
+        keyboard.add_button('Другой', color=VkKeyboardColor.NEGATIVE)
         return keyboard.get_keyboard()
 
     @staticmethod

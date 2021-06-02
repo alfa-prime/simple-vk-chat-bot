@@ -12,7 +12,7 @@ class Bot(BotAuthorization):
 
     def start(self):
         logger.info('Бот успешно стартовал')
-        dispatcher = Dispatcher(self.api, self.longpoll)
+        dispatcher = Dispatcher(self.api, self.longpoll, self.upload)
 
         for event in self.longpoll.listen():
 

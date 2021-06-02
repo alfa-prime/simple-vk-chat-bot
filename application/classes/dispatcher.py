@@ -1,7 +1,9 @@
 from vk_api.longpoll import VkEventType
 from vk_api.utils import get_random_id
+import requests
 
 from ..utilites.logger import set_logger
+from ..utilites.helpers import make_dir
 from ..classes.user import User
 from ..classes.keyboards import Keyboards
 from ..classes.messages import Messages
@@ -11,9 +13,10 @@ from ..classes.hunter import Hunter
 logger = set_logger(__name__)
 
 class Dispatcher:
-    def __init__(self, api, longpoll):
+    def __init__(self, api, longpoll, upload):
         self.api = api
         self.longpoll = longpoll
+        self.upload = upload
         self.sender_id = None
         self.sender_name = None
         self.user = None
@@ -39,31 +42,22 @@ class Dispatcher:
         else:
             self._send_message(Messages.unknown_command(), Keyboards.main())
 
-    def _send_message(self, message=None, keyboard=None):
+    def _send_message(self, message=None, keyboard=None, attachments=None):
         """ посылает сообщение пользователю """
         self.api.messages.send(peer_id=self.sender_id,
                                message=message,
                                keyboard=keyboard,
+                               attachment=attachments,
                                random_id=get_random_id())
+
         message = message.replace('\n\n', ' ').replace('\n', ' ')
         logger.info(f"Бот: {message}")
-
-    # def _send_carousel(self, message=None, template=None):
-    #     self.api.messages.send(peer_id=self.sender_id,
-    #                            message=message,
-    #                            template=template,
-    #                            random_id=get_random_id())
 
     def _received_begin(self):
         self._send_message(Messages.welcome(self.sender_name), Keyboards.main())
 
     def _received_info(self):
         self._send_message(Messages.info(), Keyboards.search())
-        # template = {
-        #     "type": "carousel",
-        #     "elements": [{'title': 'Title', "description": "Description"}]
-        # }
-        # self._send_carousel(message='xxx', template=template)
 
     def _received_search(self):
         self._send_message(message='Введите id:')
@@ -78,18 +72,29 @@ class Dispatcher:
             self._set_search_option_by_city()
 
             self._send_message(f'Начинаем поиск {self.user}')
+
             hunter = Hunter(self.user)
+            make_dir('temp')
+
 
             for target_id, target_attr in hunter.targets.items():
-                self._send_message(target_attr.get('name'), Keyboards.process_target())
+
+                r = requests.get(target_attr.get("photos").get("items")[0].get("url"))
+                with open('temp\\pic.jpg', 'wb') as f:
+                    f.write(r.content)
+
+                image = 'temp\\pic.jpg'
+                attachments = list()
+                upload_image = self.upload.photo_messages(photos=image)[0]
+                attachments.append(f'photo{upload_image.get("owner_id")}_{upload_image.get("id")}')
+
+                self._send_message(Messages.target_info(target_attr), Keyboards.process_target(), attachments)
+
                 answer = self._catch_user_input()
-                if answer == 'следующий':
-                    pass
+                if answer == 'дальше':
+                    ...
                 if answer == 'прервать':
                     break
-
-            # for target_id, target_attr in hunter.targets.items():
-            #     print(target_attr.get('name'))
 
         else:
             self._send_message(check_result_message, Keyboards.new_search())

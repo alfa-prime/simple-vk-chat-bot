@@ -31,11 +31,9 @@ class Messages:
     @staticmethod
     def user_info(user):
         full_name = f"{user.first_name} {user.last_name}"
-        # city = user.city_name if user.city_name else 'Нет данных'
 
         message_body = f'Найденые данные:\n' \
                        f'Имя: {full_name}\n' \
-                       # f'Город: {city}'
 
         return message_body
 
@@ -67,7 +65,7 @@ class Messages:
 
     @staticmethod
     def target_info(target):
-        message_body = f'{target.get("name")}\n' \
+        message_body = f'{target.get("name")}, {target.get("birthday")}\n' \
                        f'{target.get("link")}'
         return message_body
 

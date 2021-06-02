@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 import vk_api
+from vk_api import VkUpload
 from vk_api.longpoll import VkLongPoll
 from application.settings import BOT_TOKEN, APP_ID, USER_TOKEN, API_VERSION
 
@@ -8,6 +9,7 @@ class BotAuthorization:
         session = vk_api.VkApi(token=BOT_TOKEN)
         self.api = session.get_api()
         self.longpoll = VkLongPoll(session)
+        self.upload = VkUpload(session)
 
 class UserAuthorization:
     def __init__(self):
