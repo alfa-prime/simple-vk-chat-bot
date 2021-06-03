@@ -3,7 +3,7 @@ from vk_api.utils import get_random_id
 import requests
 
 from ..utilites.logger import set_logger
-from ..utilites.helpers import make_dir
+from ..utilites.helpers import make_dir, remove_dir
 from ..classes.user import User
 from ..classes.keyboards import Keyboards
 from ..classes.messages import Messages
@@ -76,7 +76,6 @@ class Dispatcher:
             hunter = Hunter(self.user)
             make_dir('temp')
 
-
             for target_id, target_attr in hunter.targets.items():
 
                 r = requests.get(target_attr.get("photos").get("items")[0].get("url"))
@@ -94,6 +93,7 @@ class Dispatcher:
                 if answer == 'дальше':
                     ...
                 if answer == 'прервать':
+                    remove_dir('temp')
                     break
 
         else:
