@@ -56,6 +56,12 @@ class Messages:
         return message_body
 
     @staticmethod
+    def choose_whom_search(name):
+        message_body = f'{name},\n' \
+                       f'для кого будем искать пару ?'
+        return message_body
+
+    @staticmethod
     def missing_age():
         message_body = f'Возраст: Нет данных.\n' \
                        f'Поиск ровестников невозможен.\n' \
@@ -65,7 +71,9 @@ class Messages:
 
     @staticmethod
     def target_info(target):
-        message_body = f'{target.get("name")}, {target.get("birthday")}\n' \
+        # если дата рождения не указана, так и пишем
+        birthday = target.get('birthday') if target.get('birthday') else 'дата рождения не указана'
+        message_body = f'{target.get("name")}, {birthday}\n' \
                        f'{target.get("link")}'
         return message_body
 

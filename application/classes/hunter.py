@@ -53,6 +53,8 @@ class Hunter:
         3. по непонятным пока для меня причинам в отбор попадают и другие города,
         поэтому запрошенный город фильтруется дополнительно
         """
+        print(raw_data)
+
         result = [v for v in raw_data
                   if v.get('can_access_closed')
                   and v.get('relation') in RELATION_IDS

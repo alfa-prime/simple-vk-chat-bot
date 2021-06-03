@@ -60,9 +60,17 @@ class Dispatcher:
         self._send_message(Messages.info(), Keyboards.search())
 
     def _received_search(self):
-        self._send_message(message='Введите id:')
-        search_user_id = self._catch_user_input()
-        self.user = User(search_user_id)
+        self._send_message(Messages.choose_whom_search(self.sender_name), Keyboards.choose_whom_search())
+        user_choice = self._catch_user_input()
+
+        if user_choice == 'для меня':
+            self.user = User(self.sender_id)
+
+        elif user_choice == 'не для меня':
+            self._send_message(message='Введите id:')
+            search_user_id = self._catch_user_input()
+            self.user = User(search_user_id)
+
         check_result, check_result_message = self._check_user_error_or_deactivated()
 
         if check_result:
@@ -71,12 +79,15 @@ class Dispatcher:
             self._set_search_option_by_age()
             self._set_search_option_by_city()
 
-            self._send_message(f'Начинаем поиск {self.user}')
+            # self._send_message(f'Начинаем поиск {self.user}')
+            self._send_message(f'Начинаем поиск.\n'
+                               f'Пожалуйста, подождите немного.\n'
+                               f'Идет сбор и обработка сведений.\n')
 
             hunter = Hunter(self.user)
             make_dir('temp')
 
-            for target_id, target_attr in hunter.targets.items():
+            for index, (target_id, target_attr) in enumerate(hunter.targets.items()):
 
                 r = requests.get(target_attr.get("photos").get("items")[0].get("url"))
                 with open('temp\\pic.jpg', 'wb') as f:
@@ -90,11 +101,22 @@ class Dispatcher:
                 self._send_message(Messages.target_info(target_attr), Keyboards.process_target(), attachments)
 
                 answer = self._catch_user_input()
-                if answer == 'дальше':
-                    ...
-                if answer == 'прервать':
+
+                if index != len(hunter.targets)-1:
+
+                    if answer == 'да':
+                        ...
+                    elif answer == 'нет':
+                        ...
+                    elif answer == 'дальше':
+                        ...
+                    elif answer == 'прервать':
+                        remove_dir('temp')
+                        self._send_message('Поиск прерван', Keyboards.new_search())
+                        break
+                else:
                     remove_dir('temp')
-                    break
+                    self._send_message('Больше кандидатур нет', Keyboards.new_search())
 
         else:
             self._send_message(check_result_message, Keyboards.new_search())

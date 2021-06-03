@@ -22,6 +22,13 @@ class Keyboards:
         return keyboard.get_keyboard()
 
     @staticmethod
+    def choose_whom_search():
+        keyboard = VkKeyboard(one_time=False, inline=True)
+        keyboard.add_button('Для меня', color=VkKeyboardColor.PRIMARY)
+        keyboard.add_button('Не для меня', color=VkKeyboardColor.NEGATIVE)
+        return keyboard.get_keyboard()
+
+    @staticmethod
     def choose_search_option_by_age():
         keyboard = VkKeyboard(one_time=False, inline=True)
         keyboard.add_button('Ровестники', color=VkKeyboardColor.PRIMARY)
