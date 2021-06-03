@@ -198,7 +198,7 @@ class Dispatcher:
             user_choice = self._catch_user_input()
             if user_choice == self.user.city_name:
                 self.user.search_attr['city_id'] = self.user.city_id
-            elif user_choice == 'указать другой':
+            elif user_choice == 'другой':
                 self._set_city()
         else:
             self._send_message('Город: нет данных')
