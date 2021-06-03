@@ -8,7 +8,7 @@ RELATION_IDS = (1, 6)
 
 # список дополнительных полей для выдачи
 # подробности https://vk.com/dev/users.search параметр fields
-FIELDS_TO_SEARCH = 'relation, bdate, city'
+FIELDS_TO_SEARCH = 'relation, bdate, city, sex'
 
 class Hunter:
     def __init__(self, user):
@@ -52,6 +52,7 @@ class Hunter:
         2. семейное положение: не женат (не замужем) или в активном поиске
         3. по непонятным пока для меня причинам в отбор попадают и другие города,
         поэтому запрошенный город фильтруется дополнительно
+        4. по полу, так же как и по городам
         """
         print(raw_data)
 
@@ -59,7 +60,9 @@ class Hunter:
                   if v.get('can_access_closed')
                   and v.get('relation') in RELATION_IDS
                   and v.get('city')
-                  and v.get('city').get('id') == self.search_attr.get('city_id')]
+                  and v.get('city').get('id') == self.search_attr.get('city_id')
+                  and v.get('sex') == self.search_attr.get('sex_id')
+                  ]
 
         self.targets_count = len(result)
         return result

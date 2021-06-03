@@ -78,6 +78,13 @@ class Messages:
         return message_body
 
     @staticmethod
+    def search_start():
+        message_body = f'Начинаем поиск.\n' \
+                       f'Пожалуйста, подождите немного.\n' \
+                       f'Идет сбор и обработка сведений.\n'
+        return message_body
+
+    @staticmethod
     def unknown_command():
         message_body = f'Неизвестная комадна.\n' \
                       f'"Инфо" подробности\n' \

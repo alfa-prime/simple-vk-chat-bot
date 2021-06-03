@@ -79,10 +79,7 @@ class Dispatcher:
             self._set_search_option_by_age()
             self._set_search_option_by_city()
 
-            # self._send_message(f'Начинаем поиск {self.user}')
-            self._send_message(f'Начинаем поиск.\n'
-                               f'Пожалуйста, подождите немного.\n'
-                               f'Идет сбор и обработка сведений.\n')
+            self._send_message(Messages.search_start())
 
             hunter = Hunter(self.user)
             make_dir('temp')
@@ -202,8 +199,6 @@ class Dispatcher:
             self.user.search_attr['sex_id'] = 2
         elif user_choice == 'женщин':
             self.user.search_attr['sex_id'] = 1
-        else:
-            self.user.search_attr['sex_id'] = 0
             
     def _set_search_option_by_city(self):
         """

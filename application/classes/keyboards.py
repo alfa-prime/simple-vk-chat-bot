@@ -40,8 +40,6 @@ class Keyboards:
         keyboard = VkKeyboard(one_time=False, inline=True)
         keyboard.add_button('Мужчин', color=VkKeyboardColor.PRIMARY)
         keyboard.add_button('Женщин', color=VkKeyboardColor.POSITIVE)
-        keyboard.add_line()
-        keyboard.add_button('Неважно', color=VkKeyboardColor.NEGATIVE)
         return keyboard.get_keyboard()
 
     @staticmethod
