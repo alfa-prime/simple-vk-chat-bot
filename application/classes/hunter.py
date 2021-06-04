@@ -1,94 +1,81 @@
-from application.settings import API_VERSION
+from vk_api.execute import VkFunction
+from datetime import datetime
 
 # 321895964 - id без города
 
 # id семейного положения  1: не женат (не замужем), 6: в активном поиске
 # значения ID можно посмотреть https://vk.com/dev/users.search параметр status
-RELATION_IDS = (1, 6)
+# RELATION_IDS = (1, 6)
 
 # список дополнительных полей для выдачи
 # подробности https://vk.com/dev/users.search параметр fields
-FIELDS_TO_SEARCH = 'relation, bdate, city, sex'
+FIELDS_TO_SEARCH = 'city, bdate, sex, relation'
 
 class Hunter:
     def __init__(self, user):
         self.user = user
         self.search_attr = user.search_attr
         self.user_api = user.api
+        self.targets_count = 0
         self.targets = self.search()
-        self.targets_count = None
 
     def search(self):
         raw_data = self._get_raw_data()
         filtered_data = self._filter_out_raw_data(raw_data)
+        print(len(filtered_data))
+        self.targets_count = len(filtered_data)
         return self._make_targets_list(filtered_data)
 
+    @staticmethod
+    def _exec_string(city_id, sex_id, year):
+        # todo: сейчас ищутся только неженатые, добавить тех кто в активном поиске
+        api = f"API.users.search({{'count':1000, 'city':{city_id}, 'birth_month': 1, 'birth_year':{year}, " \
+              f"'has_photo':1,'sex':{sex_id}, 'fields':'city, sex, relation, bdate', 'status': 1}}).items"
+        for i in range(2, 13):
+            api += f", API.users.search({{'count':1000, 'city':{city_id}, 'birth_month':{i}, 'birth_year':{year}," \
+                   f"'has_photo':1,'sex': {sex_id}, 'fields':'city, sex, relation, bdate', 'status': 1}}).items"
+        return f"return [{api}];"
+
     def _get_raw_data(self):
+        current_year = datetime.now().year
+        year_to = current_year - self.search_attr.get('age_from')
+        year_from = current_year - self.search_attr.get('age_to')
         sex_id = self.search_attr.get('sex_id')
-        age_from = self.search_attr.get('age_from')
-        age_to = self.search_attr.get('age_to')
         city_id = self.search_attr.get('city_id')
+        raw_data = []
 
-        params = dict(
-            city=city_id,
-            age_from=age_from,
-            age_to=age_to,
-            sex=sex_id,
-            fields=FIELDS_TO_SEARCH,
-            sort=1,
-            has_photo=1,
-            count=1000,
-            v=API_VERSION
-        )
+        for year in range(year_from, year_to):
+            code = self._exec_string(city_id, sex_id, year)
+            data = VkFunction(code=code)
 
-        result = self.user_api.users.search(**params).get('items')
+            for item in data(self.user_api):
+                raw_data += item
+
         # todo: добавить проверку если ничего не найдено
-        return result
+        return raw_data
 
     def _filter_out_raw_data(self, raw_data):
         """
         фильтруем результат запроса, выбираем только тех у кого:
         1. страница доступна
-        2. семейное положение: не женат (не замужем) или в активном поиске
-        3. по непонятным пока для меня причинам в отбор попадают и другие города,
+        2. по непонятным пока для меня причинам в отбор попадают и другие города,
         поэтому запрошенный город фильтруется дополнительно
-        4. по полу, так же как и по городам
+        3. по полу, так же как и по городам
         """
-        print(raw_data)
-
-        result = [v for v in raw_data
-                  if v.get('can_access_closed')
-                  and v.get('relation') in RELATION_IDS
+        result = [v for v in raw_data if
+                  not v.get('is_closed')
                   and v.get('city')
                   and v.get('city').get('id') == self.search_attr.get('city_id')
-                  and v.get('sex') == self.search_attr.get('sex_id')
-                  ]
-
-        self.targets_count = len(result)
+                  and v.get('sex') == self.search_attr.get('sex_id')]
         return result
 
-    def _make_targets_list(self, filtered_data):
+    @staticmethod
+    def _make_targets_list(filtered_data):
         result = {}
-
         for item in filtered_data:
-            # метод photos.get https://vk.com/dev/photos.get
             target_id = item.get('id')
-            photos = self.user_api.photos.get(owner_id=target_id, album_id='profile', extended=1, count=1000)
-
             user_full_name = f"{item.get('first_name')} {item.get('last_name')}"
             vk_link = f"vk.com/id{target_id}"
             birthday = item.get('bdate')
-            photos_count = photos.get('count')
-
-            result[target_id] = dict(
-                name=user_full_name,
-                link=vk_link,
-                birthday=birthday,
-                photos=dict(count=photos_count, items=[]))
-
-            for i in range(photos_count):
-                likes = photos.get('items')[i].get('likes').get('count')
-                url = photos.get('items')[i].get('sizes')[-1].get('url')
-                result[target_id]['photos']['items'].append(dict(likes=likes, url=url))
-
+            result[target_id] = dict(name=user_full_name, link=vk_link, birthday=birthday)
         return result

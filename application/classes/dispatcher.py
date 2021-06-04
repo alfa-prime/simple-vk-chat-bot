@@ -84,18 +84,24 @@ class Dispatcher:
             hunter = Hunter(self.user)
             make_dir('temp')
 
+            self._send_message(f'Найдено:{hunter.targets_count}')
             for index, (target_id, target_attr) in enumerate(hunter.targets.items()):
+                photos = self.user.api.photos.get(owner_id=target_id, album_id='profile', extended=1, count=1000)
+                photos_count = photos.get('count')
 
-                r = requests.get(target_attr.get("photos").get("items")[0].get("url"))
-                with open('temp\\pic.jpg', 'wb') as f:
-                    f.write(r.content)
+                if photos_count == 0:
+                    self._send_message(Messages.target_info(target_attr), Keyboards.process_target())
+                else:
+                    r = requests.get(photos.get("items")[0].get("sizes")[-1].get("url"))
+                    with open('temp\\pic.jpg', 'wb') as f:
+                        f.write(r.content)
 
-                image = 'temp\\pic.jpg'
-                attachments = list()
-                upload_image = self.upload.photo_messages(photos=image)[0]
-                attachments.append(f'photo{upload_image.get("owner_id")}_{upload_image.get("id")}')
+                    image = 'temp\\pic.jpg'
+                    attachments = list()
+                    upload_image = self.upload.photo_messages(photos=image)[0]
+                    attachments.append(f'photo{upload_image.get("owner_id")}_{upload_image.get("id")}')
 
-                self._send_message(Messages.target_info(target_attr), Keyboards.process_target(), attachments)
+                    self._send_message(Messages.target_info(target_attr), Keyboards.process_target(), attachments)
 
                 answer = self._catch_user_input()
 
@@ -105,9 +111,9 @@ class Dispatcher:
                         ...
                     elif answer == 'нет':
                         ...
-                    elif answer == 'дальше':
+                    elif answer == 'может быть':
                         ...
-                    elif answer == 'прервать':
+                    elif answer == 'прервать поиск':
                         remove_dir('temp')
                         self._send_message('Поиск прерван', Keyboards.new_search())
                         break
@@ -160,7 +166,7 @@ class Dispatcher:
                 self._set_age_range()
             elif user_choice == 'ровестники':
                 age_from = self.user.age - 2
-                age_to = self.user.age + 2
+                age_to = self.user.age + 3
                 self.user.search_attr['age_from'] = age_from
                 self.user.search_attr['age_to'] = age_to
         else:
@@ -178,8 +184,8 @@ class Dispatcher:
             age_to = self._catch_user_input()
 
             if age_from <= age_to:
-                self.user.search_attr['age_from'] = age_from
-                self.user.search_attr['age_to'] = age_to
+                self.user.search_attr['age_from'] = int(age_from)
+                self.user.search_attr['age_to'] = int(age_to)
                 break
             else:
                 self._send_message('Введный диапазон неверен. Попробуем заново.')
