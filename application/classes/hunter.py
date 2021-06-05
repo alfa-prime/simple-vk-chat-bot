@@ -26,7 +26,7 @@ class Hunter:
         return self._make_targets_list(filtered_data)
 
     @staticmethod
-    def _exec_string(city_id, sex_id, year):
+    def _exec_string(city_id, sex_id, year, relation_id):
         """
         используется метод vk api https://vk.com/dev/execute
         формируем код для использвания vk api exec
@@ -37,10 +37,11 @@ class Hunter:
         """
         # todo: сейчас ищутся только неженатые, добавить тех кто в активном поиске
         api = f"API.users.search({{'count':1000, 'city':{city_id}, 'birth_month': 1, 'birth_year':{year}, " \
-              f"'has_photo':1,'sex':{sex_id}, 'fields':'city, sex, relation, bdate', 'status': 1}}).items"
+              f"'has_photo':1,'sex':{sex_id}, 'fields':'city, sex, relation, bdate', 'status': {relation_id}}}).items"
         for i in range(2, 13):
             api += f", API.users.search({{'count':1000, 'city':{city_id}, 'birth_month':{i}, 'birth_year':{year}," \
-                   f"'has_photo':1,'sex': {sex_id}, 'fields':'city, sex, relation, bdate', 'status': 1}}).items"
+                   f"'has_photo':1,'sex': {sex_id}, 'fields':'city, sex, relation, bdate'," \
+                   f"'status': {relation_id}}}).items"
         return f"return [{api}];"
 
     def _get_raw_data(self):
@@ -49,10 +50,11 @@ class Hunter:
         year_from = current_year - self.search_attr.get('age_to')
         sex_id = self.search_attr.get('sex_id')
         city_id = self.search_attr.get('city_id')
-        raw_data = []
+        relation_id = self.search_attr.get('relation_id')
+        raw_data = list()
 
         for year in range(year_from, year_to):
-            code = self._exec_string(city_id, sex_id, year)
+            code = self._exec_string(city_id, sex_id, year, relation_id)
             data = VkFunction(code=code)
 
             for item in data(self.user_api):

@@ -16,6 +16,12 @@ class User(UserAuthorization, UserProperties):
         super().__init__()
         self._process_properties(input_id)
 
+    def __repr__(self):
+        return (f'{self.__class__.__name__}'
+                f'({self.id}, {self.first_name}, {self.last_name}, {self.sex}, {self.city_name}, {self.age}, '
+                f'has_error: {self.has_error}, is_deactivated: {self.is_deactivated}, '
+                f'search_attr: {self.search_attr})')
+
     def _process_properties(self, input_id):
         """ обработка полученных свойств """
         raw = self._get_raw_properties(input_id)
@@ -46,7 +52,7 @@ class User(UserAuthorization, UserProperties):
             self.city_id = city.get('id')
             self.city_name = city.get('title')
 
-        self.search_attr = dict(sex_id=None, city_id=self.city_id, age_from=None, age_to=None)
+        self.search_attr = dict(sex_id=None, city_id=self.city_id, age_from=None, age_to=None, relation_id=None)
 
         birthday = properties.get('bdate')
         if birthday:

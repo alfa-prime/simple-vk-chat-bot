@@ -32,3 +32,12 @@ class UserProperties:
     has_error: str = None
     is_deactivated: str = None
     search_attr: dict = None
+
+class DispatcherRoot:
+    def __init__(self, api, longpoll, upload):
+        self.api = api
+        self.longpoll = longpoll
+        self.upload = upload
+        self.sender_id = None
+        self.sender_name = None
+        self.user = None

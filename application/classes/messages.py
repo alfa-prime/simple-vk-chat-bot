@@ -51,6 +51,11 @@ class Messages:
         return message_body
 
     @staticmethod
+    def choose_search_option_by_relation():
+        message_body = f'Статус кандидата:'
+        return message_body
+
+    @staticmethod
     def choose_search_option_by_city(city_name):
         message_body = f'Город: {city_name}.\nВ каком городе будем искать?\n'
         return message_body

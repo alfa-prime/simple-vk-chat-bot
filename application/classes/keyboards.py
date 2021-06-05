@@ -43,6 +43,14 @@ class Keyboards:
         return keyboard.get_keyboard()
 
     @staticmethod
+    def choose_search_option_by_relation():
+        keyboard = VkKeyboard(one_time=False, inline=True)
+        keyboard.add_button('Не женат/Не замужем', color=VkKeyboardColor.SECONDARY)
+        keyboard.add_line()
+        keyboard.add_button('В активном поиске', color=VkKeyboardColor.SECONDARY)
+        return keyboard.get_keyboard()
+
+    @staticmethod
     def choose_search_option_by_city(city_name):
         keyboard = VkKeyboard(one_time=False, inline=True)
         keyboard.add_button(f'{city_name}', color=VkKeyboardColor.SECONDARY)
@@ -54,8 +62,8 @@ class Keyboards:
         keyboard = VkKeyboard(one_time=False, inline=True)
         keyboard.add_button(f'Да', color=VkKeyboardColor.POSITIVE)
         keyboard.add_button(f'Нет', color=VkKeyboardColor.NEGATIVE)
+        keyboard.add_button(f'Не знаю', color=VkKeyboardColor.PRIMARY)
         keyboard.add_line()
-        keyboard.add_button(f'Может быть', color=VkKeyboardColor.PRIMARY)
         keyboard.add_button(f'Прервать поиск', color=VkKeyboardColor.SECONDARY)
         return keyboard.get_keyboard()
 
