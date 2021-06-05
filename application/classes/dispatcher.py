@@ -1,4 +1,5 @@
 from vk_api.longpoll import VkEventType
+from vk_api.exceptions import ApiError
 from vk_api.utils import get_random_id
 import requests
 
@@ -84,7 +85,7 @@ class Dispatcher:
             hunter = Hunter(self.user)
             make_dir('temp')
 
-            self._send_message(f'Найдено:{hunter.targets_count}')
+            self._send_message(f'Найдено: {hunter.targets_count + 1}')
             for index, (target_id, target_attr) in enumerate(hunter.targets.items()):
                 photos = self.user.api.photos.get(owner_id=target_id, album_id='profile', extended=1, count=1000)
                 photos_count = photos.get('count')
@@ -98,10 +99,14 @@ class Dispatcher:
 
                     image = 'temp\\pic.jpg'
                     attachments = list()
-                    upload_image = self.upload.photo_messages(photos=image)[0]
-                    attachments.append(f'photo{upload_image.get("owner_id")}_{upload_image.get("id")}')
+                    try:
+                        upload_image = self.upload.photo_messages(photos=image)[0]
+                        attachments.append(f'photo{upload_image.get("owner_id")}_{upload_image.get("id")}')
+                    except ApiError as error:
+                        logger.error(f'{error}')
 
-                    self._send_message(Messages.target_info(target_attr), Keyboards.process_target(), attachments)
+                    self._send_message(f'{index + 1} из {hunter.targets_count + 1}', attachments=attachments)
+                    self._send_message(Messages.target_info(target_attr), Keyboards.process_target())
 
                 answer = self._catch_user_input()
 
@@ -166,7 +171,7 @@ class Dispatcher:
                 self._set_age_range()
             elif user_choice == 'ровестники':
                 age_from = self.user.age - 2
-                age_to = self.user.age + 3
+                age_to = self.user.age + 2
                 self.user.search_attr['age_from'] = age_from
                 self.user.search_attr['age_to'] = age_to
         else:

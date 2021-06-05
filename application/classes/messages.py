@@ -13,7 +13,7 @@ class Messages:
                        f'После проверки id на валидность, ' \
                        f'бот пытается собрать необходимые для поиска данные, ' \
                        f'если какие-то не найдены, то просит у пользователя ввести их. ' \
-                       f'Затем он ищет подходящие кандидатуры.\n\n' \
+                       f'Затем он ищет подходящие кандидатуры\n\n' \
                        f'Критерии совпадения:\n\n' \
                        f'семейное положение: в активном поиске или неженатые;\n\n' \
                        f'пол: пользователь сам выбрает пол кандидатов ;\n\n' \
@@ -24,7 +24,7 @@ class Messages:
                        f'город: если город указан, то предлагается выбор:\n' \
                        f'1. искать в родном городе\n' \
                        f'2. указать другой город\n' \
-                       f'в противном случае, поиск в родном городе не доступен.'
+                       f'в противном случае, поиск в родном городе не доступен'
 
         return message_body
 
@@ -41,7 +41,7 @@ class Messages:
     def choose_search_option_by_age(age):
         message_body = f'Возраст: {age}.\nКакой вариант поиска будем использовать?\n' \
                        f'"Ровестники":\nвозраст +/- 2 года;\n' \
-                       f'"Диапазон":\nзадать желаемый возрастной диапазон.\nНапример от 20 до 25.'
+                       f'"Диапазон":\nзадать желаемый возрастной диапазон\nНапример от 20 до 25'
         return message_body
 
     @staticmethod
@@ -63,30 +63,31 @@ class Messages:
 
     @staticmethod
     def missing_age():
-        message_body = f'Возраст: Нет данных.\n' \
-                       f'Поиск ровестников невозможен.\n' \
-                       f'Задайте желаемый возрастной диапазон.\n' \
+        message_body = f'Возраст: Нет данных\n' \
+                       f'Поиск ровестников невозможен\n' \
+                       f'Задайте желаемый возрастной диапазон\n' \
                        f'Например от 25 до 35.'
         return message_body
 
     @staticmethod
     def target_info(target):
         # если дата рождения не указана, так и пишем
-        birthday = target.get('birthday') if target.get('birthday') else 'дата рождения не указана'
-        message_body = f'{target.get("name")}, {birthday}\n' \
-                       f'{target.get("link")}'
+        birthday = target.get('birthday') if target.get('birthday') else 'нет данных'
+        message_body = f'Имя: {target.get("name")}\n' \
+                       f'Дата рождения: {birthday}\n' \
+                       f'Подробности: {target.get("link")}'
         return message_body
 
     @staticmethod
     def search_start():
-        message_body = f'Начинаем поиск.\n' \
-                       f'Пожалуйста, подождите немного.\n' \
-                       f'Идет сбор и обработка сведений.\n'
+        message_body = f'Начинаем поиск\n' \
+                       f'Пожалуйста, подождите немного\n' \
+                       f'Идет сбор и обработка сведений\n'
         return message_body
 
     @staticmethod
     def unknown_command():
-        message_body = f'Неизвестная комадна.\n' \
+        message_body = f'Неизвестная комадна\n' \
                       f'"Инфо" подробности\n' \
                       f'"Поиск" поиск пары\n'
         return message_body
