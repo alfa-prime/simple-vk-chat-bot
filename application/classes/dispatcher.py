@@ -1,5 +1,4 @@
 from vk_api.longpoll import VkEventType
-from vk_api.exceptions import ApiError
 from vk_api.utils import get_random_id
 import requests
 
@@ -10,8 +9,6 @@ from ..classes.keyboards import Keyboards
 from ..classes.messages import Messages
 from ..classes.commands import Commands
 from ..classes.hunter import Hunter
-
-import json
 
 logger = set_logger(__name__)
 
@@ -67,6 +64,7 @@ class Dispatcher:
     def _received_search(self):
         """ получена комадна Поиск """
         self._send_message(Messages.choose_whom_search(self.sender_name), Keyboards.choose_whom_search())
+
         user_choice = self._catch_user_input()
 
         if user_choice == 'для меня':
@@ -77,6 +75,7 @@ class Dispatcher:
             search_user_id = self._catch_user_input()
             self.user = User(search_user_id)
 
+        # проверяем id на валидность
         check_result, check_result_message = self._check_user_error_or_deactivated()
 
         if check_result:
@@ -88,7 +87,6 @@ class Dispatcher:
             self._send_message(Messages.search_start())
 
             hunter = Hunter(self.user)
-            make_dir('temp')
 
             self._send_message(f'Найдено: {hunter.targets_count + 1}')
 
@@ -111,8 +109,8 @@ class Dispatcher:
                         remove_dir('temp')
                         self._send_message('Поиск прерван', Keyboards.new_search())
                         break
+                        
                 else:
-                    remove_dir('temp')
                     self._send_message('Больше кандидатур нет', Keyboards.new_search())
 
         else:
@@ -174,7 +172,7 @@ class Dispatcher:
         while True:
             self._send_message('Введите начальное значение диапазона:')
             age_from = self._catch_user_input()
-            self._send_message('Введите окончание диапазона:')
+            self._send_message('Введите окончание диапазона\n(целое число от 14 до 80)')
             age_to = self._catch_user_input()
 
             if age_from <= age_to:
@@ -225,7 +223,7 @@ class Dispatcher:
         """
         запрашивает название города, ищет его id
         поиск городов пока только по России [country_id=1]
-        подробнее https://vk.com/dev/database.getCities
+        используется метод vk api https://vk.com/dev/database.getCities
         """
         while True:
             self._send_message('Введите название города:')

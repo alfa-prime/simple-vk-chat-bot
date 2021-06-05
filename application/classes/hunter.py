@@ -17,17 +17,24 @@ class Hunter:
         self.search_attr = user.search_attr
         self.user_api = user.api
         self.targets_count = 0
-        self.targets = self.search()
+        self.targets = self._search()
 
-    def search(self):
+    def _search(self):
         raw_data = self._get_raw_data()
         filtered_data = self._filter_out_raw_data(raw_data)
-        print(len(filtered_data))
         self.targets_count = len(filtered_data)
         return self._make_targets_list(filtered_data)
 
     @staticmethod
     def _exec_string(city_id, sex_id, year):
+        """
+        используется метод vk api https://vk.com/dev/execute
+        формируем код для использвания vk api exec
+        выбираются пользователи по году и месяцу рождения
+        с одни user_token ограничение выборки 7 лет,
+        так же крупные городв все что больше 1000 записей, откидывается
+        ограничение метода vk api https://vk.com/dev/users.search
+        """
         # todo: сейчас ищутся только неженатые, добавить тех кто в активном поиске
         api = f"API.users.search({{'count':1000, 'city':{city_id}, 'birth_month': 1, 'birth_year':{year}, " \
               f"'has_photo':1,'sex':{sex_id}, 'fields':'city, sex, relation, bdate', 'status': 1}}).items"
