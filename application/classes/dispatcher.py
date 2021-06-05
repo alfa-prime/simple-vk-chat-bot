@@ -91,22 +91,12 @@ class Dispatcher:
             make_dir('temp')
 
             self._send_message(f'Найдено: {hunter.targets_count + 1}')
+
             for index, (target_id, target_attr) in enumerate(hunter.targets.items()):
-                photos = self.user.api.photos.get(owner_id=target_id, album_id='profile', extended=1, count=1000)
-                photos_count = photos.get('count')
 
-                if photos_count == 0:
-                    # хоть в запросе и стоит выбирать только с фото, бывают варинты без фото (пока не понял почему)
-                    self._send_message(Messages.target_info(target_attr), Keyboards.process_target())
-                elif photos_count > 3:
-                    photos_ids_with_likes = {v.get('id'): v.get('likes').get('count') for v in photos.get('items')}
-                    print(photos_ids_with_likes)
-                    self._send_message(Messages.target_info(target_attr), Keyboards.process_target())
-                else:
-                    attachment = [f'photo{target_id}_{v.get("id")}' for v in photos.get('items')]
-                    self._send_message(f'{index + 1} из {hunter.targets_count + 1}', attachments=attachment)
-                    self._send_message(Messages.target_info(target_attr), Keyboards.process_target())
-
+                attachments = self._process_profile_photos(target_id)
+                self._send_message(f'{index + 1} из {hunter.targets_count + 1}', attachments=attachments)
+                self._send_message(Messages.target_info(target_attr), Keyboards.process_target())
                 answer = self._catch_user_input()
 
                 if index != len(hunter.targets)-1:
@@ -248,3 +238,39 @@ class Dispatcher:
                 break
             else:
                 self._send_message(f"'{city_name}' не обнаружен. Попробуем заново.")
+
+    def _process_profile_photos(self, target_id):
+        """
+        получаем фотографии профиля пользователя, если фотографий больше трех, то только топ-3 по лайкам
+        """
+        photos = self.user.api.photos.get(owner_id=target_id, album_id='profile', extended=1, count=1000)
+        photos_count = photos.get('count')
+
+        if photos_count == 0:
+            # получаем аватарку из свойств пользователя, так как по непонятным для меня причинам при заданных
+            # параметрах поиска все равно есть пользватели, у которых в альбоме profile нет фотографий
+            # используется метод vk api https://vk.com/dev/users.get
+            # метод экспериментальный, протестирован только на одном известном случае
+
+            user_info = self.user.api.users.get(user_ids=target_id, fields='photo_max_orig')[0]
+            avatar_url = user_info.get('photo_max_orig')
+            request = requests.get(avatar_url)
+
+            make_dir('temp')
+            with open('temp\\avatar.jpg', 'wb') as file:
+                file.write(request.content)
+
+            image = 'temp\\avatar.jpg'
+
+            upload_image = self.upload.photo_messages(photos=image)[0]
+            remove_dir('temp')
+
+            return f'photo{upload_image.get("owner_id")}_{upload_image.get("id")}'
+
+        elif photos_count > 3:
+            photos_ids_with_likes = {v.get('id'): v.get('likes').get('count') for v in photos.get('items')}
+            top_three_photos_ids = sorted(photos_ids_with_likes.items(), key=lambda x: x[1], reverse=True)[:3]
+            return [f'photo{target_id}_{v[0]}' for v in top_three_photos_ids]
+
+        else:
+            return [f'photo{target_id}_{v.get("id")}' for v in photos.get('items')]
