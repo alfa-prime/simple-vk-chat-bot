@@ -11,6 +11,8 @@ from ..classes.messages import Messages
 from ..classes.commands import Commands
 from ..classes.hunter import Hunter
 
+import json
+
 logger = set_logger(__name__)
 
 class Dispatcher:
@@ -55,12 +57,15 @@ class Dispatcher:
         logger.info(f"Бот: {message}")
 
     def _received_begin(self):
+        """ получена команда Начать """
         self._send_message(Messages.welcome(self.sender_name), Keyboards.main())
 
     def _received_info(self):
+        """ получена команда Инфо """
         self._send_message(Messages.info(), Keyboards.search())
 
     def _received_search(self):
+        """ получена комадна Поиск """
         self._send_message(Messages.choose_whom_search(self.sender_name), Keyboards.choose_whom_search())
         user_choice = self._catch_user_input()
 
@@ -91,21 +96,15 @@ class Dispatcher:
                 photos_count = photos.get('count')
 
                 if photos_count == 0:
+                    # хоть в запросе и стоит выбирать только с фото, бывают варинты без фото (пока не понял почему)
+                    self._send_message(Messages.target_info(target_attr), Keyboards.process_target())
+                elif photos_count > 3:
+                    photos_ids_with_likes = {v.get('id'): v.get('likes').get('count') for v in photos.get('items')}
+                    print(photos_ids_with_likes)
                     self._send_message(Messages.target_info(target_attr), Keyboards.process_target())
                 else:
-                    r = requests.get(photos.get("items")[0].get("sizes")[-1].get("url"))
-                    with open('temp\\pic.jpg', 'wb') as f:
-                        f.write(r.content)
-
-                    image = 'temp\\pic.jpg'
-                    attachments = list()
-                    try:
-                        upload_image = self.upload.photo_messages(photos=image)[0]
-                        attachments.append(f'photo{upload_image.get("owner_id")}_{upload_image.get("id")}')
-                    except ApiError as error:
-                        logger.error(f'{error}')
-
-                    self._send_message(f'{index + 1} из {hunter.targets_count + 1}', attachments=attachments)
+                    attachment = [f'photo{target_id}_{v.get("id")}' for v in photos.get('items')]
+                    self._send_message(f'{index + 1} из {hunter.targets_count + 1}', attachments=attachment)
                     self._send_message(Messages.target_info(target_attr), Keyboards.process_target())
 
                 answer = self._catch_user_input()
