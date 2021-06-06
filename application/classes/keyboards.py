@@ -22,28 +22,34 @@ class Keyboards:
         return keyboard.get_keyboard()
 
     @staticmethod
-    def choose_whom_search():
+    def choose_source_user():
         keyboard = VkKeyboard(one_time=False, inline=True)
         keyboard.add_button('Для меня', color=VkKeyboardColor.POSITIVE)
         keyboard.add_button('Не для меня', color=VkKeyboardColor.NEGATIVE)
         return keyboard.get_keyboard()
 
     @staticmethod
-    def choose_search_option_by_age():
+    def ask_search_option_with_age():
         keyboard = VkKeyboard(one_time=False, inline=True)
         keyboard.add_button('Ровестники', color=VkKeyboardColor.SECONDARY)
         keyboard.add_button('Диапазон', color=VkKeyboardColor.SECONDARY)
         return keyboard.get_keyboard()
 
     @staticmethod
-    def choose_search_option_by_sex():
+    def ask_search_option_without_age():
+        keyboard = VkKeyboard(one_time=False, inline=True)
+        keyboard.add_button('Диапазон', color=VkKeyboardColor.SECONDARY)
+        return keyboard.get_keyboard()
+
+    @staticmethod
+    def ask_search_option_sex():
         keyboard = VkKeyboard(one_time=False, inline=True)
         keyboard.add_button('Мужчин', color=VkKeyboardColor.SECONDARY)
         keyboard.add_button('Женщин', color=VkKeyboardColor.SECONDARY)
         return keyboard.get_keyboard()
 
     @staticmethod
-    def choose_search_option_by_relation():
+    def ask_search_option_relation():
         keyboard = VkKeyboard(one_time=False, inline=True)
         keyboard.add_button('Не женат/Не замужем', color=VkKeyboardColor.SECONDARY)
         keyboard.add_line()
@@ -51,7 +57,7 @@ class Keyboards:
         return keyboard.get_keyboard()
 
     @staticmethod
-    def choose_search_option_by_city(city_name):
+    def ask_search_option_city(city_name):
         keyboard = VkKeyboard(one_time=False, inline=True)
         keyboard.add_button(f'{city_name}', color=VkKeyboardColor.SECONDARY)
         keyboard.add_button('Другой', color=VkKeyboardColor.SECONDARY)
@@ -66,7 +72,3 @@ class Keyboards:
         keyboard.add_line()
         keyboard.add_button(f'Прервать поиск', color=VkKeyboardColor.SECONDARY)
         return keyboard.get_keyboard()
-
-    @staticmethod
-    def hide():
-        return VkKeyboard.get_empty_keyboard()

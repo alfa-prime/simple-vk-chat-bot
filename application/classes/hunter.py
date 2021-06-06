@@ -1,12 +1,6 @@
 from vk_api.execute import VkFunction
 from datetime import datetime
 
-# 321895964 - id без города
-
-# id семейного положения  1: не женат (не замужем), 6: в активном поиске
-# значения ID можно посмотреть https://vk.com/dev/users.search параметр status
-# RELATION_IDS = (1, 6)
-
 # список дополнительных полей для выдачи
 # подробности https://vk.com/dev/users.search параметр fields
 FIELDS_TO_SEARCH = 'city, bdate, sex, relation'
@@ -83,11 +77,11 @@ class Hunter:
 
     @staticmethod
     def _make_targets_list(filtered_data):
-        result = {}
-        for item in filtered_data:
+        result = []
+        for index, item in enumerate(filtered_data):
             target_id = item.get('id')
             user_full_name = f"{item.get('first_name')} {item.get('last_name')}"
             vk_link = f"vk.com/id{target_id}"
             birthday = item.get('bdate')
-            result[target_id] = dict(name=user_full_name, link=vk_link, birthday=birthday)
-        return result
+            result.append(f'{index + 1}, {target_id}, {user_full_name}, {vk_link}, {birthday}')
+        return iter(result)
