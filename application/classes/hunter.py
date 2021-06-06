@@ -19,6 +19,10 @@ class Hunter:
         self.targets_count = 0
         self.targets = self._search()
 
+    def __repr__(self):
+        return (f'{self.__class__.__name__}'
+                f'(search_attr: {self.search_attr!r}, targets_count: {self.targets_count!r}, targets: {self.targets!r})')
+
     def _search(self):
         raw_data = self._get_raw_data()
         filtered_data = self._filter_out_raw_data(raw_data)
@@ -35,7 +39,6 @@ class Hunter:
         так же крупные городв все что больше 1000 записей, откидывается
         ограничение метода vk api https://vk.com/dev/users.search
         """
-        # todo: сейчас ищутся только неженатые, добавить тех кто в активном поиске
         api = f"API.users.search({{'count':1000, 'city':{city_id}, 'birth_month': 1, 'birth_year':{year}, " \
               f"'has_photo':1,'sex':{sex_id}, 'fields':'city, sex, relation, bdate', 'status': {relation_id}}}).items"
         for i in range(2, 13):

@@ -18,8 +18,8 @@ class User(UserAuthorization, UserProperties):
 
     def __repr__(self):
         return (f'{self.__class__.__name__}'
-                f'({self.id}, {self.first_name}, {self.last_name}, {self.sex}, {self.city_name}, {self.age}, '
-                f'has_error: {self.has_error}, is_deactivated: {self.is_deactivated}, '
+                f'({self.id!r}, {self.first_name!r}, {self.last_name!r}, {self.sex!r}, {self.city_name!r}, {self.age!r},'
+                f' has_error: {self.has_error!r}, is_deactivated: {self.is_deactivated!r}, '
                 f'search_attr: {self.search_attr})')
 
     def _process_properties(self, input_id):

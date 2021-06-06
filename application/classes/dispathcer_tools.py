@@ -1,4 +1,5 @@
 import requests
+from vk_api import ApiError
 
 from .keyboards import Keyboards
 from .messages import Messages
@@ -28,6 +29,12 @@ class DispatcherTools(DispatcherRoot):
             return False, self.user.is_deactivated
         else:
             return True, None
+
+    def _set_search_option(self):
+        self._set_search_option_by_sex()
+        self._set_search_option_by_relation()
+        self._set_search_option_by_age()
+        self._set_search_option_by_city()
 
     def _set_search_option_by_sex(self):
         """

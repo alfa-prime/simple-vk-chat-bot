@@ -43,12 +43,11 @@ class Dispatcher(DispatcherTools):
 
         if check_result:
             self._send_message(Messages.user_info(self.user))
-            self._set_search_option_by_sex()
-            self._set_search_option_by_relation()
-            self._set_search_option_by_age()
-            self._set_search_option_by_city()
+            self._set_search_option()
             self._send_message(Messages.search_start())
+
             hunter = Hunter(self.user)
+
             self._send_message(f'Найдено: {hunter.targets_count + 1}')
             self._process_search_dialog(hunter)
         else:
