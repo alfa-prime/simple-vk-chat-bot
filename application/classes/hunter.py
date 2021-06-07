@@ -57,7 +57,6 @@ class Hunter:
             for item in data(self.user_api):
                 raw_data += item
 
-        # todo: добавить проверку если ничего не найдено
         return raw_data
 
     def _filter_out_raw_data(self, raw_data):
@@ -82,6 +81,6 @@ class Hunter:
             target_id = item.get('id')
             user_full_name = f"{item.get('first_name')} {item.get('last_name')}"
             vk_link = f"vk.com/id{target_id}"
-            birthday = item.get('bdate')
+            birthday = item.get('bdate') if item.get('bdate') else 'Нет данных'
             result.append(f'{index + 1}, {target_id}, {user_full_name}, {vk_link}, {birthday}')
         return iter(result)

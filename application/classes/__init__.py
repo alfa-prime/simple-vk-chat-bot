@@ -44,12 +44,13 @@ class UserProperties:
 
 class DispatcherRoot:
     def __init__(self, api, sender_id, upload):
-        self.user_input = None
         self.api = api
         self.sender_id = sender_id
         self.sender_name = self._get_sender_name()
-        self.user = None
         self.upload = upload
+
+        self.user = None
+        self.user_input = None
         self.targets = None
         self.targets_count = None
 
@@ -91,8 +92,9 @@ class DispatcherRoot:
             target = next(self.targets)
             index, target_id, name, link, bdate = target.split(',')
             attachments = self._process_profile_photos(int(target_id))
+
             self._send_message(f'{index} из {self.targets_count}', attachments=attachments)
-            self._send_message(Messages.target_info(bdate, name, link), Keyboards.process_target())
+            self._send_message(Messages.target_info(name, link, bdate), Keyboards.process_target())
         except StopIteration:
             self._send_message('Больше кандидатур нет', Keyboards.new_search())
 

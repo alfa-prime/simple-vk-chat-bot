@@ -50,7 +50,7 @@ class Dispatcher(DispatcherRoot):
 
     def _got_command_search(self):
         """ получена команда Поиск """
-        self._send_message(Messages.choose_source_user(self.sender_name), Keyboards.choose_source_user())
+        self._send_message(f'{self.sender_name},\nдля кого будем искать пару ?', Keyboards.choose_source_user())
 
     def _got_enter_and_set_source_user(self, received_message):
         """
@@ -78,7 +78,7 @@ class Dispatcher(DispatcherRoot):
             self._send_message(check_result_message, Keyboards.new_search())
 
     def _ask_search_option_sex(self):
-        self._send_message(Messages.ask_search_option_sex(), Keyboards.ask_search_option_sex())
+        self._send_message('Кого будем искать?', Keyboards.ask_search_option_sex())
 
     def _got_enter_and_set_target_sex(self, received_message):
         """
@@ -94,7 +94,7 @@ class Dispatcher(DispatcherRoot):
         self._ask_search_option_relation()
 
     def _ask_search_option_relation(self):
-        self._send_message(Messages.ask_search_option_relation(), Keyboards.ask_search_option_relation())
+        self._send_message('Статус кандидатов:', Keyboards.ask_search_option_relation())
 
     def _got_enter_and_set_target_relation(self, received_message):
         """
@@ -111,11 +111,9 @@ class Dispatcher(DispatcherRoot):
 
     def _ask_search_option_age(self):
         if self.user.age:
-            self._send_message(Messages.ask_search_option_with_age(),
-                               Keyboards.ask_search_option_with_age())
+            self._send_message(Messages.ask_search_option_with_age(), Keyboards.ask_search_option_with_age())
         else:
-            self._send_message(Messages.ask_search_option_without_age(),
-                               Keyboards.ask_search_option_without_age())
+            self._send_message(Messages.ask_search_option_without_age(), Keyboards.ask_search_option_without_age())
 
     def _got_enter_and_set_target_age(self, received_message):
         if received_message == 'диапазон':
@@ -142,7 +140,7 @@ class Dispatcher(DispatcherRoot):
             self._ask_search_option_age_from()
 
     def _ask_search_option_age_to(self):
-        self._send_message(message=Messages.ask_search_option_age_to())
+        self._send_message(Messages.ask_search_option_age_to())
 
     def _got_enter_and_set_target_age_to(self, received_message):
         try:
@@ -156,8 +154,7 @@ class Dispatcher(DispatcherRoot):
     def _ask_search_option_city(self):
         self.user_input = 'choice_city'
         if self.user.city_name:
-            self._send_message(Messages.ask_search_option_city(),
-                               Keyboards.ask_search_option_city(self.user.city_name))
+            self._send_message('В каком городе будем искать?\n', Keyboards.ask_search_option_city(self.user.city_name))
         else:
             self._ask_city_name_and_search()
 

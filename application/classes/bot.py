@@ -9,7 +9,6 @@ logger = set_logger(__name__)
 class Bot(BotAuthorization):
     def __init__(self):
         super().__init__()
-        self.sender_id = None
         self.users = dict()
 
     def start(self):
@@ -19,7 +18,6 @@ class Bot(BotAuthorization):
             for event in self.longpoll.listen():
                 if event.type == VkEventType.MESSAGE_NEW and event.to_me and event.text:
                     received_message = event.text.lower().strip()
-                    self.sender_id = event.user_id
 
                     if event.user_id not in self.users:
                         self.users[event.user_id] = Dispatcher(self.api, event.user_id, self.upload)

@@ -26,18 +26,6 @@ class Messages:
                        f'в противном случае, поиск в родном городе не доступен'
 
     @staticmethod
-    def choose_source_user(name):
-        return f'{name},\nдля кого будем искать пару ?'
-
-    @staticmethod
-    def ask_search_option_sex():
-        return f'Кого будем искать?'
-
-    @staticmethod
-    def ask_search_option_relation():
-        return f'Статус кандидатов:'
-
-    @staticmethod
     def ask_search_option_with_age():
         return f'Какой вариант поиска будем использовать?\n' \
                f'Ровестники: возраст +/- 2 года;\n' \
@@ -60,15 +48,9 @@ class Messages:
         return 'Введное значение неверно\nПопробуйте снова'
 
     @staticmethod
-    def ask_search_option_city():
-        return f'В каком городе будем искать?\n'
-
-    @staticmethod
-    def target_info(birthday, name, link):
-        # если дата рождения не указана, так и пишем
-        bday = birthday if birthday else 'нет данных'
+    def target_info(name, link, bdate):
         return f'Имя: {name}\n' \
-               f'Дата рождения: {bday}\n' \
+               f'Дата рождения: {bdate}\n' \
                f'Подробности: {link}'
 
     @staticmethod
