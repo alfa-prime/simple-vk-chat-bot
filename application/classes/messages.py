@@ -66,9 +66,9 @@ class Messages:
     @staticmethod
     def target_info(birthday, name, link):
         # если дата рождения не указана, так и пишем
-        birthday = birthday if birthday else 'нет данных'
+        bday = birthday if birthday else 'нет данных'
         return f'Имя: {name}\n' \
-               f'Дата рождения: {birthday}\n' \
+               f'Дата рождения: {bday}\n' \
                f'Подробности: {link}'
 
     @staticmethod

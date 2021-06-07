@@ -1,11 +1,20 @@
 from enum import Enum
+from itertools import chain
 
 class Commands(Enum):
     start = ('начать', 'привет', 'здравствуй', 'здоров', 'старт', 'погнали', 'hi')
     help = ('помощь', 'инфо', 'help', 'команда')
     search = ('искать', 'новый поиск', 'поиск', 'ищи')
-    choose_source_user = ('для меня', 'не для меня')
-    choose_targets_sex = ('мужчин', 'женщин')
-    choose_targets_relation = ('не женат/не замужем', 'в активном поиске')
-    choose_targets_age = ('ровестники', 'диапазон')
+    source_user = ('для меня', 'не для меня')
+    targets_sex = ('мужчин', 'женщин')
+    targets_relation = ('не женат/не замужем', 'в активном поиске')
+    targets_age = ('ровестники', 'диапазон')
+
+    def check(self, value):
+        if value in self.value:
+            return value
+
+    @staticmethod
+    def all_commands():
+        return list(chain(*[x.value for x in Commands]))
 

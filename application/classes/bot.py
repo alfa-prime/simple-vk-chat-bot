@@ -1,5 +1,4 @@
 from vk_api.longpoll import VkEventType
-from vk_api.utils import get_random_id
 
 from ..utilites.logger import set_logger
 from ..classes.dispatcher import Dispatcher
@@ -10,20 +9,8 @@ logger = set_logger(__name__)
 class Bot(BotAuthorization):
     def __init__(self):
         super().__init__()
-
         self.sender_id = None
         self.users = dict()
-
-    def _send_message(self, sender_id=None, message=None, keyboard=None, attachments=None):
-        """ посылает сообщение пользователю """
-        self.api.messages.send(peer_id=sender_id,
-                               message=message,
-                               keyboard=keyboard,
-                               attachment=attachments,
-                               random_id=get_random_id())
-
-        # message = message.replace('\n\n', ' ').replace('\n', ' ')
-        logger.info(f"Бот: {message}")
 
     def start(self):
         logger.info('Бот успешно стартовал')
