@@ -7,3 +7,4 @@ Pipfile.lock
 vk_config.v2.json
 result.json
 temp
+database.db
