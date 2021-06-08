@@ -19,8 +19,8 @@ class User(UserAuthorization, UserProperties):
 
     def __repr__(self):
         return (f'{self.__class__.__name__}'
-                f'({self.id!r}, {self.first_name!r}, {self.last_name!r}, {self.sex!r}, {self.city_name!r}, {self.age!r},'
-                f' has_error: {self.has_error!r}, is_deactivated: {self.is_deactivated!r}, '
+                f'({self.id!r}, {self.first_name!r}, {self.last_name!r}, {self.city_name!r}, {self.age!r}, '
+                f'has_error: {self.has_error!r}, is_deactivated: {self.is_deactivated!r}, '
                 f'search_attr: {self.search_attr})')
 
     def _process_properties(self, input_id):
@@ -35,7 +35,7 @@ class User(UserAuthorization, UserProperties):
             self._set_properties(raw)
 
     def _get_raw_properties(self, input_id):
-        """  получение свойств пользователя """
+        """  получение свойств пользователя, метод vk api https://vk.com/dev/users.get """
         try:
             return self.api.users.get(user_ids=input_id, fields=FIELDS_TO_SEARCH, v=self.api_version)[0]
         except self.api_error as error:
