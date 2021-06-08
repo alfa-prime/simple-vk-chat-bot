@@ -109,7 +109,7 @@ class Dispatcher(DispatcherTools):
         """
         пользователь выбирает статус отношений
         id 1: не женат/не замужем 6: в активном поиске
-        https://vk.com/dev/users.search параметр sex
+        https://vk.com/dev/users.search realtion
         """
         if received_message == 'не женат/не замужем':
             self.user.search_attr['relation_id'] = 1
