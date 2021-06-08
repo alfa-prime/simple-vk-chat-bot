@@ -4,6 +4,8 @@ from ..assists.commands import Commands
 from ..assists.keyboards import Keyboards
 from ..assists.messages import Messages
 
+""" Класс обеспечивающий диалог бота с пользователем """
+""" обрабатываются нажатия на кнопки и сообщения пользователя """
 
 class Dispatcher(DispatcherTools):
     def __init__(self, api, sender_id, upload):

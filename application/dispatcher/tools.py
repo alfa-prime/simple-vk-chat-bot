@@ -7,6 +7,8 @@ from ..assists.keyboards import Keyboards
 from ..assists.messages import Messages
 from ..utilites.helpers import make_dir, remove_dir
 
+""" Класс утилит для диспетчера обработки сообщений """
+
 class DispatcherTools(DispatcherSetup):
     def __init__(self, api, sender_id, upload):
         super().__init__(api, sender_id, upload)

@@ -3,6 +3,8 @@ from vk_api.execute import VkFunction
 from ..database import session
 from ..database.database import BlackList, WhiteList
 
+""" Класс для поиска кандидатур для пользователя """
+
 # список дополнительных полей для выдачи
 # подробности https://vk.com/dev/users.search параметр fields
 FIELDS_TO_SEARCH = 'city, bdate, sex, relation'
