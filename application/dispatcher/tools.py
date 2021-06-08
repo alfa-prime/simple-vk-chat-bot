@@ -57,6 +57,25 @@ class DispatcherTools(DispatcherSetup):
         except StopIteration:
             self._send_message('Больше кандидатур нет', Keyboards.new_search())
 
+    def _add_user_to_database(self, user):
+        """ добавляем пользователя в бд """
+        check_user_exist = self.db_session.query(Users).filter_by(vk_user_id=user.id).all()
+        if not check_user_exist:
+            name = f'{self.user.first_name} {self.user.last_name}'
+            link = f'vk.com/id{self.user.id}'
+            self.db_session.add(Users(vk_user_id=user.id, name=name, link=link))
+            self.db_session.commit()
+
+    def _add_user_to_blacklist(self, user, target_id):
+        """ добавляем кандидатуру в черный список (не будет выводится при следующем поиске) """
+        self.db_session.add(BlackList(target_id=target_id, user_id=user.id))
+        self.db_session.commit()
+
+    def _add_user_to_whitelist(self, user, target_id):
+        """ добавляем кандидатуру в белый список (не будет выводится при следующем поиске) """
+        self.db_session.add(WhiteList(target_id=target_id, user_id=user.id))
+        self.db_session.commit()
+
     def _process_profile_photos(self, target_id):
         """
         получаем фотографии профиля пользователя, если фотографий больше трех, то только топ-3 по лайкам
@@ -92,22 +111,5 @@ class DispatcherTools(DispatcherSetup):
         else:
             return [f'photo{target_id}_{v.get("id")}' for v in photos.get('items')]
 
-    def _add_user_to_database(self, user):
-        """ добавляем пользователя в бд """
-        check_user_exist = self.db_session.query(Users).filter_by(vk_user_id=user.id).all()
-        if not check_user_exist:
-            name = f'{self.user.first_name} {self.user.last_name}'
-            link = f'vk.com/id{self.user.id}'
-            self.db_session.add(Users(vk_user_id=user.id, name=name, link=link))
-            self.db_session.commit()
 
-    def _add_user_to_blacklist(self, user, target_id):
-        """ добавляем кандидатуру в черный список (не будет выводится при следующем поиске) """
-        self.db_session.add(BlackList(target_id=target_id, user_id=user.id))
-        self.db_session.commit()
-
-    def _add_user_to_whitelist(self, user, target_id):
-        """ добавляем кандидатуру в белый список (не будет выводится при следующем поиске) """
-        self.db_session.add(WhiteList(target_id=target_id, user_id=user.id))
-        self.db_session.commit()
 

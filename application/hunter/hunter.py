@@ -73,6 +73,7 @@ class Hunter:
         4. исключаются кандидаты, которые были внесены в BlackList и WhiteList
         """
         db_session = session.create()
+
         black_list = db_session.query(BlackList).filter_by(user_id=self.user.id).all()
         black_list_ids = [items.target_id for items in black_list]
 
