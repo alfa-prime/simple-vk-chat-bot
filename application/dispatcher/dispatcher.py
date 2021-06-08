@@ -160,7 +160,6 @@ class Dispatcher(DispatcherTools):
         """ получаем, проверяем и устнавливаем конец возрастного диапазона """
         try:
             self.user.search_attr['age_to'] = int(received_message)
-            self.user_input = None
             self._ask_search_option_city()
         except ValueError:
             self._send_message(Messages.entered_age_is_not_valid())
