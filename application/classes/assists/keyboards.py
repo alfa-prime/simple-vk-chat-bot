@@ -4,7 +4,7 @@ class Keyboards:
     @staticmethod
     def search():
         keyboard = VkKeyboard(one_time=False, inline=True)
-        keyboard.add_button('Поиск', color=VkKeyboardColor.SECONDARY)
+        keyboard.add_button('Поиск', color=VkKeyboardColor.POSITIVE)
         return keyboard.get_keyboard()
 
     @staticmethod

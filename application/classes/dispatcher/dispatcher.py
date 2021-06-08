@@ -1,14 +1,16 @@
-from application.classes import DispatcherRoot
-from application.classes.commands import Commands
-from application.classes.user import User
-from application.classes.keyboards import Keyboards
-from application.classes.messages import Messages
+from .tools import DispatcherTools
+from ..user.user import User
+from ..assists.commands import Commands
+from ..assists.keyboards import Keyboards
+from ..assists.messages import Messages
 
-class Dispatcher(DispatcherRoot):
+
+class Dispatcher(DispatcherTools):
     def __init__(self, api, sender_id, upload):
         super().__init__(api, sender_id, upload)
 
     def input(self, message):
+        """ диалог бота с пользователем """
         if message in Commands.all_commands():
             COMMANDS = {
                 Commands.start.check(message): lambda: self._got_command_start(),
@@ -17,7 +19,7 @@ class Dispatcher(DispatcherRoot):
                 Commands.source_user.check(message): lambda: self._got_enter_and_set_source_user(message),
                 Commands.targets_sex.check(message): lambda: self._got_enter_and_set_target_sex(message),
                 Commands.targets_relation.check(message): lambda: self._got_enter_and_set_target_relation(message),
-                Commands.targets_age.check(message): lambda: self._got_enter_and_set_target_age(message)
+                Commands.targets_age.check(message): lambda: self._got_enter_and_set_option_target_age(message)
             }
             COMMANDS[message]()
 
@@ -38,7 +40,7 @@ class Dispatcher(DispatcherRoot):
 
     def _got_command_start(self):
         """ получена команда Начать """
-        self._send_message(Messages.welcome(self.sender_name), keyboard=Keyboards.main())
+        self._send_message(Messages.welcome(self._get_sender_name()), keyboard=Keyboards.main())
 
     def _got_command_help(self):
         """ получена команда Инфо """
@@ -50,7 +52,7 @@ class Dispatcher(DispatcherRoot):
 
     def _got_command_search(self):
         """ получена команда Поиск """
-        self._send_message(f'{self.sender_name},\nдля кого будем искать пару ?', Keyboards.choose_source_user())
+        self._send_message(f'{self._get_sender_name()},\nдля кого будем искать пару ?', Keyboards.choose_source_user())
 
     def _got_enter_and_set_source_user(self, received_message):
         """
@@ -60,7 +62,9 @@ class Dispatcher(DispatcherRoot):
         """
         if received_message == 'для меня':
             self.user = User(self.sender_id)
+            self._add_user_to_database(self.user)
             self._ask_search_option_sex()
+
         elif received_message == 'не для меня':
             self.user_input = 'enter_id'
             self._send_message('Введите id:')
@@ -73,11 +77,13 @@ class Dispatcher(DispatcherRoot):
         check_result, check_result_message = self._check_user_error_or_deactivated()
 
         if check_result:
+            self._add_user_to_database(self.user)
             self._ask_search_option_sex()
         else:
             self._send_message(check_result_message, Keyboards.new_search())
 
     def _ask_search_option_sex(self):
+        """ запрашиваем пол кандидатов """
         self._send_message('Кого будем искать?', Keyboards.ask_search_option_sex())
 
     def _got_enter_and_set_target_sex(self, received_message):
@@ -94,6 +100,7 @@ class Dispatcher(DispatcherRoot):
         self._ask_search_option_relation()
 
     def _ask_search_option_relation(self):
+        """ запрашиваем семейное положение кандидатов """
         self._send_message('Статус кандидатов:', Keyboards.ask_search_option_relation())
 
     def _got_enter_and_set_target_relation(self, received_message):
@@ -110,12 +117,17 @@ class Dispatcher(DispatcherRoot):
         self._ask_search_option_age()
 
     def _ask_search_option_age(self):
+        """
+        если возраст известен запрашивает вариант поиска по возрасту (ровестники или диапазон),
+        иначе сразу переходит к запросу возрастного диапазона
+        """
         if self.user.age:
             self._send_message(Messages.ask_search_option_with_age(), Keyboards.ask_search_option_with_age())
         else:
-            self._send_message(Messages.ask_search_option_without_age(), Keyboards.ask_search_option_without_age())
+            self._ask_search_option_age_from()
 
-    def _got_enter_and_set_target_age(self, received_message):
+    def _got_enter_and_set_option_target_age(self, received_message):
+        """ получаем вариант поиска по возрасту (ровестники или диапазон) """
         if received_message == 'диапазон':
             self._ask_search_option_age_from()
 
@@ -127,10 +139,12 @@ class Dispatcher(DispatcherRoot):
             self._ask_search_option_city()
 
     def _ask_search_option_age_from(self):
+        """ запрашиваем начало возрастного диапазона """
         self.user_input = 'age_from'
         self._send_message(Messages.ask_search_option_age_from())
 
     def _got_enter_and_set_target_age_from(self, received_message):
+        """ получаем, проверяем и устнавливаем начало возрастного диапазона """
         try:
             self.user.search_attr['age_from'] = int(received_message)
             self.user_input = 'age_to'
@@ -140,9 +154,11 @@ class Dispatcher(DispatcherRoot):
             self._ask_search_option_age_from()
 
     def _ask_search_option_age_to(self):
+        """ запрашиваем конец возрастного диапазона """
         self._send_message(Messages.ask_search_option_age_to())
 
     def _got_enter_and_set_target_age_to(self, received_message):
+        """ получаем, проверяем и устнавливаем конец возрастного диапазона """
         try:
             self.user.search_attr['age_to'] = int(received_message)
             self.user_input = None
@@ -152,6 +168,7 @@ class Dispatcher(DispatcherRoot):
             self._ask_search_option_age_to()
 
     def _ask_search_option_city(self):
+        """ запрашиваем вариант поиска по городу """
         self.user_input = 'choice_city'
         if self.user.city_name:
             self._send_message('В каком городе будем искать?\n', Keyboards.ask_search_option_city(self.user.city_name))
@@ -159,6 +176,7 @@ class Dispatcher(DispatcherRoot):
             self._ask_city_name_and_search()
 
     def _got_enter_and_set_search_option_city(self, received_message):
+        """ получаем вариант поиска по городу """
         if self.user.city_name:
             if received_message == self.user.city_name.lower():
                 self.user.search_attr['city_id'] = self.user.city_id
@@ -169,10 +187,12 @@ class Dispatcher(DispatcherRoot):
             self._ask_city_name_and_search()
 
     def _ask_city_name_and_search(self):
+        """ запрашиваем название города """
         self.user_input = 'enter_city_name'
         self._send_message('Введите название города')
 
     def _got_enter_and_set_city_name(self, city_name):
+        """ получаем, проверяем и устанавлиеваем название города """
         result = self.user.api.database.getCities(q=city_name, country_id=1)
         if result.get('items'):
             self.user.search_attr['city_id'] = result.get('items')[0].get('id')
@@ -184,11 +204,15 @@ class Dispatcher(DispatcherRoot):
             self._ask_city_name_and_search()
 
     def _got_process_target_answer(self, answer):
+        """ обрабатываем ответы пользователя при просмотре кандидатур """
         if answer == 'да':
+            self._add_user_to_whitelist(self.user, self.target_id)
             self._next_target()
         elif answer == 'нет':
+            self._add_user_to_blacklist(self.user, self.target_id)
             self._next_target()
         elif answer == 'не знаю':
+            # просто пропускаем
             self._next_target()
         elif answer == 'прервать поиск':
             self._send_message('Поиск прерван', Keyboards.new_search())

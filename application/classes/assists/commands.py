@@ -11,10 +11,11 @@ class Commands(Enum):
     targets_age = ('ровестники', 'диапазон')
 
     def check(self, value):
+        """ проверяет существует ли команда """
         if value in self.value:
             return value
 
     @staticmethod
     def all_commands():
+        """ выводит список всех команд """
         return list(chain(*[x.value for x in Commands]))
-

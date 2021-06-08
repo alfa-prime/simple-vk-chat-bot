@@ -1,58 +1,15 @@
-from dataclasses import dataclass
-
 import requests
-import vk_api
-from vk_api import VkUpload
-from vk_api.longpoll import VkLongPoll
 from vk_api.utils import get_random_id
-
-from application.classes.hunter import Hunter
-from application.classes.keyboards import Keyboards
-from application.classes.messages import Messages
-from application.settings import BOT_TOKEN, APP_ID, USER_TOKEN, API_VERSION
+from .setup import DispatcherSetup
+from ..database.database import Users, BlackList, WhiteList
+from ..hunter.hunter import Hunter
+from ..assists.keyboards import Keyboards
+from ..assists.messages import Messages
 from application.utilites.helpers import make_dir, remove_dir
 
-
-class BotAuthorization:
-    def __init__(self):
-        session = vk_api.VkApi(token=BOT_TOKEN)
-        self.api = session.get_api()
-        self.longpoll = VkLongPoll(session)
-        self.upload = VkUpload(session)
-
-class UserAuthorization:
-    def __init__(self):
-        session = vk_api.VkApi(app_id=APP_ID, token=USER_TOKEN)
-        self.api = session.get_api()
-        self.api_error = vk_api.VkApiError
-        self.api_version = API_VERSION
-
-@dataclass
-class UserProperties:
-    """ хранит сведения о свойствах пользователя """
-    id: int = None
-    first_name: str = None
-    last_name: str = None
-    sex: str = None
-    city_id: int = None
-    city_name: str = None
-    age: int = None
-
-    has_error: str = None
-    is_deactivated: str = None
-    search_attr: dict = None
-
-class DispatcherRoot:
+class DispatcherTools(DispatcherSetup):
     def __init__(self, api, sender_id, upload):
-        self.api = api
-        self.sender_id = sender_id
-        self.sender_name = self._get_sender_name()
-        self.upload = upload
-
-        self.user = None
-        self.user_input = None
-        self.targets = None
-        self.targets_count = None
+        super().__init__(api, sender_id, upload)
 
     def _send_message(self, message=None, keyboard=None, attachments=None):
         """ посылает сообщение пользователю """
@@ -79,6 +36,7 @@ class DispatcherRoot:
             return True, None
 
     def _process_targets(self):
+        """ выводит результат поиска """
         self._send_message(Messages.search_start())
         hunter_one = Hunter(self.user)
         self._send_message(f'Найдено: {hunter_one.targets_count}')
@@ -87,11 +45,12 @@ class DispatcherRoot:
         self._next_target()
 
     def _next_target(self):
+        """ выводит сведения о следующей кандидатуре """
         self.user_input = 'process_targets'
         try:
             target = next(self.targets)
-            index, target_id, name, link, bdate = target.split(',')
-            attachments = self._process_profile_photos(int(target_id))
+            index, self.target_id, name, link, bdate = target.split(',')
+            attachments = self._process_profile_photos(int(self.target_id))
 
             self._send_message(f'{index} из {self.targets_count}', attachments=attachments)
             self._send_message(Messages.target_info(name, link, bdate), Keyboards.process_target())
@@ -132,3 +91,23 @@ class DispatcherRoot:
 
         else:
             return [f'photo{target_id}_{v.get("id")}' for v in photos.get('items')]
+
+    def _add_user_to_database(self, user):
+        """ добавляем пользователя в бд """
+        check_user_exist = self.db_session.query(Users).filter_by(vk_user_id=user.id).all()
+        if not check_user_exist:
+            name = f'{self.user.first_name} {self.user.last_name}'
+            link = f'vk.com/id{self.user.id}'
+            self.db_session.add(Users(vk_user_id=user.id, name=name, link=link))
+            self.db_session.commit()
+
+    def _add_user_to_blacklist(self, user, target_id):
+        """ добавляем кандидатуру в черный список (не будет выводится при следующем поиске) """
+        self.db_session.add(BlackList(target_id=target_id, user_id=user.id))
+        self.db_session.commit()
+
+    def _add_user_to_whitelist(self, user, target_id):
+        """ добавляем кандидатуру в белый список (не будет выводится при следующем поиске) """
+        self.db_session.add(WhiteList(target_id=target_id, user_id=user.id))
+        self.db_session.commit()
+

@@ -1,8 +1,9 @@
 import re
 from datetime import datetime
 
-from ..classes import UserAuthorization, UserProperties
-from ..utilites.logger import set_logger
+from .auth import UserAuthorization
+from .properties import UserProperties
+from ...utilites.logger import set_logger
 
 # список дополнительных полей для выдачи
 # подробности https://vk.com/dev/users.get параметр fields
@@ -45,7 +46,6 @@ class User(UserAuthorization, UserProperties):
         self.id = properties.get('id')
         self.first_name = properties.get('first_name')
         self.last_name = properties.get('last_name')
-        self.sex = self._sex_id_to_text(properties.get('sex'))
 
         city = properties.get('city')
         if city:
@@ -62,10 +62,3 @@ class User(UserAuthorization, UserProperties):
                 self.age = current_year - int(birth_year)
             except TypeError:
                 logger.error('Год рождения не найден. Возраст неизвестен.')
-
-    @staticmethod
-    def _sex_id_to_text(sex_id):
-        # id пола  1: женский, 2: мужской, 0: любой
-        # значения ID можно посмотреть https://vk.com/dev/users.search параметр sex
-        result = {1: 'женский', 2: 'мужской', 0: 'неопределен'}
-        return result.get(sex_id)
