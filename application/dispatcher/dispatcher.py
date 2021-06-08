@@ -133,10 +133,8 @@ class Dispatcher(DispatcherTools):
             self._ask_search_option_age_from()
 
         elif received_message == 'ровестники':
-            age_from = self.user.age - 2
-            age_to = self.user.age + 2
-            self.user.search_attr['age_from'] = age_from
-            self.user.search_attr['age_to'] = age_to
+            self.user.search_attr['age_from'] = self.user.age - 2
+            self.user.search_attr['age_to'] = self.user.age + 2
             self._ask_search_option_city()
 
     def _ask_search_option_age_from(self):
@@ -181,6 +179,7 @@ class Dispatcher(DispatcherTools):
         if self.user.city_name:
             if received_message == self.user.city_name.lower():
                 self.user.search_attr['city_id'] = self.user.city_id
+                # начинаем выводит найденные кандидатуры
                 self._process_targets()
             else:
                 self._ask_city_name_and_search()
@@ -199,6 +198,7 @@ class Dispatcher(DispatcherTools):
             self.user.search_attr['city_id'] = result.get('items')[0].get('id')
             self.user.city_id = result.get('items')[0].get('id')
             self.user.city_name = result.get('items')[0].get('title')
+            # начинаем выводит найденные кандидатуры
             self._process_targets()
         else:
             self._send_message(f"'{city_name}' не обнаружен. Попробуем заново.")
