@@ -2,9 +2,9 @@ from sqlalchemy import create_engine, String
 from sqlalchemy import Column, Integer, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 
-from application.settings import DATABASE
+from ..settings import DB_CONNECTION
 
-engine = create_engine(DATABASE)
+engine = create_engine(DB_CONNECTION)
 Base = declarative_base()
 
 class Users(Base):

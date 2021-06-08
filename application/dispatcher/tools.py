@@ -1,11 +1,11 @@
 import requests
 from vk_api.utils import get_random_id
 from .setup import DispatcherSetup
-from application.database.database import Users, BlackList, WhiteList
-from application.hunter.hunter import Hunter
-from application.assists.keyboards import Keyboards
-from application.assists.messages import Messages
-from application.utilites.helpers import make_dir, remove_dir
+from ..database.database import Users, BlackList, WhiteList
+from ..hunter.hunter import Hunter
+from ..assists.keyboards import Keyboards
+from ..assists.messages import Messages
+from ..utilites.helpers import make_dir, remove_dir
 
 class DispatcherTools(DispatcherSetup):
     def __init__(self, api, sender_id, upload):

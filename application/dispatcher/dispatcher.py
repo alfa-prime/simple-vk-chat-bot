@@ -1,8 +1,8 @@
 from .tools import DispatcherTools
-from application.user.user import User
-from application.assists.commands import Commands
-from application.assists.keyboards import Keyboards
-from application.assists.messages import Messages
+from ..user.user import User
+from ..assists.commands import Commands
+from ..assists.keyboards import Keyboards
+from ..assists.messages import Messages
 
 
 class Dispatcher(DispatcherTools):
@@ -33,7 +33,6 @@ class Dispatcher(DispatcherTools):
                 'choice_city': lambda: self._got_enter_and_set_search_option_city(message),
                 'enter_city_name': lambda: self._got_enter_and_set_city_name(message),
                 'process_targets': lambda: self._got_process_target_answer(message)
-
             }
             TAKE_USER_INPUT[self.user_input]()
 

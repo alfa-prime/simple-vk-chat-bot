@@ -1,4 +1,4 @@
-from application.database import session
+from ..database import session
 
 
 class DispatcherSetup:

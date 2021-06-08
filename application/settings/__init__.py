@@ -14,4 +14,4 @@ if load_env_values():
     USER_TOKEN = os.getenv('user_token')
     APP_ID = os.getenv('app_id')
     API_VERSION = os.getenv('api_version')
-    DATABASE = os.getenv('database')
+    DB_CONNECTION = os.getenv('db_connection_string')

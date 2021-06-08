@@ -1,7 +1,7 @@
 from vk_api.longpoll import VkEventType
-from application.bot.auth import BotAuthorization
-from application.dispatcher.dispatcher import Dispatcher
-from application.utilites.logger import set_logger
+from ..bot.auth import BotAuthorization
+from ..dispatcher.dispatcher import Dispatcher
+from ..utilites.logger import set_logger
 
 logger = set_logger(__name__)
 
