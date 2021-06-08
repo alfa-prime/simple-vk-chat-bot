@@ -12,6 +12,7 @@ class Dispatcher(DispatcherTools):
     def input(self, message):
         """ диалог бота с пользователем """
         if message in Commands.all_commands():
+            """ обрабатываем команды (нажатие кнопок и текстовый ввод) """
             COMMANDS = {
                 Commands.start.check(message): lambda: self._got_command_start(),
                 Commands.help.check(message): lambda: self._got_command_help(),
@@ -24,6 +25,7 @@ class Dispatcher(DispatcherTools):
             COMMANDS[message]()
 
         elif self.user_input:
+            """ обрабатываем данные введенные пользователем """
             TAKE_USER_INPUT = {
                 'enter_id': lambda: self._got_enter_user_id(message),
                 'age_from': lambda: self._got_enter_and_set_target_age_from(message),
