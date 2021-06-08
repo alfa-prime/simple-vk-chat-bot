@@ -1,4 +1,5 @@
-from application.classes.database import session
+from application.database import session
+
 
 class DispatcherSetup:
     def __init__(self, api, sender_id, upload):

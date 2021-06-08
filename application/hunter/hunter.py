@@ -1,10 +1,10 @@
 from datetime import datetime
 from vk_api.execute import VkFunction
-from ..database import session
+from application.database import session
 
 # список дополнительных полей для выдачи
 # подробности https://vk.com/dev/users.search параметр fields
-from ..database.database import BlackList, WhiteList
+from application.database.database import BlackList, WhiteList
 
 FIELDS_TO_SEARCH = 'city, bdate, sex, relation'
 

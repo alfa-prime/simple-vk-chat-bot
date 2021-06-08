@@ -3,7 +3,7 @@ from datetime import datetime
 
 from .auth import UserAuthorization
 from .properties import UserProperties
-from ...utilites.logger import set_logger
+from application.utilites.logger import set_logger
 
 # список дополнительных полей для выдачи
 # подробности https://vk.com/dev/users.get параметр fields

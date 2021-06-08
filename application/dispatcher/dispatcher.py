@@ -1,8 +1,8 @@
 from .tools import DispatcherTools
-from ..user.user import User
-from ..assists.commands import Commands
-from ..assists.keyboards import Keyboards
-from ..assists.messages import Messages
+from application.user.user import User
+from application.assists.commands import Commands
+from application.assists.keyboards import Keyboards
+from application.assists.messages import Messages
 
 
 class Dispatcher(DispatcherTools):
