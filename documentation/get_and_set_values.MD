@@ -21,4 +21,4 @@
 ![vk_api_1](img/vk_api_step_2.png)
 
 2.4 На следующей странице из адресной строки от access_token= до &expires_in скопировать токен.
-![vk_api_1](img/vk_api_step_3.png)
+![vk_api_1](img/vk_api_step-3.png)
