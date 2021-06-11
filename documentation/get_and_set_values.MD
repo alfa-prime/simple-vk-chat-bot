@@ -15,10 +15,10 @@
 2.1 Перейти по ссылке https://vkhost.github.io/
 
 2.2 Выбрать VK API
-![vk_api_1](img/vk_api_step_1.png)
+![vk_api_1](img/vk_api_step-1.png)
 
 2.3 На следующей странице дать разрешения
-![vk_api_1](img/vk_api_step_2.png)
+![vk_api_1](img/vk_api_step-2.png)
 
 2.4 На следующей странице из адресной строки от access_token= до &expires_in скопировать токен.
 ![vk_api_1](img/vk_api_step-3.png)
