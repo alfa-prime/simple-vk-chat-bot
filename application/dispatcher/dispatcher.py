@@ -30,8 +30,6 @@ class Dispatcher(DispatcherTools):
             """ обрабатываем данные введенные пользователем """
             TAKE_USER_INPUT = {
                 'enter_id': lambda: self._got_enter_user_id(message),
-                'show_white_list': lambda: self._got_white_list_show_option(message),
-                'process_white_list': lambda: self._process_white_list(message),
                 'age_from': lambda: self._got_enter_and_set_target_age_from(message),
                 'age_to': lambda: self._got_enter_and_set_target_age_to(message),
                 'choice_city': lambda: self._got_enter_and_set_search_option_city(message),
