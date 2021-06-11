@@ -20,6 +20,15 @@
 "[912] This is a chat bot feature, change this status in settings")
 ![bot_api](img/bot_settings.png)
 
+## Как получить токен пользователя
+1. Перейти по ссылке https://vkhost.github.io/
+2. Выбрать VK API
+![vk_api_1](img/vk_api_step_1.png)
+3. На следующей странице дать разрешения
+![vk_api_1](img/vk_api_step_2.png)
+4. На следующей странице из адресной строки сткопировать токен 
+![vk_api_1](img/vk_api_step_3.png)
+
 #### бот в стадии разработки, абсолютно все может изменится
 
 #### документация будет как только закончится разработка
