@@ -26,7 +26,10 @@ class Bot(BotAuthorization):
                         self.users[event.user_id].input(received_message)
         except ApiError as error:
             if error.code == 912:
-                logger.error("Возможности ботов отключены, для их подключения перейдите в настройки бота. "
-                             "Смотрите README.MD пункт 1.4")
-
-            print('Что-то пошло не так. Смотри логи')
+                error_message = 'Возможности ботов отключены, для их подключения перейдите в настройки бота. ' \
+                                'Смотрите README.MD пункт 1.4'
+                logger.error(error_message)
+                print(error_message)
+            else:
+                logger.error(error)
+                print('Что-то пошло не так. Смотри логи')

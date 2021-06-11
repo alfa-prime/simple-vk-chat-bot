@@ -12,6 +12,5 @@ def load_env_values():
 if load_env_values():
     BOT_TOKEN = os.getenv('bot_token')
     USER_TOKEN = os.getenv('user_token')
-    APP_ID = os.getenv('app_id')
     API_VERSION = os.getenv('api_version')
     DB_CONNECTION = os.getenv('db_connection_string')

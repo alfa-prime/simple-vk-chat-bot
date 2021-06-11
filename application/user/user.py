@@ -17,6 +17,16 @@ class User(UserAuthorization, UserProperties):
         super().__init__()
         self._process_properties(input_id)
 
+        if self.has_error:
+            if 'no access_token' in self.has_error:
+                error_message = 'Авторизация пользователя не удалась. Нет токена. Смотрите README.MD пункт 2.1'
+                print(error_message)
+                logger.error(error_message)
+            else:
+                logger.error(self.has_error)
+                print('Что-то пошло не так. Смотри логи')
+            exit()
+
     def __repr__(self):
         return (f'{self.__class__.__name__}'
                 f'({self.id!r}, {self.first_name!r}, {self.last_name!r}, {self.city_name!r}, {self.age!r}, '
