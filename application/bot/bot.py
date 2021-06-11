@@ -27,7 +27,7 @@ class Bot(BotAuthorization):
         except ApiError as error:
             if error.code == 912:
                 error_message = 'Возможности ботов отключены, для их подключения перейдите в настройки бота. ' \
-                                'Смотрите README.MD пункт 3 -> 1.4'
+                                'Смотрите README.MD пункт 4 -> 1.4'
                 logger.error(error_message)
                 print(error_message)
             else:
