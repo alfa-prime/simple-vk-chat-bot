@@ -26,6 +26,11 @@ class Messages:
                f'в противном случае, пользователь сам указывает город\n'
 
     @staticmethod
+    def ask_show_white_list_or_not(sender_name):
+        return f'{sender_name}, у вас есть "избранные" варианты\n' \
+               f'Будете просматривать?'
+
+    @staticmethod
     def ask_search_option_with_age():
         return f'Какой вариант поиска будем использовать?\n' \
                f'Ровестники: возраст +/- 2 года;\n' \

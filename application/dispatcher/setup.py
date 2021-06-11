@@ -12,6 +12,12 @@ class DispatcherSetup:
         self.user_input = None
         self.search_user_id = None
 
+        self.white_list = None
+
         self.target_id = None
+        self.target_name = None
+        self.target_link = None
+        self.target_bdate = None
+
         self.targets = None
         self.targets_count = None

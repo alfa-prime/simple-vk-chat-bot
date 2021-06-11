@@ -51,11 +51,15 @@ class DispatcherTools(DispatcherSetup):
         self.user_input = 'process_targets'
         try:
             target = next(self.targets)
-            index, self.target_id, name, link, bdate = target.split(',')
+            index, self.target_id, self.target_name, self.target_link, self.target_bdate = target.split(',')
             attachments = self._process_profile_photos(int(self.target_id))
 
             self._send_message(f'{index} из {self.targets_count}', attachments=attachments)
-            self._send_message(Messages.target_info(name, link, bdate), Keyboards.process_target())
+            self._send_message(
+                Messages.target_info(self.target_name, self.target_link, self.target_bdate),
+                Keyboards.process_target()
+            )
+
         except StopIteration:
             self._send_message('Больше кандидатур нет', Keyboards.new_search())
 
@@ -73,9 +77,14 @@ class DispatcherTools(DispatcherSetup):
         self.db_session.add(BlackList(target_id=target_id, user_id=user.id))
         self.db_session.commit()
 
-    def _add_user_to_whitelist(self, user, target_id):
+    def _add_user_to_whitelist(self, user, id, name, link, bdate):
         """ добавляем кандидатуру в белый список (не будет выводится при следующем поиске) """
-        self.db_session.add(WhiteList(target_id=target_id, user_id=user.id))
+        self.db_session.add(WhiteList(user_id=user.id,
+                                      id=self.target_id,
+                                      name=self.target_name,
+                                      link=self.target_link,
+                                      bdate = self.target_bdate
+                                      ))
         self.db_session.commit()
 
     def _process_profile_photos(self, target_id):

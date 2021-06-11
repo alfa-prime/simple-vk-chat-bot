@@ -23,7 +23,10 @@ class BlackList(Base):
 class WhiteList(Base):
     __tablename__ = 'whitelist'
     white_id = Column(Integer, primary_key=True)
-    target_id = Column(Integer)
+    id = Column(Integer)
+    name = Column(String)
+    link = Column(String)
+    bdate = Column(String)
     user_id = Column(Integer, ForeignKey('users.user_id'))
 
 

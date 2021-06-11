@@ -80,7 +80,7 @@ class Hunter:
         black_list_ids = [items.target_id for items in black_list]
 
         white_list = db_session.query(WhiteList).filter_by(user_id=self.user.id).all()
-        white_list_ids = [items.target_id for items in white_list]
+        white_list_ids = [items.id for items in white_list]
 
         result = [v for v in raw_data if
                   not v.get('is_closed')

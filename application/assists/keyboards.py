@@ -4,28 +4,44 @@ class Keyboards:
     @staticmethod
     def search():
         keyboard = VkKeyboard(one_time=False, inline=True)
-        keyboard.add_button('Начать поиск', color=VkKeyboardColor.POSITIVE)
+        keyboard.add_button('Начать поиск', color=VkKeyboardColor.SECONDARY)
         return keyboard.get_keyboard()
 
     @staticmethod
     def new_search():
         keyboard = VkKeyboard(one_time=False, inline=True)
-        keyboard.add_button('Новый поиск', color=VkKeyboardColor.POSITIVE)
+        keyboard.add_button('Новый поиск', color=VkKeyboardColor.SECONDARY)
         keyboard.add_button('Инфо', color=VkKeyboardColor.SECONDARY)
         return keyboard.get_keyboard()
 
     @staticmethod
     def main():
         keyboard = VkKeyboard(one_time=False, inline=True)
-        keyboard.add_button('Инфо', color=VkKeyboardColor.PRIMARY)
-        keyboard.add_button('Поиск', color=VkKeyboardColor.POSITIVE)
+        keyboard.add_button('Инфо', color=VkKeyboardColor.SECONDARY)
+        keyboard.add_button('Поиск', color=VkKeyboardColor.SECONDARY)
         return keyboard.get_keyboard()
 
     @staticmethod
     def choose_source_user():
         keyboard = VkKeyboard(one_time=False, inline=True)
-        keyboard.add_button('Для меня', color=VkKeyboardColor.POSITIVE)
-        keyboard.add_button('Не для меня', color=VkKeyboardColor.NEGATIVE)
+        keyboard.add_button('Для меня', color=VkKeyboardColor.SECONDARY)
+        keyboard.add_button('Не для меня', color=VkKeyboardColor.SECONDARY)
+        return keyboard.get_keyboard()
+
+    @staticmethod
+    def ask_show_white_list_or_not():
+        keyboard = VkKeyboard(one_time=False, inline=True)
+        keyboard.add_button('Да', color=VkKeyboardColor.SECONDARY)
+        keyboard.add_button('Нет', color=VkKeyboardColor.SECONDARY)
+        return keyboard.get_keyboard()
+
+    @staticmethod
+    def process_white_list():
+        keyboard = VkKeyboard(one_time=False, inline=True)
+        keyboard.add_button('Дальше', color=VkKeyboardColor.SECONDARY)
+        keyboard.add_button('Удалить', color=VkKeyboardColor.SECONDARY)
+        keyboard.add_line()
+        keyboard.add_button('Прервать просмотр', color=VkKeyboardColor.SECONDARY)
         return keyboard.get_keyboard()
 
     @staticmethod

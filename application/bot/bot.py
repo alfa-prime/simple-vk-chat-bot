@@ -1,4 +1,5 @@
 from vk_api.longpoll import VkEventType
+from vk_api.exceptions import ApiError
 from ..bot.auth import BotAuthorization
 from ..dispatcher.dispatcher import Dispatcher
 from ..utilites.logger import set_logger
@@ -11,10 +12,10 @@ class Bot(BotAuthorization):
         self.users = dict()
 
     def start(self):
-        logger.info('Бот успешно стартовал')
-
-        while True:
+        logger.info('Бот стартовал')
+        try:
             for event in self.longpoll.listen():
+
                 if event.type == VkEventType.MESSAGE_NEW and event.to_me and event.text:
                     received_message = event.text.lower().strip()
 
@@ -23,3 +24,6 @@ class Bot(BotAuthorization):
 
                     if event.type == VkEventType.MESSAGE_NEW:
                         self.users[event.user_id].input(received_message)
+        except ApiError as error:
+            logger.error(error)
+            print('Что-то пошло не так. Смотри логи')

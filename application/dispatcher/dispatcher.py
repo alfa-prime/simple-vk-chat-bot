@@ -30,11 +30,13 @@ class Dispatcher(DispatcherTools):
             """ обрабатываем данные введенные пользователем """
             TAKE_USER_INPUT = {
                 'enter_id': lambda: self._got_enter_user_id(message),
+                'show_white_list': lambda: self._got_white_list_show_option(message),
+                'process_white_list': lambda: self._process_white_list(message),
                 'age_from': lambda: self._got_enter_and_set_target_age_from(message),
                 'age_to': lambda: self._got_enter_and_set_target_age_to(message),
                 'choice_city': lambda: self._got_enter_and_set_search_option_city(message),
                 'enter_city_name': lambda: self._got_enter_and_set_city_name(message),
-                'process_targets': lambda: self._got_process_target_answer(message)
+                'process_targets': lambda: self._got_process_target_answer(message),
             }
             TAKE_USER_INPUT[self.user_input]()
 
@@ -207,8 +209,9 @@ class Dispatcher(DispatcherTools):
 
     def _got_process_target_answer(self, answer):
         """ обрабатываем ответы пользователя при просмотре кандидатур """
+        self.user_input = 'process_targets'
         if answer == 'да':
-            self._add_user_to_whitelist(self.user, self.target_id)
+            self._add_user_to_whitelist(self.user, self.target_id, self.target_name, self.target_link, self.target_bdate)
             self._next_target()
         elif answer == 'нет':
             self._add_user_to_blacklist(self.user, self.target_id)
