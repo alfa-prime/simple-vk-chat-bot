@@ -114,9 +114,11 @@ class Dispatcher(DispatcherTools):
         https://vk.com/dev/users.search параметр sex
         """
         if received_message == 'мужчин':
-            self.user.search_attr['sex_id'] = 2
+            # self.user.search_attr['sex_id'] = 2
+            self.user.search_attr.sex_id = 2
         elif received_message == 'женщин':
-            self.user.search_attr['sex_id'] = 1
+            # self.user.search_attr['sex_id'] = 1
+            self.user.search_attr.sex_id = 1
 
         self._ask_search_option_relation()
 
@@ -131,9 +133,9 @@ class Dispatcher(DispatcherTools):
         https://vk.com/dev/users.search realtion
         """
         if received_message == 'не женат/не замужем':
-            self.user.search_attr['relation_id'] = 1
+            self.user.search_attr.relation_id = 1
         elif received_message == 'в активном поиске':
-            self.user.search_attr['relation_id'] = 6
+            self.user.search_attr.relation_id = 6
 
         self._ask_search_option_age()
 
@@ -153,8 +155,8 @@ class Dispatcher(DispatcherTools):
             self._ask_search_option_age_from()
 
         elif received_message == 'ровестники':
-            self.user.search_attr['age_from'] = self.user.age - 2
-            self.user.search_attr['age_to'] = self.user.age + 2
+            self.user.search_attr.age_from = self.user.age - 2
+            self.user.search_attr.age_to = self.user.age + 2
             self._ask_search_option_city()
 
     def _ask_search_option_age_from(self):
@@ -165,7 +167,7 @@ class Dispatcher(DispatcherTools):
     def _got_enter_and_set_target_age_from(self, received_message):
         """ получаем, проверяем и устнавливаем начало возрастного диапазона """
         try:
-            self.user.search_attr['age_from'] = int(received_message)
+            self.user.search_attr.age_from = int(received_message)
             self.user_input = 'age_to'
             self._send_message(Messages.ask_search_option_age_to())
         except ValueError:
@@ -179,7 +181,7 @@ class Dispatcher(DispatcherTools):
     def _got_enter_and_set_target_age_to(self, received_message):
         """ получаем, проверяем и устнавливаем конец возрастного диапазона """
         try:
-            self.user.search_attr['age_to'] = int(received_message)
+            self.user.search_attr.age_to = int(received_message)
             self._ask_search_option_city()
         except ValueError:
             self._send_message(Messages.entered_age_is_not_valid())
@@ -197,7 +199,7 @@ class Dispatcher(DispatcherTools):
         """ получаем вариант поиска по городу """
         if self.user.city_name:
             if received_message == self.user.city_name.lower():
-                self.user.search_attr['city_id'] = self.user.city_id
+                self.user.search_attr.city_id = self.user.city_id
                 # начинаем выводит найденные кандидатуры
                 self._process_targets()
             else:
@@ -214,7 +216,7 @@ class Dispatcher(DispatcherTools):
         """ получаем, проверяем и устанавлиеваем название города """
         result = self.user.api.database.getCities(q=city_name, country_id=1)
         if result.get('items'):
-            self.user.search_attr['city_id'] = result.get('items')[0].get('id')
+            self.user.search_attr.city_id = result.get('items')[0].get('id')
             self.user.city_id = result.get('items')[0].get('id')
             self.user.city_name = result.get('items')[0].get('title')
             # начинаем выводит найденные кандидатуры

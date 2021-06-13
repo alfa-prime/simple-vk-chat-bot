@@ -58,7 +58,7 @@ class User(UserAuthorization, UserProperties):
             self.city_id = city.get('id')
             self.city_name = city.get('title')
 
-        self.search_attr = dict(sex_id=None, city_id=self.city_id, age_from=None, age_to=None, relation_id=None)
+        self.search_attr.city_id = self.city_id
 
         birthday = properties.get('bdate')
         if birthday:

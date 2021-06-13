@@ -19,7 +19,7 @@ class Hunter:
 
     def __repr__(self):
         return (f'{self.__class__.__name__}'
-                f'(search_attr: {self.search_attr!r}, targets_count: {self.total_count!r}, targets: {self.targets!r})')
+                f'(search_attr: {self.search_attr!r}, targets_count: {self.total!r}, targets: {self.targets!r})')
 
     def _search(self):
         """ запускаем процедуру поиска и возвращем список найденых кандидатур """
@@ -31,11 +31,11 @@ class Hunter:
     def _get_raw_data(self):
         """ получаем исходные данные всех найденных кандидатур """
         current_year = datetime.now().year
-        year_to = current_year - self.search_attr.get('age_from')
-        year_from = current_year - self.search_attr.get('age_to')
-        sex_id = self.search_attr.get('sex_id')
-        city_id = self.search_attr.get('city_id')
-        relation_id = self.search_attr.get('relation_id')
+        year_to = current_year - self.search_attr.age_from
+        year_from = current_year - self.search_attr.age_to
+        sex_id = self.search_attr.sex_id
+        city_id = self.search_attr.city_id
+        relation_id = self.search_attr.relation_id
         raw_data = list()
 
         for year in range(year_from, year_to):
@@ -85,8 +85,8 @@ class Hunter:
         result = [v for v in raw_data if
                   not v.get('is_closed')
                   and v.get('city')
-                  and v.get('city').get('id') == self.search_attr.get('city_id')
-                  and v.get('sex') == self.search_attr.get('sex_id')
+                  and v.get('city').get('id') == self.search_attr.city_id
+                  and v.get('sex') == self.search_attr.sex_id
                   and v.get('id') not in black_list_ids
                   and v.get('id') not in white_list_ids
                   ]

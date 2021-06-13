@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from types import SimpleNamespace
 
 @dataclass
 class UserProperties:
@@ -12,4 +13,5 @@ class UserProperties:
 
     has_error: str = None
     is_deactivated: str = None
-    search_attr: dict = None
+    search_attr: \
+        SimpleNamespace = SimpleNamespace(sex_id=None, city_id=None, age_from=None, age_to=None, relation_id=None)
