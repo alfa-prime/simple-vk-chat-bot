@@ -12,10 +12,9 @@ class Bot(BotAuthorization):
         self.users = dict()
 
     def start(self):
-        logger.info('Бот стартовал')
         try:
+            logger.info('Бот стартовал')
             for event in self.longpoll.listen():
-
                 if event.type == VkEventType.MESSAGE_NEW and event.to_me and event.text:
                     received_message = event.text.lower().strip()
 
@@ -29,7 +28,5 @@ class Bot(BotAuthorization):
                 error_message = 'Возможности ботов отключены, для их подключения перейдите в настройки бота. ' \
                                 'Смотрите README.MD пункт 4 -> 1.4'
                 logger.error(error_message)
-                print(error_message)
             else:
                 logger.error(error)
-                print('Что-то пошло не так. Смотри логи')
