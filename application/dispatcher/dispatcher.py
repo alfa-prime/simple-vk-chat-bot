@@ -114,10 +114,8 @@ class Dispatcher(DispatcherTools):
         https://vk.com/dev/users.search параметр sex
         """
         if received_message == 'мужчин':
-            # self.user.search_attr['sex_id'] = 2
             self.user.search_attr.sex_id = 2
         elif received_message == 'женщин':
-            # self.user.search_attr['sex_id'] = 1
             self.user.search_attr.sex_id = 1
 
         self._ask_search_option_relation()

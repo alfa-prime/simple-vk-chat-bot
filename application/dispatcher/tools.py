@@ -29,7 +29,6 @@ class DispatcherTools(DispatcherSetup):
         получает имя пользователя по его id
         метод vk api https://vk.com/dev/users.get
         """
-
         return self.api.users.get(user_id=self.sender_id)[0].get('first_name')
 
     def _check_user_error_or_deactivated(self):
