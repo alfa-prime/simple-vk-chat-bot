@@ -129,6 +129,7 @@ class DispatcherTools(DispatcherSetup):
     def _process_profile_photos(self, target_id):
         """
         получаем фотографии профиля пользователя, если фотографий больше трех, то только топ-3 по лайкам
+        метод vk api https://vk.com/dev/photos.get
         """
         photos = self.user.api.photos.get(owner_id=target_id, album_id='profile', extended=1, count=1000)
         photos_count = photos.get('count')
