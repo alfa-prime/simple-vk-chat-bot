@@ -15,13 +15,6 @@ class Keyboards:
         return keyboard.get_keyboard()
 
     @staticmethod
-    def continue_search():
-        keyboard = VkKeyboard(one_time=False, inline=True)
-        keyboard.add_button('Да', color=VkKeyboardColor.SECONDARY)
-        keyboard.add_button('Нет', color=VkKeyboardColor.SECONDARY)
-        return keyboard.get_keyboard()
-
-    @staticmethod
     def main():
         keyboard = VkKeyboard(one_time=False, inline=True)
         keyboard.add_button('Инфо', color=VkKeyboardColor.SECONDARY)
@@ -36,7 +29,7 @@ class Keyboards:
         return keyboard.get_keyboard()
 
     @staticmethod
-    def ask_show_white_list_or_not():
+    def ask_yes_or_no():
         keyboard = VkKeyboard(one_time=False, inline=True)
         keyboard.add_button('Да', color=VkKeyboardColor.SECONDARY)
         keyboard.add_button('Нет', color=VkKeyboardColor.SECONDARY)

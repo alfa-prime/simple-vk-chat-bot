@@ -94,7 +94,7 @@ class Dispatcher(DispatcherTools):
         self.user_input = 'show_white_list_or_not'
         self._send_message(
             Messages.ask_show_white_list_or_not(self.user.first_name),
-            Keyboards.ask_show_white_list_or_not()
+            Keyboards.ask_yes_or_no()
         )
 
     def _got_enter_while_list_show_or_not(self, received_message):
@@ -240,7 +240,7 @@ class Dispatcher(DispatcherTools):
         ANSWERS = {
             'дальше': lambda: self._next_chosen(),
             'убрать из избранного': lambda: self._remove_target_from_white_list(),
-            'прервать просмотр': lambda: self._send_message('Продолжить поиск?', Keyboards.continue_search()),
+            'прервать просмотр': lambda: self._send_message('Продолжить поиск?', Keyboards.ask_yes_or_no()),
             'да': lambda: self._ask_search_option_sex(),
             'нет': lambda: self._send_message('До свидания. Приходите еще.')
         }

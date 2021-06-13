@@ -82,7 +82,7 @@ class DispatcherTools(DispatcherSetup):
             self._send_message(f'{index} из {total_records}', attachments=attachments)
             self._send_message(Messages.target_info(name, bdate), Keyboards.process_chosen(link))
         except StopIteration:
-            self._send_message('Больше избранных кандидатур нет.\n Искать новых?', Keyboards.continue_search())
+            self._send_message('Больше избранных кандидатур нет.\n Искать новых?', Keyboards.ask_yes_or_no())
 
     def _add_user_to_database(self, user):
         """ добавляем пользователя в бд """
