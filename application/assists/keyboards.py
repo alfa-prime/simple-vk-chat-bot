@@ -15,6 +15,13 @@ class Keyboards:
         return keyboard.get_keyboard()
 
     @staticmethod
+    def continue_search():
+        keyboard = VkKeyboard(one_time=False, inline=True)
+        keyboard.add_button('Да', color=VkKeyboardColor.SECONDARY)
+        keyboard.add_button('Нет', color=VkKeyboardColor.SECONDARY)
+        return keyboard.get_keyboard()
+
+    @staticmethod
     def main():
         keyboard = VkKeyboard(one_time=False, inline=True)
         keyboard.add_button('Инфо', color=VkKeyboardColor.SECONDARY)
@@ -35,14 +42,14 @@ class Keyboards:
         keyboard.add_button('Нет', color=VkKeyboardColor.SECONDARY)
         return keyboard.get_keyboard()
 
-    @staticmethod
-    def process_white_list():
-        keyboard = VkKeyboard(one_time=False, inline=True)
-        keyboard.add_button('Дальше', color=VkKeyboardColor.SECONDARY)
-        keyboard.add_button('Удалить', color=VkKeyboardColor.SECONDARY)
-        keyboard.add_line()
-        keyboard.add_button('Прервать просмотр', color=VkKeyboardColor.SECONDARY)
-        return keyboard.get_keyboard()
+    # @staticmethod
+    # def process_white_list():
+    #     keyboard = VkKeyboard(one_time=False, inline=True)
+    #     keyboard.add_button('Дальше', color=VkKeyboardColor.SECONDARY)
+    #     keyboard.add_button('Удалить', color=VkKeyboardColor.SECONDARY)
+    #     keyboard.add_line()
+    #     keyboard.add_button('Прервать просмотр', color=VkKeyboardColor.SECONDARY)
+    #     return keyboard.get_keyboard()
 
     @staticmethod
     def ask_search_option_with_age():
@@ -87,4 +94,14 @@ class Keyboards:
         keyboard.add_button(f'Не знаю', color=VkKeyboardColor.PRIMARY)
         keyboard.add_line()
         keyboard.add_button(f'Прервать поиск', color=VkKeyboardColor.SECONDARY)
+        return keyboard.get_keyboard()
+
+    @staticmethod
+    def process_chosen():
+        keyboard = VkKeyboard(one_time=False, inline=True)
+        keyboard.add_button(f'Следующий', color=VkKeyboardColor.POSITIVE)
+        keyboard.add_line()
+        keyboard.add_button(f'Убрать из избранного', color=VkKeyboardColor.NEGATIVE)
+        keyboard.add_line()
+        keyboard.add_button(f'Прервать просмотр', color=VkKeyboardColor.SECONDARY)
         return keyboard.get_keyboard()

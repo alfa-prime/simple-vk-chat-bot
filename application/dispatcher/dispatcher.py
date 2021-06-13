@@ -3,6 +3,7 @@ from ..user.user import User
 from ..assists.commands import Commands
 from ..assists.keyboards import Keyboards
 from ..assists.messages import Messages
+from ..whitelist.whitelist import CurrentWhiteList
 
 """ Класс обеспечивающий диалог бота с пользователем """
 """ обрабатываются нажатия на кнопки и сообщения пользователя """
@@ -22,7 +23,7 @@ class Dispatcher(DispatcherTools):
                 Commands.source_user.check(message): lambda: self._got_enter_and_set_source_user(message),
                 Commands.targets_sex.check(message): lambda: self._got_enter_and_set_target_sex(message),
                 Commands.targets_relation.check(message): lambda: self._got_enter_and_set_target_relation(message),
-                Commands.targets_age.check(message): lambda: self._got_enter_and_set_option_target_age(message)
+                Commands.targets_age.check(message): lambda: self._got_enter_and_set_option_target_age(message),
             }
             COMMANDS[message]()
 
@@ -35,6 +36,8 @@ class Dispatcher(DispatcherTools):
                 'choice_city': lambda: self._got_enter_and_set_search_option_city(message),
                 'enter_city_name': lambda: self._got_enter_and_set_city_name(message),
                 'process_targets': lambda: self._got_process_target_answer(message),
+                'show_white_list_or_not': lambda: self._got_enter_while_list_show_or_not(message),
+                'process_chosen': lambda: self._got_process_chosen_answer(message),
             }
             TAKE_USER_INPUT[self.user_input]()
 
@@ -66,7 +69,7 @@ class Dispatcher(DispatcherTools):
         if received_message == 'для меня':
             self.user = User(self.sender_id)
             self._add_user_to_database(self.user)
-            self._ask_search_option_sex()
+            self._white_list_exists()
 
         elif received_message == 'не для меня':
             self.user_input = 'enter_id'
@@ -81,9 +84,24 @@ class Dispatcher(DispatcherTools):
 
         if check_result:
             self._add_user_to_database(self.user)
-            self._ask_search_option_sex()
+            self._white_list_exists()
+
         else:
             self._send_message(check_result_message, Keyboards.new_search())
+
+    def _ask_show_white_list_or_not(self):
+        """ спрашиваем выводить белый спискок или нет """
+        self.user_input = 'show_white_list_or_not'
+        self._send_message(
+            Messages.ask_show_white_list_or_not(self.user.first_name),
+            Keyboards.ask_show_white_list_or_not()
+        )
+
+    def _got_enter_while_list_show_or_not(self, received_message):
+        if received_message == 'да':
+            self._next_chosen()
+        elif received_message == 'нет':
+            self._ask_search_option_sex()
 
     def _ask_search_option_sex(self):
         """ запрашиваем пол кандидатов """
@@ -209,13 +227,34 @@ class Dispatcher(DispatcherTools):
         """ обрабатываем ответы пользователя при просмотре кандидатур """
         self.user_input = 'process_targets'
         if answer == 'да':
-            self._add_user_to_whitelist(self.user, self.target_id, self.target_name, self.target_link, self.target_bdate)
+            self._add_target_to_whitelist(self.user.id)
             self._next_target()
         elif answer == 'нет':
-            self._add_user_to_blacklist(self.user, self.target_id)
+            self._add_target_to_blacklist(self.user.id)
             self._next_target()
         elif answer == 'не знаю':
             # просто пропускаем
             self._next_target()
         elif answer == 'прервать поиск':
             self._send_message('Поиск прерван', Keyboards.new_search())
+
+    def _got_process_chosen_answer(self, answer):
+        """ обрабатываем ответы пользователя при просмотре избранных кандидатур """
+        self.user_input = 'process_chosen'
+        ANSWERS = {
+            'следующий': lambda: self._next_chosen(),
+            'убрать из избранного': lambda: self._remove_target_from_white_list(),
+            'прервать просмотр': lambda: self._send_message('Продолжить поиск?', Keyboards.continue_search()),
+            'да': lambda: self._ask_search_option_sex(),
+            'нет': lambda: self._send_message('До свидания. Приходите еще.')
+        }
+        ANSWERS[answer]()
+
+    def _white_list_exists(self):
+        """ проверяем у пользователя наличие белого списка, если есть, то спрашиваем выводить или нет"""
+        self.white_list = CurrentWhiteList(self.user.id)
+
+        if self.white_list.items:
+            self._ask_show_white_list_or_not()
+        else:
+            self._ask_search_option_sex()

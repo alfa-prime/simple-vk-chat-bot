@@ -98,6 +98,7 @@ class Hunter:
         """ формируем и возвращаем список найденых кандидатур (итератор) """
         result = []
         for index, item in enumerate(filtered_data):
+
             target_id = item.get('id')
             user_full_name = f"{item.get('first_name')} {item.get('last_name')}"
             vk_link = f"vk.com/id{target_id}"

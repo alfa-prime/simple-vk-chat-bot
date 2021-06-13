@@ -7,6 +7,7 @@ from ..assists.keyboards import Keyboards
 from ..assists.messages import Messages
 from ..utilites.helpers import make_dir, remove_dir
 
+
 """ Класс утилит для диспетчера обработки сообщений """
 
 class DispatcherTools(DispatcherSetup):
@@ -63,6 +64,19 @@ class DispatcherTools(DispatcherSetup):
         except StopIteration:
             self._send_message('Больше кандидатур нет', Keyboards.new_search())
 
+    def _next_chosen(self):
+        """ выводит сведения о следущем избраном кандидате """
+        self.user_input = 'process_chosen'
+        try:
+            chosen = next(self.white_list)
+            index, target_id, name, link, bdate, total_records = chosen.values()
+            attachments = self._process_profile_photos(int(target_id))
+            self.target_id = target_id
+            self._send_message(f'{index} из {total_records}', attachments=attachments)
+            self._send_message(f'{name} {link} {bdate}', Keyboards.process_chosen())
+        except StopIteration:
+            self._send_message('Больше избранных кандидатур нет.\n Искать новых?', Keyboards.continue_search())
+
     def _add_user_to_database(self, user):
         """ добавляем пользователя в бд """
         check_user_exist = self.db_session.query(Users).filter_by(vk_user_id=user.id).all()
@@ -72,20 +86,26 @@ class DispatcherTools(DispatcherSetup):
             self.db_session.add(Users(vk_user_id=user.id, name=name, link=link))
             self.db_session.commit()
 
-    def _add_user_to_blacklist(self, user, target_id):
+    def _add_target_to_blacklist(self, user_id):
         """ добавляем кандидатуру в черный список (не будет выводится при следующем поиске) """
-        self.db_session.add(BlackList(target_id=target_id, user_id=user.id))
+        self.db_session.add(BlackList(user_id=user_id, target_id=self.target_id))
         self.db_session.commit()
 
-    def _add_user_to_whitelist(self, user, id, name, link, bdate):
+    def _add_target_to_whitelist(self, user_id):
         """ добавляем кандидатуру в белый список (не будет выводится при следующем поиске) """
-        self.db_session.add(WhiteList(user_id=user.id,
+        self.db_session.add(WhiteList(user_id=user_id,
                                       id=self.target_id,
                                       name=self.target_name,
                                       link=self.target_link,
-                                      bdate = self.target_bdate
+                                      bdate=self.target_bdate
                                       ))
         self.db_session.commit()
+
+    def _remove_target_from_white_list(self):
+        """ удаляем кандидатуру из списка избранных """
+        self.db_session.delete(self.db_session.query(WhiteList).filter_by(id=self.target_id).one())
+        self.db_session.commit()
+        self._next_chosen()
 
     def _process_profile_photos(self, target_id):
         """
@@ -121,6 +141,3 @@ class DispatcherTools(DispatcherSetup):
 
         else:
             return [f'photo{target_id}_{v.get("id")}' for v in photos.get('items')]
-
-
-
