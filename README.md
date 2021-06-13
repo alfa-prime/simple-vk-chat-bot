@@ -18,7 +18,3 @@
 1. Для начала диалога с ботом отправить ему сообщение **Начать**
 ![](documentation/img/bot_start.png)
 2. Подробности работы бота можно узнать послав ему сообщение **Инфо**
-![](documentation/img/bot_info.png)
-
-## Пример работы бота
-![](documentation/img/sample.gif)
