@@ -9,10 +9,12 @@ from ..database.database import BlackList, WhiteList
 class Hunter:
     def __init__(self, user):
         self.user = user
-        self.search_attr = user.search_attr
         self.user_api = user.api
-        self.total = 0
+        self.search_attr = user.search_attr
+
         self._counter = 0
+        self.total = 0
+
         self.targets = iter(self._search())
 
     def __repr__(self):
