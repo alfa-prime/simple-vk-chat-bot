@@ -29,4 +29,3 @@ class CurrentWhiteList:
             bdate=item.bdate,
             total=self.total_count
         )
-

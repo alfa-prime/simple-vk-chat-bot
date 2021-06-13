@@ -5,10 +5,6 @@ from .auth import UserAuthorization
 from .properties import UserProperties
 from ..utilites.logger import set_logger
 
-# список дополнительных полей для выдачи
-# подробности https://vk.com/dev/users.get параметр fields
-FIELDS_TO_SEARCH = 'sex, bdate, city, country'
-
 logger = set_logger(__name__)
 
 class User(UserAuthorization, UserProperties):
@@ -44,6 +40,8 @@ class User(UserAuthorization, UserProperties):
 
     def _get_raw_properties(self, input_id):
         """  получение свойств пользователя, метод vk api https://vk.com/dev/users.get """
+        # список дополнительных полей для выдачи
+        FIELDS_TO_SEARCH = 'sex, bdate, city, country'
         try:
             return self.api.users.get(user_ids=input_id, fields=FIELDS_TO_SEARCH, v=self.api_version)[0]
         except self.api_error as error:

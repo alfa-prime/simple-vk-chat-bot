@@ -23,6 +23,7 @@ class Bot(BotAuthorization):
 
                     if event.type == VkEventType.MESSAGE_NEW:
                         self.users[event.user_id].input(received_message)
+
         except ApiError as error:
             if error.code == 912:
                 error_message = 'Возможности ботов отключены, для их подключения перейдите в настройки бота. ' \
