@@ -7,9 +7,11 @@ from application.database.database import WhiteList
 class CurrentWhiteList:
     def __init__(self, user_id):
         self.db_session = session.create()
-        self.items = self._get_items(user_id)
-        self.counter = 0
+
         self.total = 0
+        self.counter = 0
+
+        self.items = self._get_items(user_id)
 
     def _get_items(self, user_id):
         result = self.db_session.query(WhiteList).filter_by(user_id=user_id).all()
