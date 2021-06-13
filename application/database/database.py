@@ -9,12 +9,12 @@ logger = set_logger(__name__)
 
 try:
     engine = create_engine(DB_CONNECTION)
-    Base = declarative_base()
 except AttributeError as error:
     error_message = 'Не указана строка подключения базы данных'
-    print(error_message)
     logger.error(error_message)
     exit()
+
+Base = declarative_base()
 
 class Users(Base):
     __tablename__ = "users"

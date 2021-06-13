@@ -20,10 +20,8 @@ class BotAuthorization:
             if error.code == 5:
                 error_message = 'Авторизация бота не удалась. Нет токена. Смотрите README.MD пункт 4 -> 1.1'
                 logger.error(error_message)
-                print(error_message)
             else:
                 logger.error(error)
-                print('Что-то пошло не так. Смотри логи')
             exit()
 
 

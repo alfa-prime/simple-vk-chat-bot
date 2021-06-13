@@ -21,10 +21,8 @@ class User(UserAuthorization, UserProperties):
             if 'no access_token' in self.has_error:
                 error_message = 'Авторизация пользователя не удалась. Нет токена. Смотрите README.MD пункт 4 -> 2.1'
                 print(error_message)
-                logger.error(error_message)
             else:
                 logger.error(self.has_error)
-                print('Что-то пошло не так. Смотри логи')
             exit()
 
     def __repr__(self):
