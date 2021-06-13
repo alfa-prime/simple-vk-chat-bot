@@ -90,6 +90,7 @@ class DispatcherTools(DispatcherSetup):
         """ добавляем кандидатуру в черный список (не будет выводится при следующем поиске) """
         self.db_session.add(BlackList(user_id=user_id, target_id=self.target_id))
         self.db_session.commit()
+        self._next_target()
 
     def _add_target_to_whitelist(self, user_id):
         """ добавляем кандидатуру в белый список (не будет выводится при следующем поиске) """
@@ -100,6 +101,7 @@ class DispatcherTools(DispatcherSetup):
                                       bdate=self.target_bdate
                                       ))
         self.db_session.commit()
+        self._next_target()
 
     def _remove_target_from_white_list(self):
         """ удаляем кандидатуру из списка избранных """

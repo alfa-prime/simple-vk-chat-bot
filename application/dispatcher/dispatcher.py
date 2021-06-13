@@ -226,17 +226,13 @@ class Dispatcher(DispatcherTools):
     def _got_process_target_answer(self, answer):
         """ обрабатываем ответы пользователя при просмотре кандидатур """
         self.user_input = 'process_targets'
-        if answer == 'да':
-            self._add_target_to_whitelist(self.user.id)
-            self._next_target()
-        elif answer == 'нет':
-            self._add_target_to_blacklist(self.user.id)
-            self._next_target()
-        elif answer == 'не знаю':
-            # просто пропускаем
-            self._next_target()
-        elif answer == 'прервать поиск':
-            self._send_message('Поиск прерван', Keyboards.new_search())
+        ANSWERS = {
+            'да': lambda: self._add_target_to_whitelist(self.user.id),
+            'нет': lambda: self._add_target_to_blacklist(self.user.id),
+            'не знаю': lambda: self._next_target(),
+            'прервать поиск': lambda: self._send_message('Поиск прерван', Keyboards.new_search()),
+        }
+        ANSWERS[answer]()
 
     def _got_process_chosen_answer(self, answer):
         """ обрабатываем ответы пользователя при просмотре избранных кандидатур """
