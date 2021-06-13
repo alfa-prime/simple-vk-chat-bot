@@ -2,8 +2,16 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/alfa-prime/simple-vk-chat-bot)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/alfa-prime/simple-vk-chat-bot)
 ![GitHub last commit](https://img.shields.io/github/last-commit/alfa-prime/simple-vk-chat-bot)
-[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
+![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
 
+## Описание
+ВК-чат-бот для знакомств.  
+Бот, основываясь на данных пользователя и заданных в диалоге параметрах, ищет подходящих кандидатов.  
+В процессе просмотра полученных результатов существует возможность добавлять кандидатов в "черный" и "белый"
+списки (кнопки "Нет" и "Да" соотвестнно).  
+Кандидаты добавленные в один из списков не будут показанны при следующем поиске.  
+Есть возможность просмореть "белый" список.  
+При просмотре "белого" списка дана возможность исключать из него кандидатов.
 
 ## Перед запуском бота
 1. Для установки зависимостей выполнить команду `pip install -r requirements.txt`
