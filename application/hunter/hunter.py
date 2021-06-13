@@ -98,11 +98,11 @@ class Hunter:
         result = []
         for item in filtered_data:
             self._counter += 1
-            id_ = item.get('id')
+            target_id = item.get('id')
             full_name = f"{item.get('first_name')} {item.get('last_name')}"
-            link = f"https://vk.com/id{id_}"
+            link = f"https://vk.com/id{target_id}"
             bdate = item.get('bdate') if item.get('bdate') else 'Нет данных'
-            result.append(f'{self._counter},{id_},{full_name},{link},{bdate}')
+            result.append(f'{self._counter},{target_id},{full_name},{link},{bdate}')
         return result
 
     def __iter__(self):
@@ -110,5 +110,5 @@ class Hunter:
 
     def __next__(self):
         item = next(self.targets)
-        index, id_, full_name, link, bdate = item.split(',')
-        return Record(index, id_, full_name, link, bdate, self.total)
+        index, target_id, full_name, link, bdate = item.split(',')
+        return Record(index, target_id, full_name, link, bdate, self.total)
