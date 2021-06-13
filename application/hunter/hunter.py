@@ -1,6 +1,7 @@
 from datetime import datetime
 from vk_api.execute import VkFunction
 from ..database import session
+from ..database.record import Record
 from ..database.database import BlackList, WhiteList
 
 """ Класс поиска кандидатур для пользователя """
@@ -10,7 +11,7 @@ class Hunter:
         self.user = user
         self.search_attr = user.search_attr
         self.user_api = user.api
-        self.total_count = None
+        self.total = 0
         self._counter = 0
         self.targets = iter(self._search())
 
@@ -22,7 +23,7 @@ class Hunter:
         """ запускаем процедуру поиска и возвращем список найденых кандидатур """
         raw_data = self._get_raw_data()
         filtered_data = self._filter_out_raw_data(raw_data)
-        self.total_count = len(filtered_data)
+        self.total = len(filtered_data)
         return self._make_targets_list(filtered_data)
 
     def _get_raw_data(self):
@@ -108,4 +109,4 @@ class Hunter:
     def __next__(self):
         item = next(self.targets)
         index, id_, full_name, link, bdate = item.split(',')
-        return dict(index=index, id=id_, name=full_name, link=link, bdate=bdate)
+        return Record(index, id_, full_name, link, bdate, self.total)

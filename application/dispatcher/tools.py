@@ -46,7 +46,7 @@ class DispatcherTools(DispatcherSetup):
         """ выводит результат поиска """
         self._send_message(Messages.search_start())
         self.targets = Hunter(self.user)
-        self._send_message(f'Найдено: {self.targets.total_count}')
+        self._send_message(f'Найдено: {self.targets.total}')
         self._next_target()
 
     def _next_target(self):
@@ -54,20 +54,19 @@ class DispatcherTools(DispatcherSetup):
         self.user_input = 'process_targets'
         try:
             target = next(self.targets)
-            index, id_, name, link, bdate = target.values()
-            attachments = self._process_profile_photos(int(id_))
+            attachments = self._process_profile_photos(target.target_id)
 
             # свойства для добавления кандидатуры в белый или черный список
             # методы _add_target_to_blacklist и _add_target_to_whitelist
-            self.target_id = id_
-            self.target_name = name
-            self.target_link = link
-            self.target_bdate = bdate
+            self.target_id = target.target_id
+            self.target_name = target.name
+            self.target_link = target.link
+            self.target_bdate = target.bdate
 
-            self._send_message(f'{index} из {self.targets.total_count}', attachments=attachments)
+            self._send_message(f'{target.index} из {target.total}', attachments=attachments)
             self._send_message(
-                Messages.target_info(name, bdate),
-                Keyboards.process_target(link)
+                Messages.target_info(target.name, target.bdate),
+                Keyboards.process_target(target.link)
             )
 
         except StopIteration:
@@ -78,15 +77,14 @@ class DispatcherTools(DispatcherSetup):
         self.user_input = 'process_chosen'
         try:
             chosen = next(self.white_list)
-            index, target_id, name, link, bdate, total_records = chosen.values()
-            attachments = self._process_profile_photos(int(target_id))
+            attachments = self._process_profile_photos(chosen.target_id)
 
             # target_id используется для удаления записи из белого списка
             # метод _remove_target_from_white_list
-            self.target_id = target_id
+            self.target_id = chosen.target_id
 
-            self._send_message(f'{index} из {total_records}', attachments=attachments)
-            self._send_message(Messages.target_info(name, bdate), Keyboards.process_chosen(link))
+            self._send_message(f'{chosen.index} из {chosen.total}', attachments=attachments)
+            self._send_message(Messages.target_info(chosen.name, chosen.bdate), Keyboards.process_chosen(chosen.link))
         except StopIteration:
             self._send_message('Больше избранных кандидатур нет.\n Искать новых?', Keyboards.ask_yes_or_no())
 
