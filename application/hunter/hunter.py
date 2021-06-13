@@ -101,7 +101,7 @@ class Hunter:
 
             target_id = item.get('id')
             user_full_name = f"{item.get('first_name')} {item.get('last_name')}"
-            vk_link = f"vk.com/id{target_id}"
+            vk_link = f"https://vk.com/id{target_id}"
             birthday = item.get('bdate') if item.get('bdate') else 'Нет данных'
-            result.append(f'{index + 1}, {target_id}, {user_full_name}, {vk_link}, {birthday}')
+            result.append(f'{index + 1},{target_id},{user_full_name},{vk_link},{birthday}')
         return iter(result)

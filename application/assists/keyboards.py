@@ -42,15 +42,6 @@ class Keyboards:
         keyboard.add_button('Нет', color=VkKeyboardColor.SECONDARY)
         return keyboard.get_keyboard()
 
-    # @staticmethod
-    # def process_white_list():
-    #     keyboard = VkKeyboard(one_time=False, inline=True)
-    #     keyboard.add_button('Дальше', color=VkKeyboardColor.SECONDARY)
-    #     keyboard.add_button('Удалить', color=VkKeyboardColor.SECONDARY)
-    #     keyboard.add_line()
-    #     keyboard.add_button('Прервать просмотр', color=VkKeyboardColor.SECONDARY)
-    #     return keyboard.get_keyboard()
-
     @staticmethod
     def ask_search_option_with_age():
         keyboard = VkKeyboard(one_time=False, inline=True)
@@ -87,8 +78,10 @@ class Keyboards:
         return keyboard.get_keyboard()
 
     @staticmethod
-    def process_target():
+    def process_target(link):
         keyboard = VkKeyboard(one_time=False, inline=True)
+        keyboard.add_openlink_button('Подробнее', link=link)
+        keyboard.add_line()
         keyboard.add_button(f'Да', color=VkKeyboardColor.POSITIVE)
         keyboard.add_button(f'Нет', color=VkKeyboardColor.NEGATIVE)
         keyboard.add_button(f'Не знаю', color=VkKeyboardColor.PRIMARY)
@@ -97,9 +90,10 @@ class Keyboards:
         return keyboard.get_keyboard()
 
     @staticmethod
-    def process_chosen():
+    def process_chosen(link):
         keyboard = VkKeyboard(one_time=False, inline=True)
-        keyboard.add_button(f'Следующий', color=VkKeyboardColor.POSITIVE)
+        keyboard.add_openlink_button('Подробнее', link=link)
+        keyboard.add_button(f'Дальше', color=VkKeyboardColor.POSITIVE)
         keyboard.add_line()
         keyboard.add_button(f'Убрать из избранного', color=VkKeyboardColor.NEGATIVE)
         keyboard.add_line()

@@ -53,10 +53,9 @@ class Messages:
         return 'Введное значение неверно\nПопробуйте снова'
 
     @staticmethod
-    def target_info(name, link, bdate):
+    def target_info(name, bdate):
         return f'Имя: {name}\n' \
-               f'Дата рождения: {bdate}\n' \
-               f'Подробности: {link}'
+               f'Дата рождения: {bdate}'
 
     @staticmethod
     def search_start():

@@ -57,8 +57,8 @@ class DispatcherTools(DispatcherSetup):
 
             self._send_message(f'{index} из {self.targets_count}', attachments=attachments)
             self._send_message(
-                Messages.target_info(self.target_name, self.target_link, self.target_bdate),
-                Keyboards.process_target()
+                Messages.target_info(self.target_name, self.target_bdate),
+                Keyboards.process_target(self.target_link)
             )
 
         except StopIteration:
@@ -73,7 +73,7 @@ class DispatcherTools(DispatcherSetup):
             attachments = self._process_profile_photos(int(target_id))
             self.target_id = target_id
             self._send_message(f'{index} из {total_records}', attachments=attachments)
-            self._send_message(f'{name} {link} {bdate}', Keyboards.process_chosen())
+            self._send_message(Messages.target_info(name, bdate), Keyboards.process_chosen(link))
         except StopIteration:
             self._send_message('Больше избранных кандидатур нет.\n Искать новых?', Keyboards.continue_search())
 

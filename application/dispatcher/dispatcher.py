@@ -238,7 +238,7 @@ class Dispatcher(DispatcherTools):
         """ обрабатываем ответы пользователя при просмотре избранных кандидатур """
         self.user_input = 'process_chosen'
         ANSWERS = {
-            'следующий': lambda: self._next_chosen(),
+            'дальше': lambda: self._next_chosen(),
             'убрать из избранного': lambda: self._remove_target_from_white_list(),
             'прервать просмотр': lambda: self._send_message('Продолжить поиск?', Keyboards.continue_search()),
             'да': lambda: self._ask_search_option_sex(),
