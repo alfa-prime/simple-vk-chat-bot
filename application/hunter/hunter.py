@@ -14,18 +14,19 @@ class Hunter:
         self.user = user
         self.search_attr = user.search_attr
         self.user_api = user.api
-        self.count = 0
-        self.targets = self._search()
+        self.total_count = None
+        self._counter = 0
+        self.targets = iter(self._search())
 
     def __repr__(self):
         return (f'{self.__class__.__name__}'
-                f'(search_attr: {self.search_attr!r}, targets_count: {self.targets_count!r}, targets: {self.targets!r})')
+                f'(search_attr: {self.search_attr!r}, targets_count: {self.total_count!r}, targets: {self.targets!r})')
 
     def _search(self):
         """ запускаем процедуру поиска и возвращем список найденых кандидатур """
         raw_data = self._get_raw_data()
         filtered_data = self._filter_out_raw_data(raw_data)
-        self.count = len(filtered_data)
+        self.total_count = len(filtered_data)
         return self._make_targets_list(filtered_data)
 
     def _get_raw_data(self):
@@ -93,17 +94,17 @@ class Hunter:
 
         return result
 
-    @staticmethod
-    def _make_targets_list(filtered_data):
-        """ формируем и возвращаем список найденых кандидатур (итератор) """
+    def _make_targets_list(self, filtered_data):
+        """ формируем и возвращаем список найденых кандидатур """
         result = []
-        for index, item in enumerate(filtered_data):
+        for item in filtered_data:
+            self._counter += 1
             id_ = item.get('id')
             full_name = f"{item.get('first_name')} {item.get('last_name')}"
             link = f"https://vk.com/id{id_}"
             bdate = item.get('bdate') if item.get('bdate') else 'Нет данных'
-            result.append(f'{index + 1},{id_},{full_name},{link},{bdate}')
-        return iter(result)
+            result.append(f'{self._counter},{id_},{full_name},{link},{bdate}')
+        return result
 
     def __iter__(self):
         return self

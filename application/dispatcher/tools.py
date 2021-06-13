@@ -42,7 +42,7 @@ class DispatcherTools(DispatcherSetup):
         """ выводит результат поиска """
         self._send_message(Messages.search_start())
         self.targets = Hunter(self.user)
-        self._send_message(f'Найдено: {self.targets.count}')
+        self._send_message(f'Найдено: {self.targets.total_count}')
         self._next_target()
 
     def _next_target(self):
@@ -59,7 +59,7 @@ class DispatcherTools(DispatcherSetup):
             self.target_link = link
             self.target_bdate = bdate
 
-            self._send_message(f'{index} из {self.targets.count}', attachments=attachments)
+            self._send_message(f'{index} из {self.targets.total_count}', attachments=attachments)
             self._send_message(
                 Messages.target_info(name, bdate),
                 Keyboards.process_target(link)

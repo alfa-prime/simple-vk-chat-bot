@@ -31,7 +31,7 @@ class User(UserAuthorization, UserProperties):
         return (f'{self.__class__.__name__}'
                 f'({self.id!r}, {self.first_name!r}, {self.last_name!r}, {self.city_name!r}, {self.age!r}, '
                 f'has_error: {self.has_error!r}, is_deactivated: {self.is_deactivated!r}, '
-                f'search_attr: {self.search_attr})')
+                f'search_attr: {self.search_attr!r})')
 
     def _process_properties(self, input_id):
         """ обработка полученных свойств """
