@@ -244,7 +244,7 @@ class Dispatcher(DispatcherTools):
             'убрать из избранного': lambda: self._remove_target_from_white_list(),
             'прервать просмотр': lambda: self._send_message('Продолжить поиск?', Keyboards.ask_yes_or_no()),
             'да': lambda: self._ask_search_option_sex(),
-            'нет': lambda: self._send_message('До свидания. Приходите еще.')
+            'нет': lambda: self._send_message('До свидания. Приходите еще.'),
         }
         ANSWERS[answer]()
 

@@ -16,11 +16,13 @@ class DispatcherTools(DispatcherSetup):
 
     def _send_message(self, message=None, keyboard=None, attachments=None):
         """ посылает сообщение пользователю """
-        self.api.messages.send(peer_id=self.sender_id,
-                               message=message,
-                               keyboard=keyboard,
-                               attachment=attachments,
-                               random_id=get_random_id())
+        self.api.messages.send(
+            peer_id=self.sender_id,
+            message=message,
+            keyboard=keyboard,
+            attachment=attachments,
+            random_id=get_random_id()
+        )
 
     def _get_sender_name(self):
         """
@@ -105,12 +107,16 @@ class DispatcherTools(DispatcherSetup):
 
     def _add_target_to_whitelist(self, user_id):
         """ добавляем кандидатуру в белый список (не будет выводится при следующем поиске) """
-        self.db_session.add(WhiteList(user_id=user_id,
-                                      id=self.target_id,
-                                      name=self.target_name,
-                                      link=self.target_link,
-                                      bdate=self.target_bdate
-                                      ))
+        self.db_session.add(
+            WhiteList(
+                user_id=user_id,
+                id=self.target_id,
+                name=self.target_name,
+                link=self.target_link,
+                bdate=self.target_bdate
+            )
+        )
+
         self.db_session.commit()
         self._next_target()
 
