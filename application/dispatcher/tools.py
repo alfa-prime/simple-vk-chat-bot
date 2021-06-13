@@ -41,10 +41,8 @@ class DispatcherTools(DispatcherSetup):
     def _process_targets(self):
         """ выводит результат поиска """
         self._send_message(Messages.search_start())
-        hunter_one = Hunter(self.user)
-        self._send_message(f'Найдено: {hunter_one.targets_count}')
-        self.targets = hunter_one.targets
-        self.targets_count = hunter_one.targets_count
+        self.targets = Hunter(self.user)
+        self._send_message(f'Найдено: {self.targets.count}')
         self._next_target()
 
     def _next_target(self):
@@ -52,13 +50,19 @@ class DispatcherTools(DispatcherSetup):
         self.user_input = 'process_targets'
         try:
             target = next(self.targets)
-            index, self.target_id, self.target_name, self.target_link, self.target_bdate = target.split(',')
-            attachments = self._process_profile_photos(int(self.target_id))
+            index, id_, name, link, bdate = target.values()
+            attachments = self._process_profile_photos(int(id_))
 
-            self._send_message(f'{index} из {self.targets_count}', attachments=attachments)
+            # свойства для добавления кандидатуры в белый или черный список
+            self.target_id = id_
+            self.target_name = name
+            self.target_link = link
+            self.target_bdate = bdate
+
+            self._send_message(f'{index} из {self.targets.count}', attachments=attachments)
             self._send_message(
-                Messages.target_info(self.target_name, self.target_bdate),
-                Keyboards.process_target(self.target_link)
+                Messages.target_info(name, bdate),
+                Keyboards.process_target(link)
             )
 
         except StopIteration:
@@ -71,7 +75,10 @@ class DispatcherTools(DispatcherSetup):
             chosen = next(self.white_list)
             index, target_id, name, link, bdate, total_records = chosen.values()
             attachments = self._process_profile_photos(int(target_id))
+
+            # target_id используется для удаления записи из белого списка
             self.target_id = target_id
+
             self._send_message(f'{index} из {total_records}', attachments=attachments)
             self._send_message(Messages.target_info(name, bdate), Keyboards.process_chosen(link))
         except StopIteration:

@@ -14,7 +14,7 @@ class Hunter:
         self.user = user
         self.search_attr = user.search_attr
         self.user_api = user.api
-        self.targets_count = 0
+        self.count = 0
         self.targets = self._search()
 
     def __repr__(self):
@@ -25,7 +25,7 @@ class Hunter:
         """ запускаем процедуру поиска и возвращем список найденых кандидатур """
         raw_data = self._get_raw_data()
         filtered_data = self._filter_out_raw_data(raw_data)
-        self.targets_count = len(filtered_data)
+        self.count = len(filtered_data)
         return self._make_targets_list(filtered_data)
 
     def _get_raw_data(self):
@@ -98,10 +98,17 @@ class Hunter:
         """ формируем и возвращаем список найденых кандидатур (итератор) """
         result = []
         for index, item in enumerate(filtered_data):
-
-            target_id = item.get('id')
-            user_full_name = f"{item.get('first_name')} {item.get('last_name')}"
-            vk_link = f"https://vk.com/id{target_id}"
-            birthday = item.get('bdate') if item.get('bdate') else 'Нет данных'
-            result.append(f'{index + 1},{target_id},{user_full_name},{vk_link},{birthday}')
+            id_ = item.get('id')
+            full_name = f"{item.get('first_name')} {item.get('last_name')}"
+            link = f"https://vk.com/id{id_}"
+            bdate = item.get('bdate') if item.get('bdate') else 'Нет данных'
+            result.append(f'{index + 1},{id_},{full_name},{link},{bdate}')
         return iter(result)
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        item = next(self.targets)
+        index, id_, full_name, link, bdate = item.split(',')
+        return dict(index=index, id=id_, name=full_name, link=link, bdate=bdate)
