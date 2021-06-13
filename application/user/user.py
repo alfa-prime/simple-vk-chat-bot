@@ -47,20 +47,20 @@ class User(UserAuthorization, UserProperties):
         except self.api_error as error:
             return dict(error.error)
 
-    def _set_properties(self, properties):
+    def _set_properties(self, raw_properties):
         """ устанавливает свойства пользователя """
-        self.id = properties.get('id')
-        self.first_name = properties.get('first_name')
-        self.last_name = properties.get('last_name')
+        self.id = raw_properties.get('id')
+        self.first_name = raw_properties.get('first_name')
+        self.last_name = raw_properties.get('last_name')
 
-        city = properties.get('city')
+        city = raw_properties.get('city')
         if city:
             self.city_id = city.get('id')
             self.city_name = city.get('title')
 
         self.search_attr.city_id = self.city_id
 
-        birthday = properties.get('bdate')
+        birthday = raw_properties.get('bdate')
         if birthday:
             try:
                 birth_year = re.search(r'\d{4}', birthday)[0]
