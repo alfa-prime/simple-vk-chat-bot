@@ -23,7 +23,11 @@ class DispatcherTools(DispatcherSetup):
                                random_id=get_random_id())
 
     def _get_sender_name(self):
-        """ получает имя пользователя по его id """
+        """
+        получает имя пользователя по его id
+        метод vk api https://vk.com/dev/users.get
+        """
+
         return self.api.users.get(user_id=self.sender_id)[0].get('first_name')
 
     def _check_user_error_or_deactivated(self):
@@ -54,6 +58,7 @@ class DispatcherTools(DispatcherSetup):
             attachments = self._process_profile_photos(int(id_))
 
             # свойства для добавления кандидатуры в белый или черный список
+            # методы _add_target_to_blacklist и _add_target_to_whitelist
             self.target_id = id_
             self.target_name = name
             self.target_link = link
@@ -77,6 +82,7 @@ class DispatcherTools(DispatcherSetup):
             attachments = self._process_profile_photos(int(target_id))
 
             # target_id используется для удаления записи из белого списка
+            # метод _remove_target_from_white_list
             self.target_id = target_id
 
             self._send_message(f'{index} из {total_records}', attachments=attachments)
