@@ -1,6 +1,11 @@
 from dataclasses import dataclass
 from types import SimpleNamespace as Simple
 
+"""
+dataclass - https://docs.python.org/3/library/dataclasses.html
+SimpleNamespace - https://docs.python.org/3/library/types.html -> Additional Utility Classes and Functions 
+"""
+
 @dataclass
 class UserProperties:
     """ свойства пользователя """
