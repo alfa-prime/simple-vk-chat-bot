@@ -95,14 +95,14 @@ class Hunter:
 
     def _make_targets_list(self, filtered_data):
         """ формируем и возвращаем список найденых кандидатур """
-        result = []
+        result = tuple()
         for item in filtered_data:
             self._counter += 1
             target_id = item.get('id')
             full_name = f"{item.get('first_name')} {item.get('last_name')}"
             link = f"https://vk.com/id{target_id}"
             bdate = item.get('bdate') if item.get('bdate') else 'Нет данных'
-            result.append(Record(self._counter, target_id, full_name, link, bdate, self.total))
+            result += Record(self._counter, target_id, full_name, link, bdate, self.total),
         return result
 
     def __iter__(self):
