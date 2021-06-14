@@ -1,7 +1,7 @@
 from datetime import datetime
 from vk_api.execute import VkFunction
 from ..database import session
-from ..database.record import Record
+from ..database.models import Record
 from ..database.database import BlackList, WhiteList
 
 """ Класс поиска кандидатур для пользователя """

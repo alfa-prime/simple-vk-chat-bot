@@ -1,5 +1,5 @@
 from application.database import session
-from application.database.record import Record
+from application.database.models import Record
 from application.database.database import WhiteList
 
 """ белый список текущего пользователя """
