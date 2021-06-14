@@ -102,13 +102,11 @@ class Hunter:
             full_name = f"{item.get('first_name')} {item.get('last_name')}"
             link = f"https://vk.com/id{target_id}"
             bdate = item.get('bdate') if item.get('bdate') else 'Нет данных'
-            result.append(f'{self._counter},{target_id},{full_name},{link},{bdate}')
+            result.append(Record(self._counter, target_id, full_name, link, bdate, self.total))
         return result
 
     def __iter__(self):
         return self
 
     def __next__(self):
-        item = next(self.targets)
-        index, target_id, full_name, link, bdate = item.split(',')
-        return Record(index, target_id, full_name, link, bdate, self.total)
+        return next(self.targets)

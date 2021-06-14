@@ -9,7 +9,7 @@ class CurrentWhiteList:
         self.db_session = session.create()
 
         self.total = 0
-        self.counter = 0
+        self._counter = 0
 
         self.items = self._get_items(user_id)
 
@@ -22,6 +22,6 @@ class CurrentWhiteList:
         return self
 
     def __next__(self):
-        self.counter += 1
+        self._counter += 1
         item = next(self.items)
-        return Record(self.counter, item.id, item.name, item.link, item.bdate, self.total)
+        return Record(self._counter, item.id, item.name, item.link, item.bdate, self.total)
