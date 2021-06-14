@@ -17,7 +17,9 @@ class User(UserAuthorization, UserProperties):
             if 'no access_token' in self.has_error:
                 error_message = 'Авторизация пользователя не удалась. Нет токена. Смотрите README.MD пункт 4 -> 2.1'
                 print(error_message)
+                logger.error(error_message)
             else:
+                print(self.has_error)
                 logger.error(self.has_error)
             exit()
 

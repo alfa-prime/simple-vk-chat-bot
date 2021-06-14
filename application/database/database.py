@@ -37,5 +37,6 @@ try:
 
 except AttributeError as error:
     error_message = 'Не указана строка подключения базы данных'
+    print(error_message)
     logger.error(error_message)
     exit()

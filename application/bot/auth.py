@@ -18,7 +18,9 @@ class BotAuthorization:
         except ApiError as error:
             if error.code == 5:
                 error_message = 'Авторизация бота не удалась. Нет токена. Смотрите README.MD пункт 4 -> 1.1'
+                print(error_message)
                 logger.error(error_message)
             else:
+                print(error)
                 logger.error(error)
             exit()
