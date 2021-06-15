@@ -29,5 +29,7 @@ class Bot(BotAuthorization):
                 error_message = 'Возможности ботов отключены, для их подключения перейдите в настройки бота. ' \
                                 'Смотрите README.MD пункт 4 -> 1.4'
                 logger.error(error_message)
+                print(error_message)
             else:
                 logger.error(error)
+                print(error)

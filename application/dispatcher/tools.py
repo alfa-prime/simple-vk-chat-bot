@@ -57,12 +57,8 @@ class DispatcherTools(DispatcherSetup):
             target = next(self.targets)
             attachments = self._process_profile_photos(target.target_id)
 
-            # свойства для добавления кандидатуры в белый или черный список
-            # методы _add_target_to_blacklist и _add_target_to_whitelist
-            self.target_id = target.target_id
-            self.target_name = target.name
-            self.target_link = target.link
-            self.target_bdate = target.bdate
+            # для внесения записи в белый или черный списки методы _add_target_to_whitelist и _add_target_to_blacklist
+            self.target = target
 
             self._send_message(f'{target.index} из {target.total}', attachments=attachments)
             self._send_message(
@@ -80,8 +76,7 @@ class DispatcherTools(DispatcherSetup):
             chosen = next(self.white_list)
             attachments = self._process_profile_photos(chosen.target_id)
 
-            # target_id используется для удаления записи из белого списка
-            # метод _remove_target_from_white_list
+            # для удаления записи из белого списка метод _remove_target_from_white_list
             self.target_id = chosen.target_id
 
             self._send_message(f'{chosen.index} из {chosen.total}', attachments=attachments)
@@ -91,37 +86,37 @@ class DispatcherTools(DispatcherSetup):
 
     def _add_user_to_database(self, user):
         """ добавляем пользователя в бд """
-        check_user_exist = self.db_session.query(Users).filter_by(vk_user_id=user.id).all()
+        check_user_exist = self.db_session.query(Users).filter_by(user_id=user.id).all()
         if not check_user_exist:
             name = f'{self.user.first_name} {self.user.last_name}'
             link = f'vk.com/id{self.user.id}'
-            self.db_session.add(Users(vk_user_id=user.id, name=name, link=link))
+            self.db_session.add(Users(user_id=user.id, name=name, link=link))
             self.db_session.commit()
 
     def _add_target_to_blacklist(self, user_id):
         """ добавляем кандидатуру в черный список (не будет выводится при следующем поиске) """
-        self.db_session.add(BlackList(user_id=user_id, target_id=self.target_id))
+        self.db_session.add(BlackList(user_id=user_id, target_id=self.target.target_id))
         self.db_session.commit()
         self._next_target()
 
     def _add_target_to_whitelist(self, user_id):
         """ добавляем кандидатуру в белый список (не будет выводится при следующем поиске) """
+
         self.db_session.add(
             WhiteList(
                 user_id=user_id,
-                id=self.target_id,
-                name=self.target_name,
-                link=self.target_link,
-                bdate=self.target_bdate
+                target_id=self.target.target_id,
+                name=self.target.name,
+                link=self.target.link,
+                bdate=self.target.bdate
             )
         )
-
         self.db_session.commit()
         self._next_target()
 
     def _remove_target_from_white_list(self):
         """ удаляем кандидатуру из списка избранных """
-        self.db_session.delete(self.db_session.query(WhiteList).filter_by(id=self.target_id).one())
+        self.db_session.delete(self.db_session.query(WhiteList).filter_by(target_id=self.target_id).one())
         self.db_session.commit()
         self._next_chosen()
 

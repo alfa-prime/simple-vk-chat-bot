@@ -13,8 +13,8 @@ try:
 
     class Users(Base):
         __tablename__ = "users"
-        user_id = Column(Integer, primary_key=True)
-        vk_user_id = Column(Integer)
+        id = Column(Integer, primary_key=True)
+        user_id = Column(Integer)
         name = Column(String)
         link = Column(String)
 
@@ -27,7 +27,7 @@ try:
     class WhiteList(Base):
         __tablename__ = 'whitelist'
         white_id = Column(Integer, primary_key=True)
-        id = Column(Integer)
+        target_id = Column(Integer)
         name = Column(String)
         link = Column(String)
         bdate = Column(String)

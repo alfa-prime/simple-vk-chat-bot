@@ -11,12 +11,12 @@ class CurrentWhiteList:
         self.total = 0
         self._counter = 0
 
-        self.items = iter(self._get_items(user_id))
+        self.items = self._get_items(user_id)
 
     def _get_items(self, user_id):
         result = self.db_session.query(WhiteList).filter_by(user_id=user_id).all()
         self.total = len(result)
-        return result if self.total > 0 else False
+        return iter(result) if self.total > 0 else False
 
     def __iter__(self):
         return self
@@ -24,4 +24,4 @@ class CurrentWhiteList:
     def __next__(self):
         self._counter += 1
         item = next(self.items)
-        return Record(self._counter, item.id, item.name, item.link, item.bdate, self.total)
+        return Record(self._counter, item.target_id, item.name, item.link, item.bdate, self.total)
