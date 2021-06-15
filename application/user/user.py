@@ -19,8 +19,6 @@ class User(UserAuthorization, UserProperties):
                 print(error_message)
                 logger.error(error_message)
                 exit()
-            else:
-                logger.error(self.has_error)
 
     def __repr__(self):
         return (f'{self.__class__.__name__}'
