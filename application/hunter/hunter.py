@@ -15,7 +15,7 @@ class Hunter:
         self._counter = 0
         self.total = 0
 
-        self.targets = iter(self._search())
+        self.targets = self._search()
 
     def __repr__(self):
         return (f'{self.__class__.__name__}'
@@ -103,7 +103,7 @@ class Hunter:
             link = f"https://vk.com/id{target_id}"
             bdate = item.get('bdate') if item.get('bdate') else 'Нет данных'
             result += Record(self._counter, target_id, full_name, link, bdate, self.total),
-        return result
+        return iter(result)
 
     def __iter__(self):
         return self
