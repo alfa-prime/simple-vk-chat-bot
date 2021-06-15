@@ -18,10 +18,9 @@ class User(UserAuthorization, UserProperties):
                 error_message = 'Авторизация пользователя не удалась. Нет токена. Смотрите README.MD пункт 4 -> 2.1'
                 print(error_message)
                 logger.error(error_message)
+                exit()
             else:
-                print(self.has_error)
                 logger.error(self.has_error)
-            exit()
 
     def __repr__(self):
         return (f'{self.__class__.__name__}'
